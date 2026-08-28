@@ -29,7 +29,7 @@ export function Welcome() {
 
         <nav className="flex flex-col gap-2">
           <a
-            href="home.tsx"
+            href="/"
             className="flex items-center gap-3 px-3 py-3 rounded-lg bg-white/10 text-white font-semibold"
           >
             <LayoutDashboard size={20} />
@@ -37,7 +37,7 @@ export function Welcome() {
           </a>
 
           <a
-            href="relatorios.tsx"
+            href="/relatorios"
             className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
           >
             <List size={20} />
@@ -45,7 +45,7 @@ export function Welcome() {
           </a>
 
           <a
-            href="IA.tsx"
+            href="/IA"
             className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
           >
             <Filter size={20} />
@@ -53,7 +53,7 @@ export function Welcome() {
           </a>
 
           <a
-            href="team.tsx"
+            href="/team"
             className="flex items-center justify-between px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
           >
             <div className="flex items-center gap-3">
@@ -64,7 +64,7 @@ export function Welcome() {
           </a>
 
           <a
-            href="presencas.tsx"
+            href="/presencas"
             className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
           >
             <ClipboardCheck size={20} />
@@ -72,7 +72,7 @@ export function Welcome() {
           </a>
 
           <a
-            href="salas.tsx"
+            href="/salas"
             className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
           >
             <DoorOpen size={20} />
@@ -80,7 +80,7 @@ export function Welcome() {
           </a>
 
           <a
-            href="alunos.tsx"
+            href="/alunos"
             className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
           >
             <Users size={20} />
@@ -92,7 +92,7 @@ export function Welcome() {
 
         <nav>
           <a
-            href="settings.tsx"
+            href="/settings"
             className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
           >
             <Settings size={20} />
@@ -104,7 +104,7 @@ export function Welcome() {
 
         <div className="flex flex-col gap-3">
           <a
-            href="ajuda.tsx"
+            href="/ajuda"
             className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
           >
             <HelpCircle size={20} />
@@ -112,7 +112,7 @@ export function Welcome() {
           </a>
 
           <a
-            href="Log.tsx"
+            href="/Log"
             className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
           >
             <LogOut size={20} />
