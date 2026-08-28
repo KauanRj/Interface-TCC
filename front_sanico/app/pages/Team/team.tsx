@@ -10,19 +10,22 @@ import {
   Settings,
   HelpCircle,
   LogOut,
+  BellRing,
+  TrendingUp,
+  TrendingDown,
 }from "lucide-react";
 
-export function Welcome() {
+export function Team() {
   return (
     <main className="min-h-screen flex bg-gray-100 m-0">
    
-      <aside className="w-72 min-h-screen bg-stone-900 text-white flex flex-col px-5 py-6">
+      <aside className="w-55 min-h-screen bg-stone-900 text-white text-sm flex flex-col px-5 py-6">
         <div className="flex items-center gap-3 mb-10">
-          <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white/10">
+          <div className="w-5 h-10 rounded-full flex items-center justify-center bg-white/10">
             <Home size={21} />
           </div>
 
-          <h1 className="text-xl font-bold">
+          <h1 className="text-base font-bold">
             Home
           </h1>
         </div>
@@ -137,7 +140,7 @@ export function Welcome() {
             </div>
           
             <div className="flex items-center gap-4">
-              <h1 className="text-lg font-semibold">Notificação</h1>
+              <BellRing size={20} />
               <div className="bg-white rounded-full w-10 h-10 flex items-center justify-center">
                 <img
                   src="https://via.placeholder.com/40"
@@ -149,13 +152,7 @@ export function Welcome() {
             </div>
           </div>
           
-          <div className="  p-4 rounded-lg h-full max-h-150 m-4 grid grid-cols-3 gap-4">
-            <div className="rounded-lg bg-stone-900 ">01</div>
-            <div className="rounded-lg bg-white">02</div>
-            <div className="rounded-lg bg-white">03</div>
-            <div className="col-span-2 rounded-lg bg-white">04</div>
-            <div className="rounded-lg bg-white">05</div>
-          </div>
+          
         </div>
         
       
