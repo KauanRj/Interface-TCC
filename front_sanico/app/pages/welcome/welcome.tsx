@@ -14,12 +14,14 @@ import {
   TrendingUp,
   TrendingDown,
 }from "lucide-react";
+import Lohran from "../../../public/lohran.png"
 
 export function Welcome() {
   return (
     <main className="min-h-screen flex bg-gray-100 m-0">
+
    
-      <aside className="w-55 min-h-screen bg-stone-900 text-white text-sm flex flex-col px-5 py-6">
+      <aside className="w-55 min-h-screen bg-[#0d4c5c] text-white text-sm flex flex-col px-5 py-6">
         <div className="flex items-center gap-3 mb-10">
           <div className="w-5 h-10 rounded-full flex items-center justify-center bg-white/10">
             <Home size={21} />
@@ -143,8 +145,8 @@ export function Welcome() {
               <BellRing size={20} />
               <div className="bg-white rounded-full w-10 h-10 flex items-center justify-center">
                 <img
-                  src="https://via.placeholder.com/40"
-                  alt="Profile"
+                  src={Lohran}
+                  alt="Lohran"
                   className="rounded-full"
                 />
               </div>
@@ -153,7 +155,7 @@ export function Welcome() {
           </div>
           
           <div className="  p-4 rounded-lg h-full max-h-150 m-4 grid grid-cols-3 gap-4">
-            <div className="relative rounded-lg bg-stone-900 flex flex-col justify-around p-4">
+            <div className="relative rounded-lg bg-[#0d4c5c] flex flex-col justify-around p-4">
               <h1 className="absolute top-4 left-0 right-0 text-lg font-bold text-white text-center">Presenças</h1>
               <TrendingUp size={20} color="white" className="absolute bottom-4 left-4" />
              

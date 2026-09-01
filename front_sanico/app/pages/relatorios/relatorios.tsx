@@ -14,12 +14,13 @@ import {
   TrendingUp,
   TrendingDown,
 }from "lucide-react";
+import Lohran from "../../../public/lohran.png";
 
 export function Relatorios() {
   return (
     <main className="min-h-screen flex bg-gray-100 m-0">
    
-      <aside className="w-55 min-h-screen bg-stone-900 text-white text-sm flex flex-col px-5 py-6">
+      <aside className="w-55 min-h-screen bg-[#0d4c5c] text-white text-sm flex flex-col px-5 py-6">
         <div className="flex items-center gap-3 mb-10">
           <div className="w-5 h-10 rounded-full flex items-center justify-center bg-white/10">
             <Home size={21} />
@@ -127,7 +128,7 @@ export function Relatorios() {
         <div className="flex-1 flex flex-col">
           <div className="w-full bg-white p-4 shadow-lg flex justify-between items-center">
             <div>
-              <h1 className="text-2xl font-bold">Welcome back, Lohran!</h1>
+              <h1 className="text-2xl font-bold">Lohran </h1>
               <p className="text-lg text-gray-500">blablabla</p>
             </div>
           
@@ -143,7 +144,7 @@ export function Relatorios() {
               <BellRing size={20} />
               <div className="bg-white rounded-full w-10 h-10 flex items-center justify-center">
                 <img
-                  src="https://via.placeholder.com/40"
+                  src={Lohran}
                   alt="Profile"
                   className="rounded-full"
                 />
