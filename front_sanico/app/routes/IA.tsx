@@ -1,13 +1,13 @@
-import type { Route } from "./+types/IA";
-import { Welcome } from "../welcome/welcome";
+import type { Route } from "./+types/home";
+import { Welcome } from "../pages/welcome/welcome";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Assistente de IA" },
-    { name: "description", content: "Assistente de IA da secretaria." },
+    { title: "Educontrol - IA" },
+    { name: "description", content: "Página de IA" },
   ];
 }
 
-export default function AssistenteIA() {
+export default function IA() {
   return <Welcome />;
 }

@@ -1,13 +1,15 @@
-import type { Route } from "./+types/relatorios";
-import { Welcome } from "../welcome/welcome";
+import { Relatorios } from "~/pages/relatorios/relatorios";
+import type { Route } from "../+types/root";
 
-export function meta({}: Route.MetaArgs) {
+
+
+export function meta({}: Route.MetaArgs) { 
   return [
-    { title: "Relatórios" },
-    { name: "description", content: "Relatórios da secretaria." },
+    { title: "Educontrol - Relatórios" },
+    { name: "description", content: "Página de relatórios" },
   ];
 }
 
-export default function Relatorios() {
-  return <Welcome />;
+export default function relatorios() {
+  return <Relatorios />;
 }

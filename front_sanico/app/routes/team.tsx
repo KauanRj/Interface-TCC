@@ -1,10 +1,10 @@
-import type { Route } from "./+types/team";
-import { Welcome } from "../welcome/welcome";
+import type { Route } from "./+types/home";
+import { Welcome } from "../pages/welcome/welcome";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Team" },
-    { name: "description", content: "Equipe da secretaria." },
+    { title: "Educontrol - Time" },
+    { name: "description", content: "Página do time" },
   ];
 }
 

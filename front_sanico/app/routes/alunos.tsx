@@ -1,10 +1,10 @@
-import type { Route } from "./+types/alunos";
-import { Welcome } from "../welcome/welcome";
+import type { Route } from "./+types/home";
+import { Welcome } from "../pages/welcome/welcome";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Alunos" },
-    { name: "description", content: "Cadastro de alunos." },
+    { title: "Educontrol - Alunos" },
+    { name: "description", content: "Página de alunos" },
   ];
 }
 
