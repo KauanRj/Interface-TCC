@@ -3,11 +3,11 @@ import { Welcome } from "../pages/welcome/welcome";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Educontrol - Home" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "Educontrol - Salas" },
+    { name: "description", content: "Página de salas" },
   ];
 }
 
-export default function Home() {
+export default function Salas() {
   return <Welcome />;
 }
