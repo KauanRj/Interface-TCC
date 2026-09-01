@@ -1,7 +1,7 @@
 
 export function Welcome() {
   return (
-    <main className="min-h-screen flex bg-gray-400 m-0">
+    <main className="min-h-screen flex bg-gray-100 m-0">
    
       <div className="w-56 flex flex-col bg-gray-800 text-white p-4 m-0 rounded-lg shadow-lg block-screen ">
         
@@ -28,7 +28,7 @@ export function Welcome() {
               <h1 className="text-2xl font-bold">Welcome back, Lohran!</h1>
               <p className="text-lg text-gray-500">blablabla</p>
             </div>
-          
+
             <div>
               <input
                 type="text"
@@ -36,7 +36,7 @@ export function Welcome() {
                 className="bg-gray-200 text-sm rounded-lg w-80 h-10 px-4"
               />
             </div>
-          
+
             <div className="flex items-center gap-4">
               <h1 className="text-lg font-semibold">Notificação</h1>
               <div className="bg-white rounded-full w-10 h-10 flex items-center justify-center">
@@ -49,7 +49,7 @@ export function Welcome() {
               <span className="text-lg font-semibold">Lohran</span>
             </div>
           </div>
-          
+
           <div className="flex-1 bg-gray-600 p-4 rounded-lg shadow-lg m-4">
             gb
           </div>
