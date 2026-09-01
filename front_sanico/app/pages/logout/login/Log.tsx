@@ -18,7 +18,7 @@ import {
 export function Log() {
   return (
     <main className="min-h-screen flex bg-gray-100 m-0">
-   
+      <h1>oi</h1>
       <aside className="w-55 min-h-screen bg-stone-900 text-white text-sm flex flex-col px-5 py-6">
         <div className="flex items-center gap-3 mb-10">
           <div className="w-5 h-10 rounded-full flex items-center justify-center bg-white/10">
