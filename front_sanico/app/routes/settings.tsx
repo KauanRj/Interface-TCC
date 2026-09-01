@@ -1,10 +1,10 @@
-import type { Route } from "./+types/home";
-import { Welcome } from "../pages/welcome/welcome";
+import type { Route } from "./+types/settings";
+import { Welcome } from "../welcome/welcome";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Educontrol - Configurações" },
-    { name: "description", content: "Página de configurações" },
+    { title: "Settings" },
+    { name: "description", content: "Configurações da secretaria." },
   ];
 }
 

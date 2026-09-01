@@ -1,13 +1,13 @@
-import type { Route } from "./+types/home";
-import { Welcome } from "../pages/welcome/welcome";
+import type { Route } from "./+types/presenca";
+import { Welcome } from "../welcome/welcome";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Educontrol - Presença" },
-    { name: "description", content: "Página de presença" },
+    { title: "Presenças" },
+    { name: "description", content: "Controle de presenças." },
   ];
 }
 
-export default function Presença() {
+export default function Presenca() {
   return <Welcome />;
 }
