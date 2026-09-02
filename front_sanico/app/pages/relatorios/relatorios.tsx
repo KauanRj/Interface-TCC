@@ -13,13 +13,13 @@ import {
   BellRing,
   TrendingUp,
   TrendingDown,
-}from "lucide-react";
+} from "lucide-react";
 import Lohran from "../../../public/lohran.png";
 
 export function Relatorios() {
   return (
-    <main className="min-h-screen flex bg-gray-100 m-0">
-   
+    <main className="min-h-screen flex bg-gray-100 dark:bg-[#101820] m-0">
+
       <aside className="w-55 min-h-screen bg-[#0d4c5c] text-white text-sm flex flex-col px-5 py-6">
         <div className="flex items-center gap-3 mb-10">
           <div className="w-5 h-10 rounded-full flex items-center justify-center bg-white/10">
@@ -34,7 +34,7 @@ export function Relatorios() {
         <nav className="flex flex-col gap-2">
           <a
             href="home.tsx"
-            className="flex items-center gap-3 px-3 py-3 rounded-lg bg-white/10 text-white font-semibold"
+            className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
           >
             <LayoutDashboard size={20} />
             <span>Início</span>
@@ -42,7 +42,7 @@ export function Relatorios() {
 
           <a
             href="relatorios.tsx"
-            className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
+            className="flex items-center gap-3 px-3 py-3 rounded-lg bg-white/10 text-white hover:text-white transition font-semibold"
           >
             <List size={20} />
             <span>Relatórios</span>
@@ -64,7 +64,6 @@ export function Relatorios() {
               <Mail size={20} />
               <span>Team</span>
             </div>
-
           </a>
 
           <a
@@ -125,38 +124,71 @@ export function Relatorios() {
         </div>
       </aside>
 
-        <div className="flex-1 flex flex-col">
-          <div className="w-full bg-white p-4 shadow-lg flex justify-between items-center">
-            <div>
-              <h1 className="text-2xl font-bold">Lohran </h1>
-              <p className="text-lg text-gray-500">blablabla</p>
+      <div className="flex-1 flex flex-col">
+
+        <div className="w-full bg-white dark:bg-[#17212b] p-4 shadow-lg flex justify-between items-center">
+          <div>
+            <h1 className="text-2xl font-bold p-4 text-gray-950 dark:text-[#f1f5f9]">
+              Relatorios
+            </h1>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <BellRing
+              size={20}
+              className="text-gray-700 dark:text-[#cbd5e1]"
+            />
+
+            <div className="bg-white rounded-full w-10 h-10 flex items-center justify-center">
+              <img
+                src={Lohran}
+                alt="Profile"
+                className="rounded-full"
+              />
             </div>
-          
-            <div>
+
+            <span className="text-lg font-semibold text-gray-900 dark:text-[#f1f5f9]">
+              Lohran
+            </span>
+          </div>
+        </div>
+
+        <div className="p-4 m-4 grid grid-cols-1 gap-4 bg-gray-100 dark:bg-[#101820]">
+
+          <div className="relative rounded-lg bg-white dark:bg-[#1b2733] h-60 p-5">
+
+            <h1 className="absolute top-6 left-4 right-0 text-2xl font-bold text-gray-950 dark:text-[#f1f5f9]">
+              Pesquisar Aluno para relatórios
+            </h1>
+
+            <div className="mt-16">
               <input
                 type="text"
                 placeholder="Pesquisar..."
-                className="bg-gray-200 text-sm rounded-lg w-80 h-10 px-4"
+                className="
+                  bg-gray-200 dark:bg-[#243442]
+                  text-gray-900 dark:text-[#f1f5f9]
+                  placeholder-gray-500 dark:placeholder-[#94a3b8]
+                  text-sm rounded-lg w-260 h-14 px-3
+                  outline-none
+                "
               />
             </div>
-          
-            <div className="flex items-center gap-4">
-              <BellRing size={20} />
-              <div className="bg-white rounded-full w-10 h-10 flex items-center justify-center">
-                <img
-                  src={Lohran}
-                  alt="Profile"
-                  className="rounded-full"
-                />
-              </div>
-              <span className="text-lg font-semibold">Lohran</span>
-            </div>
+
           </div>
-          
-          
+
+          <div className="relative rounded-lg bg-white dark:bg-[#1b2733] min-h-60 p-4">
+
+            <h1 className="text-lg font-bold text-center text-gray-950 dark:text-[#f1f5f9]">
+              //tabela
+            </h1>
+
+          </div>
+
         </div>
-        
-      
+
+      </div>
+
     </main>
   );
 }

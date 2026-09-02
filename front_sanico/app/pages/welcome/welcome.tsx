@@ -1,14 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
 import {
   Home,
   LayoutDashboard,
@@ -24,14 +13,13 @@ import {
   BellRing,
   TrendingUp,
   TrendingDown,
-}from "lucide-react";
-import Lohran from "../../../public/lohran.png"
+} from "lucide-react";
+import Lohran from "../../../public/lohran.png";
 
 export function Welcome() {
   return (
-    <main className="min-h-screen flex bg-gray-100 m-0">
+    <main className="min-h-screen flex bg-gray-100 dark:bg-[#101820] m-0">
 
-   
       <aside className="w-55 min-h-screen bg-[#0d4c5c] text-white text-sm flex flex-col px-5 py-6">
         <div className="flex items-center gap-3 mb-10">
           <div className="w-5 h-10 rounded-full flex items-center justify-center bg-white/10">
@@ -76,7 +64,6 @@ export function Welcome() {
               <Mail size={20} />
               <span>Team</span>
             </div>
-
           </a>
 
           <a
@@ -137,56 +124,93 @@ export function Welcome() {
         </div>
       </aside>
 
-        <div className="flex-1 flex flex-col">
-          <div className="w-full bg-white p-4 shadow-lg flex justify-between items-center">
-            <div>
-              <h1 className="text-2xl font-bold">Welcome back, Lohran!</h1>
-              <p className="text-lg text-gray-500">blablabla</p>
-            </div>
-          
-            <div>
-              <input
-                type="text"
-                placeholder="Pesquisar..."
-                className="bg-gray-200 text-sm rounded-lg w-80 h-10 px-4"
+      <div className="flex-1 flex flex-col">
+        <div className="w-full bg-white dark:bg-[#17212b] p-4 shadow-lg flex justify-between items-center">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-[#f1f5f9]">
+              Welcome back, Lohran!
+            </h1>
+            <p className="text-lg text-gray-500 dark:text-[#94a3b8]">
+              blablabla
+            </p>
+          </div>
+
+          <div>
+            <input
+              type="text"
+              placeholder="Pesquisar..."
+              className="bg-gray-200 dark:bg-[#243442]
+                text-gray-900 dark:text-white
+                placeholder-gray-500 dark:placeholder-gray-400
+                text-sm rounded-lg w-80 h-10 px-4
+                outline-none"
+            />
+          </div>
+
+          <div className="flex items-center gap-4">
+            <BellRing size={20} className="text-gray-900 dark:text-white" />
+
+            <div className="bg-white rounded-full w-10 h-10 flex items-center justify-center">
+              <img
+                src={Lohran}
+                alt="Lohran"
+                className="rounded-full"
               />
             </div>
-          
-            <div className="flex items-center gap-4">
-              <BellRing size={20} />
-              <div className="bg-white rounded-full w-10 h-10 flex items-center justify-center">
-                <img
-                  src={Lohran}
-                  alt="Lohran"
-                  className="rounded-full"
-                />
-              </div>
-              <span className="text-lg font-semibold">Lohran</span>
-            </div>
-          </div>
-          
-          <div className="  p-4 rounded-lg h-full max-h-150 m-4 grid grid-cols-3 gap-4">
-            <div className="relative rounded-lg bg-[#0d4c5c] flex flex-col justify-around p-4">
-              <h1 className="absolute top-4 left-0 right-0 text-lg font-bold text-white text-center">Presenças</h1>
-              <TrendingUp size={20} color="white" className="absolute bottom-4 left-4" />
-             
-              
-            </div>
-            <div className="relative rounded-lg bg-white flex flex-col justify-around p-4">
-              <h1 className="absolute top-4 left-0 right-0 text-lg font-bold text-center">Pendentes</h1>
-              <TrendingUp size={20} color="black" className="absolute bottom-4 left-4" />
-            </div>
-            <div className="relative rounded-lg bg-white flex flex-col justify-around p-4">
-              <h1 className="absolute top-4 left-0 right-0 text-lg font-bold text-center">Atrasados</h1>
-              <TrendingDown size={20} color="black" className="absolute bottom-4 left-4" />
-            </div>
-          
-            <div className="col-span-2 rounded-lg bg-white"></div>
-            <div className="rounded-lg bg-white"></div>
+
+            <span className="text-lg font-semibold text-gray-900 dark:text-white">
+              Lohran
+            </span>
           </div>
         </div>
-        
-      
+
+        <div className="p-4 rounded-lg h-full max-h-180 m-4 grid grid-cols-3 gap-4 bg-gray-100 dark:bg-[#101820]">
+          <div className="relative rounded-lg bg-[#0d4c5c] flex flex-col justify-around p-4">
+            <h1 className="absolute top-4 left-0 right-0 text-lg font-bold text-white text-center">
+              Presenças
+            </h1>
+
+            <TrendingUp
+              size={20}
+              className="text-white/80 absolute bottom-4 left-4"
+            />
+          </div>
+
+          <div className="relative rounded-lg bg-white dark:bg-[#1b2733] flex flex-col justify-around p-4">
+            <h1 className="absolute top-4 left-0 right-0 text-lg font-bold text-gray-950 dark:text-white text-center">
+              Pendentes
+            </h1>
+
+            <TrendingUp
+              size={20}
+              className="text-gray-950 dark:text-white absolute bottom-4 left-4"
+            />
+          </div>
+
+          <div className="relative rounded-lg bg-white dark:bg-[#1b2733] flex flex-col justify-around p-4">
+            <h1 className="absolute top-4 left-0 right-0 text-lg font-bold text-gray-950 dark:text-white text-center">
+              Atrasados
+            </h1>
+
+            <TrendingDown
+              size={20}
+              className="text-gray-950 dark:text-white absolute bottom-4 left-4"
+            />
+          </div>
+
+          <div className="relative rounded-lg bg-white dark:bg-[#1b2733] col-span-2">
+            <h1 className="absolute top-4 left-4 right-0 text-lg font-bold text-gray-950 dark:text-white">
+              Grafico de Turmas
+            </h1>
+          </div>
+
+          <div className="relative rounded-lg bg-white dark:bg-[#1b2733]">
+            <h1 className="absolute top-4 left-0 right-0 text-lg font-bold text-gray-950 dark:text-white text-center">
+              Pré-Relatorios
+            </h1>
+          </div>
+        </div>
+      </div>
     </main>
   );
 }
