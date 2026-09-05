@@ -26,8 +26,11 @@ import {
   TrendingDown,
 }from "lucide-react";
 import Lohran from "../../../public/lohran.png"
+import { useNavigate } from "react-router";
 
 export function Welcome() {
+  const navigate = useNavigate();
+
   return (
     <main className="min-h-screen flex bg-gray-100 m-0">
 
@@ -45,7 +48,7 @@ export function Welcome() {
 
         <nav className="flex flex-col gap-2">
           <a
-            href="home.tsx"
+            onClick={() => navigate("/")}
             className="flex items-center gap-3 px-3 py-3 rounded-lg bg-white/10 text-white font-semibold"
           >
             <LayoutDashboard size={20} />
@@ -53,7 +56,7 @@ export function Welcome() {
           </a>
 
           <a
-            href="relatorios.tsx"
+            onClick={() => navigate("/relatorios")}
             className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
           >
             <List size={20} />
@@ -61,7 +64,7 @@ export function Welcome() {
           </a>
 
           <a
-            href="IA.tsx"
+            onClick={() => navigate("/IA")}
             className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
           >
             <Filter size={20} />
@@ -69,7 +72,7 @@ export function Welcome() {
           </a>
 
           <a
-            href="team.tsx"
+            onClick={() => navigate("/team")}
             className="flex items-center justify-between px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
           >
             <div className="flex items-center gap-3">
@@ -80,7 +83,7 @@ export function Welcome() {
           </a>
 
           <a
-            href="presencas.tsx"
+            onClick={() => navigate("/presenca")}
             className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
           >
             <ClipboardCheck size={20} />
@@ -88,7 +91,7 @@ export function Welcome() {
           </a>
 
           <a
-            href="salas.tsx"
+            onClick={() => navigate("/salas")}
             className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
           >
             <DoorOpen size={20} />
@@ -96,7 +99,7 @@ export function Welcome() {
           </a>
 
           <a
-            href="alunos.tsx"
+            onClick={() => navigate("/alunos")}
             className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
           >
             <Users size={20} />
@@ -108,7 +111,7 @@ export function Welcome() {
 
         <nav>
           <a
-            href="settings.tsx"
+            onClick={() => navigate("/settings")}
             className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
           >
             <Settings size={20} />
@@ -120,7 +123,7 @@ export function Welcome() {
 
         <div className="flex flex-col gap-3">
           <a
-            href="ajuda.tsx"
+            onClick={() => navigate("/ajuda")}
             className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
           >
             <HelpCircle size={20} />
@@ -128,7 +131,7 @@ export function Welcome() {
           </a>
 
           <a
-            href="Log.tsx"
+            onClick={() => navigate("/Log")}
             className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
           >
             <LogOut size={20} />
@@ -169,7 +172,7 @@ export function Welcome() {
             <div className="relative rounded-lg bg-[#0d4c5c] flex flex-col justify-around p-4">
               <h1 className="absolute top-4 left-0 right-0 text-lg font-bold text-white text-center">Presenças</h1>
               <TrendingUp size={20} color="white" className="absolute bottom-4 left-4" />
-             
+              
               
             </div>
             <div className="relative rounded-lg bg-white flex flex-col justify-around p-4">
