@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import Lohran from "../../../public/lohran.png";
 
+
 export function Welcome() {
   return (
     <main className="app-shell">
@@ -210,3 +211,4 @@ export function Welcome() {
     </main>
   );
 }
+
