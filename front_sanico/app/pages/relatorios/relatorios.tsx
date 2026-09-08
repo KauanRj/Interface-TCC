@@ -13,18 +13,19 @@ import {
   BellRing,
   TrendingUp,
   TrendingDown,
-}from "lucide-react";
+} from "lucide-react";
 import Lohran from "../../../public/lohran.png";
 import { useNavigate } from "react-router";
 
 export function Relatorios() {
   const navigate = useNavigate();
+
   return (
-    <main className="min-h-screen flex bg-gray-100 m-0">
-   
-      <aside className="w-55 min-h-screen bg-[#0d4c5c] text-white text-sm flex flex-col px-5 py-6">
+    <main className="app-shell">
+
+      <aside className="app-sidebar">
         <div className="flex items-center gap-3 mb-10">
-          <div className="w-5 h-10 rounded-full flex items-center justify-center bg-white/10">
+          <div className="app-logo-mark">
             <Home size={21} />
           </div>
 
@@ -36,7 +37,7 @@ export function Relatorios() {
         <nav className="flex flex-col gap-2">
           <a
             onClick={() => navigate("/")}
-            className="flex items-center gap-3 px-3 py-3 rounded-lg bg-white/10 text-white font-semibold"
+            className="app-nav-link"
           >
             <LayoutDashboard size={20} />
             <span>Início</span>
@@ -44,7 +45,7 @@ export function Relatorios() {
 
           <a
             onClick={() => navigate("/relatorios")}
-            className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
+            className="app-nav-active"
           >
             <List size={20} />
             <span>Relatórios</span>
@@ -52,7 +53,7 @@ export function Relatorios() {
 
           <a
             onClick={() => navigate("/IA")}
-            className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
+            className="app-nav-link"
           >
             <Filter size={20} />
             <span>Assistente de IA</span>
@@ -60,18 +61,17 @@ export function Relatorios() {
 
           <a
             onClick={() => navigate("/team")}
-            className="flex items-center justify-between px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
+            className="app-nav-link-between"
           >
             <div className="flex items-center gap-3">
               <Mail size={20} />
               <span>Team</span>
             </div>
-
           </a>
 
           <a
             onClick={() => navigate("/presenca")}
-            className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
+            className="app-nav-link"
           >
             <ClipboardCheck size={20} />
             <span>Presenças</span>
@@ -79,7 +79,7 @@ export function Relatorios() {
 
           <a
             onClick={() => navigate("/salas")}
-            className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
+            className="app-nav-link"
           >
             <DoorOpen size={20} />
             <span>Salas</span>
@@ -87,19 +87,19 @@ export function Relatorios() {
 
           <a
             onClick={() => navigate("/alunos")}
-            className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
+            className="app-nav-link"
           >
             <Users size={20} />
             <span>Alunos</span>
           </a>
         </nav>
 
-        <div className="border-t border-white/10 my-7" />
+        <div className="app-divider" />
 
         <nav>
           <a
             onClick={() => navigate("/settings")}
-            className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
+            className="app-nav-link"
           >
             <Settings size={20} />
             <span>Settings</span>
@@ -111,7 +111,7 @@ export function Relatorios() {
         <div className="flex flex-col gap-3">
           <a
             onClick={() => navigate("/ajuda")}
-            className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
+            className="app-nav-link"
           >
             <HelpCircle size={20} />
             <span>Ajuda</span>
@@ -119,7 +119,7 @@ export function Relatorios() {
 
           <a
             onClick={() => navigate("/Log")}
-            className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
+            className="app-nav-link"
           >
             <LogOut size={20} />
             <span>Log out</span>
@@ -127,38 +127,66 @@ export function Relatorios() {
         </div>
       </aside>
 
-        <div className="flex-1 flex flex-col">
-          <div className="w-full bg-white p-4 shadow-lg flex justify-between items-center">
-            <div>
-              <h1 className="text-2xl font-bold">Lohran </h1>
-              <p className="text-lg text-gray-500">blablabla</p>
+      <div className="flex-1 flex flex-col">
+
+        <div className="app-header">
+          <div>
+            <h1 className="app-title p-4">
+              Relatorios
+            </h1>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <BellRing
+              size={20}
+              className="text-gray-700 dark:text-[#b9d2cc]"
+            />
+
+            <div className="app-avatar">
+              <img
+                src={Lohran}
+                alt="Profile"
+                className="rounded-full"
+              />
             </div>
-          
-            <div>
+
+            <span className="text-lg font-semibold text-gray-900 dark:text-[#f5fffc]">
+              Lohran
+            </span>
+          </div>
+        </div>
+
+        <div className="app-page-grid">
+
+          <div className="app-card h-60 p-5">
+
+            <h1 className="absolute top-6 left-4 right-0 text-2xl font-bold text-gray-950 dark:text-[#f5fffc]">
+              Pesquisar Aluno para relatórios
+            </h1>
+
+            <div className="mt-16">
               <input
                 type="text"
                 placeholder="Pesquisar..."
-                className="bg-gray-200 text-sm rounded-lg w-80 h-10 px-4"
+                className="app-input w-full h-14"
               />
             </div>
-          
-            <div className="flex items-center gap-4">
-              <BellRing size={20} />
-              <div className="bg-white rounded-full w-10 h-10 flex items-center justify-center">
-                <img
-                  src={Lohran}
-                  alt="Profile"
-                  className="rounded-full"
-                />
-              </div>
-              <span className="text-lg font-semibold">Lohran</span>
-            </div>
+
           </div>
-          
-          
+
+          <div className="app-card min-h-60 p-4">
+
+            <h1 className="text-lg font-bold text-center text-[#f5fffc]">
+              //tabela
+            </h1>
+
+            
+          </div>
+
         </div>
-        
-      
+
+      </div>
+
     </main>
   );
 }
