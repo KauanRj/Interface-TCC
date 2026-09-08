@@ -10,6 +10,6 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export default function TeamPage() {
-  return <Team /> };
-
+export default function teamPage() {
+  return <Team />;
+}

@@ -19,11 +19,11 @@ import { useNavigate } from "react-router";
 export function Log() {
   const navigate = useNavigate();
   return (
-    <main className="min-h-screen flex bg-gray-100 m-0">
-      <h1>oi</h1>
-      <aside className="w-55 min-h-screen bg-stone-900 text-white text-sm flex flex-col px-5 py-6">
+    <main className="app-shell">
+      
+      <aside className="app-sidebar">
         <div className="flex items-center gap-3 mb-10">
-          <div className="w-5 h-10 rounded-full flex items-center justify-center bg-white/10">
+          <div className="app-logo-mark">
             <Home size={21} />
           </div>
 
@@ -35,7 +35,7 @@ export function Log() {
         <nav className="flex flex-col gap-2">
           <a
             onClick={() => navigate("/")}
-            className="flex items-center gap-3 px-3 py-3 rounded-lg bg-white/10 text-white font-semibold"
+            className="app-nav-active"
           >
             <LayoutDashboard size={20} />
             <span>Início</span>
@@ -43,7 +43,7 @@ export function Log() {
 
           <a
             onClick={() => navigate("/relatorios")}
-            className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
+            className="app-nav-link"
           >
             <List size={20} />
             <span>Relatórios</span>
@@ -51,7 +51,7 @@ export function Log() {
 
           <a
             onClick={() => navigate("/IA")}
-            className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
+            className="app-nav-link"
           >
             <Filter size={20} />
             <span>Assistente de IA</span>
@@ -59,7 +59,7 @@ export function Log() {
 
           <a
             onClick={() => navigate("/team")}
-            className="flex items-center justify-between px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
+            className="app-nav-link-between"
           >
             <div className="flex items-center gap-3">
               <Mail size={20} />
@@ -70,7 +70,7 @@ export function Log() {
 
           <a
             onClick={() => navigate("/presenca")}
-            className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
+            className="app-nav-link"
           >
             <ClipboardCheck size={20} />
             <span>Presenças</span>
@@ -78,7 +78,7 @@ export function Log() {
 
           <a
             onClick={() => navigate("/salas")}
-            className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
+            className="app-nav-link"
           >
             <DoorOpen size={20} />
             <span>Salas</span>
@@ -86,19 +86,19 @@ export function Log() {
 
           <a
             onClick={() => navigate("/alunos")}
-            className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
+            className="app-nav-link"
           >
             <Users size={20} />
             <span>Alunos</span>
           </a>
         </nav>
 
-        <div className="border-t border-white/10 my-7" />
+        <div className="app-divider" />
 
         <nav>
           <a
             onClick={() => navigate("/settings")}
-            className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
+            className="app-nav-link"
           >
             <Settings size={20} />
             <span>Settings</span>
@@ -110,7 +110,7 @@ export function Log() {
         <div className="flex flex-col gap-3">
           <a
             onClick={() => navigate("/ajuda")}
-            className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
+            className="app-nav-link"
           >
             <HelpCircle size={20} />
             <span>Ajuda</span>
@@ -118,7 +118,7 @@ export function Log() {
 
           <a
             onClick={() => navigate("/Log")}
-            className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
+            className="app-nav-link"
           >
             <LogOut size={20} />
             <span>Log out</span>
@@ -127,30 +127,30 @@ export function Log() {
       </aside>
 
         <div className="flex-1 flex flex-col">
-          <div className="w-full bg-white p-4 shadow-lg flex justify-between items-center">
+          <div className="app-header">
             <div>
               <h1 className="text-2xl font-bold">Welcome back, Lohran!</h1>
-              <p className="text-lg text-gray-500">blablabla</p>
+              <p className="app-muted">blablabla</p>
             </div>
           
             <div>
               <input
                 type="text"
                 placeholder="Pesquisar..."
-                className="bg-gray-200 text-sm rounded-lg w-80 h-10 px-4"
+                className="app-input w-full max-w-80"
               />
             </div>
           
             <div className="flex items-center gap-4">
               <BellRing size={20} />
-              <div className="bg-white rounded-full w-10 h-10 flex items-center justify-center">
+              <div className="app-avatar">
                 <img
                   src="https://via.placeholder.com/40"
                   alt="Profile"
                   className="rounded-full"
                 />
               </div>
-              <span className="text-lg font-semibold">Lohran</span>
+              <span className="text-lg font-semibold text-gray-900 dark:text-[#f5fffc]">Lohran</span>
             </div>
           </div>
           

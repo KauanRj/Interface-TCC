@@ -10,6 +10,6 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export default function AlunosPage() {
-  return <Alunos /> };
-
+export default function alunosPage() {
+  return <Alunos />;
+}
