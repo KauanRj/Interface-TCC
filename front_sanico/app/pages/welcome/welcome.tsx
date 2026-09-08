@@ -15,9 +15,12 @@ import {
   TrendingDown,
 } from "lucide-react";
 import Lohran from "../../../public/lohran.png";
+import { useNavigate } from "react-router";
 
 
 export function Welcome() {
+  const navigate = useNavigate();
+
   return (
     <main className="app-shell">
 
@@ -34,7 +37,7 @@ export function Welcome() {
 
         <nav className="flex flex-col gap-2">
           <a
-            href="home.tsx"
+            onClick={() => navigate("/")}
             className="app-nav-active"
           >
             <LayoutDashboard size={20} />
@@ -42,7 +45,7 @@ export function Welcome() {
           </a>
 
           <a
-            href="relatorios.tsx"
+            onClick={() => navigate("/relatorios")}
             className="app-nav-link"
           >
             <List size={20} />
@@ -50,7 +53,7 @@ export function Welcome() {
           </a>
 
           <a
-            href="IA.tsx"
+            onClick={() => navigate("/IA")}
             className="app-nav-link"
           >
             <Filter size={20} />
@@ -58,7 +61,7 @@ export function Welcome() {
           </a>
 
           <a
-            href="team.tsx"
+            onClick={() => navigate("/team")}
             className="app-nav-link-between"
           >
             <div className="flex items-center gap-3">
@@ -68,7 +71,7 @@ export function Welcome() {
           </a>
 
           <a
-            href="presencas.tsx"
+            onClick={() => navigate("/presenca")}
             className="app-nav-link"
           >
             <ClipboardCheck size={20} />
@@ -76,7 +79,7 @@ export function Welcome() {
           </a>
 
           <a
-            href="salas.tsx"
+            onClick={() => navigate("/salas")}
             className="app-nav-link"
           >
             <DoorOpen size={20} />
@@ -84,7 +87,7 @@ export function Welcome() {
           </a>
 
           <a
-            href="alunos.tsx"
+            onClick={() => navigate("/alunos")}
             className="app-nav-link"
           >
             <Users size={20} />
@@ -96,7 +99,7 @@ export function Welcome() {
 
         <nav>
           <a
-            href="settings.tsx"
+            onClick={() => navigate("/settings")}
             className="app-nav-link"
           >
             <Settings size={20} />
@@ -108,7 +111,7 @@ export function Welcome() {
 
         <div className="flex flex-col gap-3">
           <a
-            href="ajuda.tsx"
+            onClick={() => navigate("/ajuda")}
             className="app-nav-link"
           >
             <HelpCircle size={20} />
@@ -116,7 +119,7 @@ export function Welcome() {
           </a>
 
           <a
-            href="Log.tsx"
+            onClick={() => navigate("/log")}
             className="app-nav-link"
           >
             <LogOut size={20} />

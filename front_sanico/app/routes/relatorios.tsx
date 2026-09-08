@@ -10,6 +10,6 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export default function relatorios() {
+export default function relatoriosPage() {
   return <Relatorios />;
 }

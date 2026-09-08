@@ -1,13 +1,15 @@
-import type { Route } from "./+types/home";
-import { Welcome } from "../pages/welcome/welcome";
+import { Team } from "~/pages/Team/team";
+import type { Route } from "../+types/root";
 
-export function meta({}: Route.MetaArgs) {
+
+
+export function meta({}: Route.MetaArgs) { 
   return [
     { title: "Educontrol - Time" },
     { name: "description", content: "Página do time" },
   ];
 }
 
-export default function Team() {
-  return <Welcome />;
+export default function teamPage() {
+  return <Team />;
 }

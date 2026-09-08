@@ -14,8 +14,10 @@ import {
   TrendingUp,
   TrendingDown,
 }from "lucide-react";
+import { useNavigate } from "react-router";
 
 export function IA() {
+  const navigate = useNavigate();
   return (
     <main className="app-shell">
    
@@ -32,7 +34,7 @@ export function IA() {
 
         <nav className="flex flex-col gap-2">
           <a
-            href="home.tsx"
+            onClick={() => navigate("/")}
             className="app-nav-active"
           >
             <LayoutDashboard size={20} />
@@ -40,7 +42,7 @@ export function IA() {
           </a>
 
           <a
-            href="relatorios.tsx"
+            onClick={() => navigate("/relatorios")}
             className="app-nav-link"
           >
             <List size={20} />
@@ -48,7 +50,7 @@ export function IA() {
           </a>
 
           <a
-            href="IA.tsx"
+            onClick={() => navigate("/IA")}
             className="app-nav-link"
           >
             <Filter size={20} />
@@ -56,7 +58,7 @@ export function IA() {
           </a>
 
           <a
-            href="team.tsx"
+            onClick={() => navigate("/team")}
             className="app-nav-link-between"
           >
             <div className="flex items-center gap-3">
@@ -67,7 +69,7 @@ export function IA() {
           </a>
 
           <a
-            href="presencas.tsx"
+            onClick={() => navigate("/presenca")}
             className="app-nav-link"
           >
             <ClipboardCheck size={20} />
@@ -75,7 +77,7 @@ export function IA() {
           </a>
 
           <a
-            href="salas.tsx"
+            onClick={() => navigate("/salas")}
             className="app-nav-link"
           >
             <DoorOpen size={20} />
@@ -83,7 +85,7 @@ export function IA() {
           </a>
 
           <a
-            href="alunos.tsx"
+            onClick={() => navigate("/alunos")}
             className="app-nav-link"
           >
             <Users size={20} />
@@ -95,7 +97,7 @@ export function IA() {
 
         <nav>
           <a
-            href="settings.tsx"
+            onClick={() => navigate("/settings")}
             className="app-nav-link"
           >
             <Settings size={20} />
@@ -107,7 +109,7 @@ export function IA() {
 
         <div className="flex flex-col gap-3">
           <a
-            href="ajuda.tsx"
+            onClick={() => navigate("/ajuda")}
             className="app-nav-link"
           >
             <HelpCircle size={20} />
@@ -115,7 +117,7 @@ export function IA() {
           </a>
 
           <a
-            href="Log.tsx"
+            onClick={() => navigate("/Log")}
             className="app-nav-link"
           >
             <LogOut size={20} />
