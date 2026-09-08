@@ -15,8 +15,11 @@ import {
   TrendingDown,
 } from "lucide-react";
 import Lohran from "../../../public/lohran.png";
+import { useNavigate } from "react-router";
 
 export function Relatorios() {
+  const navigate = useNavigate();
+
   return (
     <main className="app-shell">
 
@@ -33,7 +36,7 @@ export function Relatorios() {
 
         <nav className="flex flex-col gap-2">
           <a
-            href="home.tsx"
+            onClick={() => navigate("/")}
             className="app-nav-link"
           >
             <LayoutDashboard size={20} />
@@ -41,7 +44,7 @@ export function Relatorios() {
           </a>
 
           <a
-            href="relatorios.tsx"
+            onClick={() => navigate("/relatorios")}
             className="app-nav-active"
           >
             <List size={20} />
@@ -49,7 +52,7 @@ export function Relatorios() {
           </a>
 
           <a
-            href="IA.tsx"
+            onClick={() => navigate("/IA")}
             className="app-nav-link"
           >
             <Filter size={20} />
@@ -57,7 +60,7 @@ export function Relatorios() {
           </a>
 
           <a
-            href="team.tsx"
+            onClick={() => navigate("/team")}
             className="app-nav-link-between"
           >
             <div className="flex items-center gap-3">
@@ -67,7 +70,7 @@ export function Relatorios() {
           </a>
 
           <a
-            href="presencas.tsx"
+            onClick={() => navigate("/presenca")}
             className="app-nav-link"
           >
             <ClipboardCheck size={20} />
@@ -75,7 +78,7 @@ export function Relatorios() {
           </a>
 
           <a
-            href="salas.tsx"
+            onClick={() => navigate("/salas")}
             className="app-nav-link"
           >
             <DoorOpen size={20} />
@@ -83,7 +86,7 @@ export function Relatorios() {
           </a>
 
           <a
-            href="alunos.tsx"
+            onClick={() => navigate("/alunos")}
             className="app-nav-link"
           >
             <Users size={20} />
@@ -95,7 +98,7 @@ export function Relatorios() {
 
         <nav>
           <a
-            href="settings.tsx"
+            onClick={() => navigate("/settings")}
             className="app-nav-link"
           >
             <Settings size={20} />
@@ -107,7 +110,7 @@ export function Relatorios() {
 
         <div className="flex flex-col gap-3">
           <a
-            href="ajuda.tsx"
+            onClick={() => navigate("/ajuda")}
             className="app-nav-link"
           >
             <HelpCircle size={20} />
@@ -115,7 +118,7 @@ export function Relatorios() {
           </a>
 
           <a
-            href="Log.tsx"
+            onClick={() => navigate("/Log")}
             className="app-nav-link"
           >
             <LogOut size={20} />
