@@ -18,11 +18,11 @@ import Lohran from "../../../public/lohran.png";
 
 export function Welcome() {
   return (
-    <main className="min-h-screen flex bg-gray-100 dark:bg-[#101820] m-0">
+    <main className="app-shell">
 
-      <aside className="w-55 min-h-screen bg-[#0d4c5c] text-white text-sm flex flex-col px-5 py-6">
+      <aside className="app-sidebar">
         <div className="flex items-center gap-3 mb-10">
-          <div className="w-5 h-10 rounded-full flex items-center justify-center bg-white/10">
+          <div className="app-logo-mark">
             <Home size={21} />
           </div>
 
@@ -34,7 +34,7 @@ export function Welcome() {
         <nav className="flex flex-col gap-2">
           <a
             href="home.tsx"
-            className="flex items-center gap-3 px-3 py-3 rounded-lg bg-white/10 text-white font-semibold"
+            className="app-nav-active"
           >
             <LayoutDashboard size={20} />
             <span>Início</span>
@@ -42,7 +42,7 @@ export function Welcome() {
 
           <a
             href="relatorios.tsx"
-            className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
+            className="app-nav-link"
           >
             <List size={20} />
             <span>Relatórios</span>
@@ -50,7 +50,7 @@ export function Welcome() {
 
           <a
             href="IA.tsx"
-            className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
+            className="app-nav-link"
           >
             <Filter size={20} />
             <span>Assistente de IA</span>
@@ -58,7 +58,7 @@ export function Welcome() {
 
           <a
             href="team.tsx"
-            className="flex items-center justify-between px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
+            className="app-nav-link-between"
           >
             <div className="flex items-center gap-3">
               <Mail size={20} />
@@ -68,7 +68,7 @@ export function Welcome() {
 
           <a
             href="presencas.tsx"
-            className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
+            className="app-nav-link"
           >
             <ClipboardCheck size={20} />
             <span>Presenças</span>
@@ -76,7 +76,7 @@ export function Welcome() {
 
           <a
             href="salas.tsx"
-            className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
+            className="app-nav-link"
           >
             <DoorOpen size={20} />
             <span>Salas</span>
@@ -84,19 +84,19 @@ export function Welcome() {
 
           <a
             href="alunos.tsx"
-            className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
+            className="app-nav-link"
           >
             <Users size={20} />
             <span>Alunos</span>
           </a>
         </nav>
 
-        <div className="border-t border-white/10 my-7" />
+        <div className="app-divider" />
 
         <nav>
           <a
             href="settings.tsx"
-            className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
+            className="app-nav-link"
           >
             <Settings size={20} />
             <span>Settings</span>
@@ -108,7 +108,7 @@ export function Welcome() {
         <div className="flex flex-col gap-3">
           <a
             href="ajuda.tsx"
-            className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
+            className="app-nav-link"
           >
             <HelpCircle size={20} />
             <span>Ajuda</span>
@@ -116,7 +116,7 @@ export function Welcome() {
 
           <a
             href="Log.tsx"
-            className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/50 hover:bg-white/5 hover:text-white transition"
+            className="app-nav-link"
           >
             <LogOut size={20} />
             <span>Log out</span>
@@ -125,12 +125,12 @@ export function Welcome() {
       </aside>
 
       <div className="flex-1 flex flex-col">
-        <div className="w-full bg-white dark:bg-[#17212b] p-4 shadow-lg flex justify-between items-center">
+        <div className="app-header">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-[#f1f5f9]">
+            <h1 className="app-title">
               Welcome back, Lohran!
             </h1>
-            <p className="text-lg text-gray-500 dark:text-[#94a3b8]">
+            <p className="app-muted">
               blablabla
             </p>
           </div>
@@ -139,18 +139,14 @@ export function Welcome() {
             <input
               type="text"
               placeholder="Pesquisar..."
-              className="bg-gray-200 dark:bg-[#243442]
-                text-gray-900 dark:text-white
-                placeholder-gray-500 dark:placeholder-gray-400
-                text-sm rounded-lg w-80 h-10 px-4
-                outline-none"
+              className="app-input w-full max-w-80"
             />
           </div>
 
           <div className="flex items-center gap-4">
-            <BellRing size={20} className="text-gray-900 dark:text-white" />
+            <BellRing size={20} className="text-gray-900 dark:text-[#f5fffc]" />
 
-            <div className="bg-white rounded-full w-10 h-10 flex items-center justify-center">
+            <div className="app-avatar">
               <img
                 src={Lohran}
                 alt="Lohran"
@@ -158,14 +154,14 @@ export function Welcome() {
               />
             </div>
 
-            <span className="text-lg font-semibold text-gray-900 dark:text-white">
+            <span className="text-lg font-semibold text-gray-900 dark:text-[#f5fffc]">
               Lohran
             </span>
           </div>
         </div>
 
-        <div className="p-4 rounded-lg h-full max-h-180 m-4 grid grid-cols-3 gap-4 bg-gray-100 dark:bg-[#101820]">
-          <div className="relative rounded-lg bg-[#0d4c5c] flex flex-col justify-around p-4">
+        <div className="app-content-grid">
+          <div className="app-card-strong flex flex-col justify-around p-4">
             <h1 className="absolute top-4 left-0 right-0 text-lg font-bold text-white text-center">
               Presenças
             </h1>
@@ -176,36 +172,36 @@ export function Welcome() {
             />
           </div>
 
-          <div className="relative rounded-lg bg-white dark:bg-[#1b2733] flex flex-col justify-around p-4">
-            <h1 className="absolute top-4 left-0 right-0 text-lg font-bold text-gray-950 dark:text-white text-center">
+          <div className="app-card flex flex-col justify-around p-4">
+            <h1 className="absolute top-4 left-0 right-0 text-lg font-bold text-gray-950 dark:text-[#f5fffc] text-center">
               Pendentes
             </h1>
 
             <TrendingUp
               size={20}
-              className="text-gray-950 dark:text-white absolute bottom-4 left-4"
+              className="text-[#f5fffc] absolute bottom-4 left-4"
             />
           </div>
 
-          <div className="relative rounded-lg bg-white dark:bg-[#1b2733] flex flex-col justify-around p-4">
-            <h1 className="absolute top-4 left-0 right-0 text-lg font-bold text-gray-950 dark:text-white text-center">
+          <div className="app-card flex flex-col justify-around p-4">
+            <h1 className="absolute top-4 left-0 right-0 text-lg font-bold text-gray-950 dark:text-[#f5fffc] text-center">
               Atrasados
             </h1>
 
             <TrendingDown
               size={20}
-              className="text-gray-950 dark:text-white absolute bottom-4 left-4"
+              className="text-[#f5fffc] absolute bottom-4 left-4"
             />
           </div>
 
-          <div className="relative rounded-lg bg-white dark:bg-[#1b2733] col-span-2">
-            <h1 className="absolute top-4 left-4 right-0 text-lg font-bold text-gray-950 dark:text-white">
+          <div className="app-card lg:col-span-2">
+            <h1 className="absolute top-4 left-4 right-0 text-lg font-bold text-gray-950 dark:text-[#f5fffc]">
               Grafico de Turmas
             </h1>
           </div>
 
-          <div className="relative rounded-lg bg-white dark:bg-[#1b2733]">
-            <h1 className="absolute top-4 left-0 right-0 text-lg font-bold text-gray-950 dark:text-white text-center">
+          <div className="app-card">
+            <h1 className="absolute top-4 left-0 right-0 text-lg font-bold text-gray-950 dark:text-[#f5fffc] text-center">
               Pré-Relatorios
             </h1>
           </div>
