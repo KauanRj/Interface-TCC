@@ -20,7 +20,7 @@ export function Log() {
   const navigate = useNavigate();
   return (
     <main className="app-shell">
-      <h1>oi</h1>
+      
       <aside className="app-sidebar">
         <div className="flex items-center gap-3 mb-10">
           <div className="app-logo-mark">
