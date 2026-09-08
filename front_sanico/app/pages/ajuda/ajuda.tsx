@@ -14,13 +14,14 @@ import {
   TrendingUp,
   TrendingDown,
 }from "lucide-react";
+import Lohran from "../../../public/lohran.png";
 import { useNavigate } from "react-router";
 
 export function Ajuda() {
   const navigate = useNavigate();
   return (
     <main className="app-shell">
-   
+
       <aside className="app-sidebar">
         <div className="flex items-center gap-3 mb-10">
           <div className="app-logo-mark">
@@ -35,7 +36,7 @@ export function Ajuda() {
         <nav className="flex flex-col gap-2">
           <a
             onClick={() => navigate("/")}
-            className="app-nav-active"
+            className="app-nav-link"
           >
             <LayoutDashboard size={20} />
             <span>Início</span>
@@ -65,7 +66,6 @@ export function Ajuda() {
               <Mail size={20} />
               <span>Team</span>
             </div>
-
           </a>
 
           <a
@@ -110,7 +110,7 @@ export function Ajuda() {
         <div className="flex flex-col gap-3">
           <a
             onClick={() => navigate("/ajuda")}
-            className="app-nav-link"
+            className="app-nav-active"  
           >
             <HelpCircle size={20} />
             <span>Ajuda</span>
@@ -126,33 +126,34 @@ export function Ajuda() {
         </div>
       </aside>
 
-        <div className="flex-1 flex flex-col">
-          <div className="app-header">
-            <div>
-              <h1 className="text-2xl font-bold">Welcome back, Lohran!</h1>
-              <p className="app-muted">blablabla</p>
-            </div>
-          
-            <div>
-              <input
-                type="text"
-                placeholder="Pesquisar..."
-                className="app-input w-full max-w-80"
+      <div className="flex-1 flex flex-col">
+
+        <div className="app-header">
+          <div>
+            <h1 className="app-title p-4">
+              Como podemos ajudar você?
+            </h1>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <BellRing
+              size={20}
+              className="text-gray-700 dark:text-[#b9d2cc]"
+            />
+
+            <div className="app-avatar">
+              <img
+                src={Lohran}
+                alt="Profile"
+                className="rounded-full"
               />
             </div>
-          
-            <div className="flex items-center gap-4">
-              <BellRing size={20} />
-              <div className="app-avatar">
-                <img
-                  src="https://via.placeholder.com/40"
-                  alt="Profile"
-                  className="rounded-full"
-                />
-              </div>
-              <span className="text-lg font-semibold text-gray-900 dark:text-[#f5fffc]">Lohran</span>
-            </div>
+
+            <span className="text-lg font-semibold text-gray-900 dark:text-[#f5fffc]">
+              Lohran
+            </span>
           </div>
+        </div>
           
           
         </div>

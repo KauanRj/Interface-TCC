@@ -14,6 +14,7 @@ import {
   TrendingUp,
   TrendingDown,
 }from "lucide-react";
+import Lohran from "../../../public/lohran.png";
 import { useNavigate } from "react-router";
 
 export function Configuracao() {
@@ -35,7 +36,7 @@ export function Configuracao() {
         <nav className="flex flex-col gap-2">
           <a
             onClick={() => navigate("/")} 
-            className="app-nav-active"
+            className="app-nav-link"
           >
             <LayoutDashboard size={20} />
             <span>Início</span>
@@ -98,7 +99,7 @@ export function Configuracao() {
         <nav>
           <a
             onClick={() => navigate("/settings")}
-            className="app-nav-link"
+            className="app-nav-active"
           >
             <Settings size={20} />
             <span>Settings</span>
@@ -145,7 +146,7 @@ export function Configuracao() {
               <BellRing size={20} />
               <div className="app-avatar">
                 <img
-                  src="https://via.placeholder.com/40"
+                  src={Lohran}
                   alt="Profile"
                   className="rounded-full"
                 />

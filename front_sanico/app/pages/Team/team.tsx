@@ -14,6 +14,7 @@ import {
   TrendingUp,
   TrendingDown,
 }from "lucide-react";
+import Lohran from "../../../public/lohran.png";
 import { useNavigate } from "react-router";
 
 export function Team() {
@@ -37,7 +38,7 @@ export function Team() {
         <nav className="flex flex-col gap-2">
           <a
             onClick={() => navigate("/")}
-            className="app-nav-active"
+            className="app-nav-link"
           >
             <LayoutDashboard size={20} />
             <span>Início</span>
@@ -61,7 +62,7 @@ export function Team() {
 
           <a
             onClick={() => navigate("/team")}
-            className="app-nav-link-between"
+            className="app-nav-active"
           >
             <div className="flex items-center gap-3">
               <Mail size={20} />
@@ -147,7 +148,7 @@ export function Team() {
               <BellRing size={20} />
               <div className="app-avatar">
                 <img
-                  src="https://via.placeholder.com/40"
+                  src={Lohran}
                   alt="Profile"
                   className="rounded-full"
                 />
