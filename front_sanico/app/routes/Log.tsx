@@ -10,6 +10,6 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export default function logPage() {
-  return <Log />;
-}
+export default function LogPage() {
+  return <Log /> };
+

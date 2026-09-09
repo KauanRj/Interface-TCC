@@ -1,4 +1,4 @@
-import { Salas} from "~/pages/salas/salas";
+import { Salas } from "~/pages/salas/salas";
 import type { Route } from "../+types/root";
 
 
@@ -10,6 +10,6 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export default function salasPage() {
-  return <Salas />;
-}
+export default function SalasPage() {
+  return <Salas /> };
+
