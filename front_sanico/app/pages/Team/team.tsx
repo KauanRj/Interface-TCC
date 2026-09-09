@@ -37,7 +37,7 @@ export function Team() {
 
         <nav className="flex flex-col gap-2">
           <a
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/home")}
             className="app-nav-link"
           >
             <LayoutDashboard size={20} />
@@ -53,7 +53,7 @@ export function Team() {
           </a>
 
           <a
-            onClick={() => navigate("/IA")}
+            onClick={() => navigate("/ia")}
             className="app-nav-link"
           >
             <Filter size={20} />
@@ -120,7 +120,7 @@ export function Team() {
           </a>
 
           <a
-            onClick={() => navigate("/Log")}
+            onClick={() => navigate("/log")}
             className="app-nav-link"
           >
             <LogOut size={20} />

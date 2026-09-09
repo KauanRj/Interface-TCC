@@ -1,4 +1,4 @@
-import { IA} from "~/pages/assistenteIA/IA";
+import { IA } from "~/pages/assistenteIA/IA";
 import type { Route } from "../+types/root";
 
 
