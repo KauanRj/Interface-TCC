@@ -130,17 +130,10 @@ export function Salas() {
         <div className="flex-1 flex flex-col">
           <div className="app-header">
             <div>
-              <h1 className="text-2xl font-bold">Welcome back, Lohran!</h1>
-              <p className="app-muted">blablabla</p>
+              <h1 className="text-2xl font-bold py-4 p-2">Salas e turmas</h1>
+              <p className="app-muted">Gerencie as salas e turmas da sua instituição</p>
             </div>
           
-            <div>
-              <input
-                type="text"
-                placeholder="Pesquisar..."
-                className="app-input w-full max-w-80"
-              />
-            </div>
           
             <div className="flex items-center gap-4">
               <BellRing size={20} />
@@ -154,8 +147,27 @@ export function Salas() {
               <span className="text-lg font-semibold text-gray-900 dark:text-[#f5fffc]">Lohran</span>
             </div>
           </div>
+
+          <div className="app-page-grid">
+            <div className="app-card py-4 p-2">
+              <h1 className="text-xl font-bold py-2 p-1">9° ano</h1>
+              <div className="flex items-center gap-2 rounded-lg border border-gray-300 p-2">
+                <p className="text-muted ">Turma A</p>
+              </div>
+              
+            </div>
+
+            <div className="app-card py-4 p-2">
+              <h1 className="text-xl font-bold py-2 p-1">9° ano</h1>
+              <p className="text-muted ">Turma A</p>
+              
+            </div>
+
+          </div>
           
         </div>
+
+        
         
       
     </main>
