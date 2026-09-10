@@ -8,7 +8,7 @@ import {
   DoorOpen,
   Users,
   Settings,
-  HelpCircle,
+  
   LogOut,
   BellRing,
   TrendingUp,
@@ -110,11 +110,11 @@ export function Presenca() {
 
         <div className="flex flex-col gap-3">
           <a
-            onClick={() => navigate("/ajuda")}
+            onClick={() => navigate("/perfil")}
             className="app-nav-link"
           >
-            <HelpCircle size={20} />
-            <span>Ajuda</span>
+            <Users size={20} />
+            <span>Perfil</span>
           </a>
 
           <a

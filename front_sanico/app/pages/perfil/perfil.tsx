@@ -8,7 +8,7 @@ import {
   DoorOpen,
   Users,
   Settings,
-  HelpCircle,
+  
   LogOut,
   BellRing,
   TrendingUp,
@@ -17,7 +17,7 @@ import {
 import Lohran from "../../../public/lohran.png";
 import { useNavigate } from "react-router";
 
-export function Ajuda() {
+export function Perfil() {
   const navigate = useNavigate();
   return (
     <main className="app-shell">
@@ -109,11 +109,11 @@ export function Ajuda() {
 
         <div className="flex flex-col gap-3">
           <a
-            onClick={() => navigate("/ajuda")}
+            onClick={() => navigate("/perfil")}
             className="app-nav-active"  
           >
-            <HelpCircle size={20} />
-            <span>Ajuda</span>
+            <Users size={20} />
+            <span>Perfil</span>
           </a>
 
           <a
@@ -131,7 +131,7 @@ export function Ajuda() {
         <div className="app-header">
           <div>
             <h1 className="app-title p-4">
-              Como podemos ajudar você?
+              Meu perfil
             </h1>
           </div>
 

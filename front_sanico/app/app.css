@@ -89,6 +89,14 @@ body {
     @apply text-lg font-bold text-[#f5fffc];
   }
 
+  .app-login-shell {
+    @apply h-screen overflow-hidden bg-gray-100 p-4 dark:bg-[#03080c] sm:p-6 lg:p-8;
+  }
+
+  .app-login-container{
+    @apply mx-auto flex h-full max-w-7xl overflow-hidden rounded-2xl bg-white shadow-2xl dark:bg-[#071015];
+  }
+
   .app-button-entrar {
     @apply relative w-full rounded-lg bg-[#0d4c5c] py-3 text-[#b9d2cc] font-semibold ring-1 ring-white/10 shadow-lg shadow-black/10
      transition hover:translate-x-1 hover:bg-[#22c7a9]/18 hover:text-white hover:ring-[#7ff5df]/20;

@@ -25,11 +25,12 @@ export function Log() {
     if (email === "admin@educontrol.com" && password === "244466666") {
       navigate("/home");
     } else {
-      alert("E-mail ou senha incorretos.");
+      alert("Errou ai irmao kkk.");
     }
   };
   return (
-    <main className="app-shell">
+    <main className="app-login-shell">
+      <div className="app-login-container">
       <div className="relative hidden h-screen w-1/2 overflow-hidden lg:block">
       <img
          src={login}
@@ -126,10 +127,10 @@ export function Log() {
 
     <div className="app-login-welcome">
       <h2 className="app-login-title2">
-        Welcome back!
+        Seja bem vindo!
       </h2>
       <p className="app-login-description">
-        Please enter your details
+        Por favor insira seus dados
       </p>
     </div>
       
@@ -234,6 +235,7 @@ export function Log() {
          </form>
        </div>
       </section>
+      </div>
     </main>
   );
 }
