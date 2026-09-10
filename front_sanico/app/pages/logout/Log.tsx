@@ -150,8 +150,7 @@ export function Log() {
             type="email"
             placeholder="seu@email.com"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-lg border border-white/15 bg-[#151515] py-3 pl-10 pr-4 text-white outline-none transition placeholder:text-gray-500 focus:border-[#B59A72] focus:ring-2 focus:ring-[#B59A72]/30"
+            onChange={(e) => setEmail(e.target.value)}className="w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-gray-900 placeholder-gray-500 outline-none focus:border-[#0d7f70] dark:border-white/15 dark:bg-[#151515] dark:text-white dark:focus:border-[#22c7a9]"
           />
         </div>
       </div>
@@ -173,7 +172,7 @@ export function Log() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Sua senha"
-            className="w-full rounded-lg border border-white/15 bg-[#151515] py-3 pl-10 pr-10 text-white outline-none transition placeholder:text-gray-500 focus:border-[#B59A72] focus:ring-2 focus:ring-[#B59A72]/30"
+            className="w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-gray-900 placeholder-gray-500 outline-none focus:border-[#0d7f70] dark:border-white/15 dark:bg-[#151515] dark:text-white dark:focus:border-[#22c7a9]"
           />
 
           <Eye
