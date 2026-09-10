@@ -10,6 +10,6 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export default function presencaPage() {
-  return <Presenca />;
-}
+export default function PresencaPage() {
+  return <Presenca /> };
+

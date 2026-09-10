@@ -1,4 +1,4 @@
-import { IA} from "~/pages/assistenteIA/IA";
+import { IA } from "~/pages/assistenteIA/IA";
 import type { Route } from "../+types/root";
 
 
@@ -10,6 +10,6 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export default function iaPage() {
-  return <IA />;
-}
+export default function IAPage() {
+  return <IA /> };
+

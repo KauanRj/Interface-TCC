@@ -24,11 +24,13 @@ body {
   }
 
   .app-logo-mark {
-    @apply w-5 h-10 rounded-full flex items-center justify-center bg-[#22c7a9]/15 text-[#7ff5df] ring-1 ring-[#7ff5df]/20 transition hover:bg-[#22c7a9]/25 hover:ring-[#7ff5df]/40;
+    @apply w-5 h-10 rounded-full flex items-center justify-center bg-[#22c7a9]/15 text-[#7ff5df] ring-1 ring-[#7ff5df]/20 
+    transition hover:bg-[#22c7a9]/25 hover:ring-[#7ff5df]/40;
   }
 
   .app-nav-active {
-    @apply flex items-center gap-3 px-3 py-3 rounded-lg bg-[#22c7a9]/18 text-white font-semibold ring-1 ring-[#7ff5df]/20 shadow-lg shadow-black/10 transition hover:bg-[#22c7a9]/25 hover:ring-[#7ff5df]/35;
+    @apply flex items-center gap-3 px-3 py-3 rounded-lg bg-[#22c7a9]/18 text-white font-semibold ring-1 ring-[#7ff5df]/20 shadow-lg
+     shadow-black/10 transition hover:bg-[#22c7a9]/25 hover:ring-[#7ff5df]/35;
   }
 
   .app-nav-link {
@@ -44,7 +46,9 @@ body {
   }
 
   .app-header {
-    @apply w-full bg-white/95 p-4 shadow-xl shadow-slate-200/70 flex flex-wrap justify-between items-center gap-4 border-b border-slate-200 backdrop-blur transition dark:bg-[#071015]/95 dark:shadow-black/30 dark:border-white/10;
+    @apply w-full bg-white/95 p-4 shadow-xl shadow-slate-200/70 flex flex-wrap justify-between items-center gap-4 border-b
+     border-slate-200 backdrop-blur transition
+     dark:bg-[#071015]/95 dark:shadow-black/30 dark:border-white/10;
   }
 
   .app-title {
@@ -56,11 +60,13 @@ body {
   }
 
   .app-input {
-    @apply bg-gray-200 text-gray-900 placeholder-gray-500 text-sm rounded-lg h-10 px-4 outline-none border border-slate-300 transition hover:border-[#0d4c5c]/50 focus:border-[#0d4c5c] focus:ring-2 focus:ring-[#0d4c5c]/20 dark:bg-[#0c171d] dark:text-[#f5fffc] dark:placeholder-[#78948e] dark:border-white/10 dark:hover:border-[#45dbc2]/40 dark:focus:border-[#45dbc2] dark:focus:ring-[#45dbc2]/20;
+    @apply bg-gray-200 text-gray-900 placeholder-gray-500 text-sm rounded-lg h-10 px-4 outline-none border border-slate-300 
+    transition hover:border-[#0d4c5c]/50 focus:border-[#0d4c5c] focus:ring-2 focus:ring-[#0d4c5c]/20 dark:bg-[#0c171d] dark:text-[#f5fffc] dark:placeholder-[#78948e] dark:border-white/10 dark:hover:border-[#45dbc2]/40 dark:focus:border-[#45dbc2] dark:focus:ring-[#45dbc2]/20;
   }
 
   .app-avatar {
-    @apply bg-white rounded-full w-10 h-10 flex items-center justify-center ring-1 ring-slate-200 overflow-hidden transition hover:scale-105 hover:ring-[#0d4c5c]/40 dark:bg-[#0c171d] dark:ring-white/10 dark:hover:ring-[#45dbc2]/40;
+    @apply bg-white rounded-full w-10 h-10 flex items-center justify-center ring-1 ring-slate-200 overflow-hidden 
+    transition hover:scale-105 hover:ring-[#0d4c5c]/40 dark:bg-[#0c171d] dark:ring-white/10 dark:hover:ring-[#45dbc2]/40;
   }
 
   .app-content-grid {
@@ -83,4 +89,130 @@ body {
     @apply text-lg font-bold text-[#f5fffc];
   }
 
+  .app-button-entrar {
+    @apply relative w-full rounded-lg bg-[#0d4c5c] py-3 text-[#b9d2cc] font-semibold ring-1 ring-white/10 shadow-lg shadow-black/10
+     transition hover:translate-x-1 hover:bg-[#22c7a9]/18 hover:text-white hover:ring-[#7ff5df]/20;
+  }
+
+  .app-login-subtitle {
+    @apply ml-[60px] text-base text-white/70;
+  }
+
+  .app-login-forgot {
+    @apply text-sm text-[#4f7f8a] transition hover:text-[#7aaeb8] hover:underline;
+  }
+
+  .app-signin {
+    @apply mt-4 text-sm text-[#4f7f8a] hover:underline cursor-pointer hover:text-[#7aaeb8] transition 
+  }
+
+  .app-login-rigth {
+   @apply  absolute left-8 top-8 flex w-[calc(100%-4rem)] flex-col gap-5;
+  }
+
+  .app-login-title2{
+    @apply font-serif font-bold text-5xl tracking-tight text-gray-950 dark:text-[#f5fffc] ; 
+  }
+
+  .app-login-logo {
+    @apply flex items-center gap-3;
+  }
+
+  .app-login-logo-icon {
+    @apply h-12 w-12 text-gray-900 dark:text-white;;
+  }
+
+  .app-login-logo-text {
+    @apply text-4xl tracking-tight;
+  }
+
+  .app-login-logo-edu {
+    @apply font-bold text-gray-900 dark:text-white;
+  }
+
+  .app-login-logo-control {
+    @apply font-bold text-[#0d8f7b] dark:text-[#22c7a9];
+  }
+ 
+  .app-login-welcome {
+    @apply mb-10  text-center;
+  }
+
+  .app-login-description{
+    @apply mt-2 text-base text-gray-500 dark:text-[#fb1aa];
+  }
+
+  .app-login-divider {
+    @apply my-6 flex items-center gap-3;
+  }
+  
+  .app-login-divider span {
+    @apply h-px flex-1 bg-gray-300 dark:bg-white/10;
+  }
+  
+  .app-login-divider p {
+    @apply text-sm text-gray-500 dark:text-[#8fb1aa];
+  }
+  
+  .app-google-button {
+    @apply flex w-full items-center justify-center gap-3 rounded-lg 
+    border border-gray-200 bg-white py-3 font-medium text-gray-800 shadow-sm transition hover:bg-gray-50 hover:shadow-md
+   dark:border-white/10 dark:bg-[#0c171d] dark:text-white dark:hover:bg-[#101f27];
+  }
+  
+  .app-google-icon {
+    @apply text-xl font-bold;
+  }
+  .app-login-welcome-text {
+    @apply mt-6 text-5xl font-bold tracking-tight;
+  }
+  
+  .app-login-welcome-bem {
+    @apply text-gray-900 dark:text-white;
+  }
+  
+  .app-login-welcome-vindo {
+    @apply text-[#0d7f70] dark:text-[#22c7a9];;
+  }
+
+  .app-login-welcome-description {
+    @apply  text-gray-600 dark:text-white/60;
+  }
+
+  .app-login-features{
+    @apply  mt-10 flex flex-col gap-5;
+  }
+  
+  .app-login-feature{
+    @apply flex items-center gap-4 mt-4;
+  }
+
+  .app-login-feature-icon{
+    @apply  flex h-10 w-10 shrink-0 items-center justify-center rounded-xl
+    border border-[#0d7f70]/20 bg-[#0d7f70]/10 text-[#0d7f70]
+    dark:border-[#22c7a9]/20 dark:bg-[#22c7a9]/10 dark:text-[#22c7a9];
+  }
+
+  .app-login-feature h3{
+    @apply text-gray-900 dark:text-white;
+  }
+
+  .app-login-feature p{
+    @apply text-gray-600 dark:text-white/55;
+  }
+
+  .app-login-brand,
+  .app-login-info {
+    @apply border border-white/40 rounded-2xl shadow-2xl backdrop-blur-2xl
+      bg-white/85 text-gray-900
+      dark:border-white/10 dark:bg-[#050b0e]/75 dark:text-white;
+  }
+
+  .app-login-brand {
+   @apply w-fit px-5 py-4;
+  }
+
+  .app-login-info {
+     @apply max-w-xl  px-5 pb-5 pt-0;
+}
 }

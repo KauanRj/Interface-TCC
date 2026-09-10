@@ -1,4 +1,4 @@
-import { Ajuda } from "~/pages/ajuda/ajuda";
+import { Ajuda} from "~/pages/ajuda/ajuda";
 import type { Route } from "../+types/root";
 
 
@@ -10,6 +10,6 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export default function ajudaPage() {
-  return <Ajuda />;
-}
+export default function AjudaPage() {
+  return <Ajuda /> };
+

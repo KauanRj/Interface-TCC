@@ -10,6 +10,6 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export default function settingsPage() {
-  return <Configuracao />;
-}
+export default function SettingsPage() {
+  return <Configuracao /> };
+

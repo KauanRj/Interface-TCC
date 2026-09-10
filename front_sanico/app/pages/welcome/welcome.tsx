@@ -37,7 +37,7 @@ export function Welcome() {
 
         <nav className="flex flex-col gap-2">
           <a
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/home")}
             className="app-nav-active"
           >
             <LayoutDashboard size={20} />
@@ -53,7 +53,7 @@ export function Welcome() {
           </a>
 
           <a
-            onClick={() => navigate("/IA")}
+            onClick={() => navigate("/ia")}
             className="app-nav-link"
           >
             <Filter size={20} />

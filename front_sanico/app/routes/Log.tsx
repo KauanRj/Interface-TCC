@@ -1,15 +1,15 @@
-import { Log } from "~/pages/logout/login/Log";
+import { Log } from "~/pages/logout/Log";
 import type { Route } from "../+types/root";
 
 
 
 export function meta({}: Route.MetaArgs) { 
   return [
-    { title: "Educontrol - Log" },
+    { title: "Educontrol - Login" },
     { name: "description", content: "Página de log" },
   ];
 }
 
-export default function logPage() {
-  return <Log />;
-}
+export default function LogPage() {
+  return <Log /> };
+
