@@ -145,7 +145,7 @@ export function Salas() {
         <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
           <div className="app-header">
             <div>
-              <h1 className="text-2xl font-bold py-4 p-2">Salas e turmas</h1>
+              <h1 className="text-2xl font-bold">Salas e turmas</h1>
               <p className="app-muted">Gerencie as salas e turmas da sua instituição</p>
             </div>
 
