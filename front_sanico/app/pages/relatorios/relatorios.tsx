@@ -291,8 +291,8 @@ export function Relatorios() {
           </h2>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+        <div className="overflow-x-auto p-4">
+          <table className="w-full text-left border-collapse">
             <thead>
               <tr className="border-b  border-slate-200 text-left dark:border-white/10">
                 <th className=" py-3 p-2">#</th>

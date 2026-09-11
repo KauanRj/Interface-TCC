@@ -263,6 +263,14 @@ body {
     @apply bg-red-500/15 text-red-500;
   }
 
+  .app-report-icon.purple {
+    @apply bg-purple-500/15 text-purple-500;
+  }
+
+  .app-report-icon.gray {
+    @apply bg-gray-500/15 text-gray-500;
+  }
+
   .app-report-filters {
     @apply grid grid-cols-4 gap-3;
   }
@@ -292,7 +300,24 @@ body {
     @apply text-base font-semibold text-gray-900 dark:text-white;
   }
 
-  .app-report-status {
+  /*.app-report-status {
+    @apply rounded-full bg-emerald-500/15 px-2 py-1 text-xs font-medium text-emerald-500;
+  }*/ 
+
+  .app-status-green{
     @apply rounded-full bg-emerald-500/15 px-2 py-1 text-xs font-medium text-emerald-500;
   }
+
+  .app-status-red{
+    @apply  rounded-full bg-red-500/15 px-2 py-1 text-xs font-medium text-red-500;
+  }
+
+  .app-status-gray{
+    @apply  rounded-full bg-gray-500/15 px-2 py-1 text-xs font-medium text-gray-500;
+  }
+
+  .app-status-yellow{
+    @apply  rounded-full bg-yellow-500/15 px-2 py-1 text-xs font-medium text-yellow-500;
+  }
+
 }

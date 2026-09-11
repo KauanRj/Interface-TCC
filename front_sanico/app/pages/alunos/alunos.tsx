@@ -13,12 +13,24 @@ import {
   BellRing,
   TrendingUp,
   TrendingDown,
+  Search,
+  Download,
+  Plus,
+  BarChart3,
+  AlertTriangle,
 }from "lucide-react";
 import Lohran from "../../../public/lohran.png";
 import { useNavigate } from "react-router";
 
 export function Alunos() {
   const navigate = useNavigate();
+
+  const alunos = [
+    { id: 1, nome: "Ana Clara Silva", turma: "9º Ano A", presenca: "95%", media: "8,7", situacao: "Bom" },
+    { id: 2, nome: "Bruno Almeida", turma: "8º Ano B", presenca: "78%", media: "6,9", situacao: "Em atenção" },
+    { id: 3, nome: "Carlos Eduardo", turma: "9º Ano A", presenca: "60%", media: "5,4", situacao: "Risco" },
+    { id: 4, nome: "Daniela Santos", turma: "7º Ano A", presenca: "88%", media: "7,8", situacao: "Bom" },
+  ];  
   return (
     <main className="app-shell block-s">
    
@@ -130,6 +142,24 @@ export function Alunos() {
               <h1 className="text-2xl font-bold py-4 p-2">Alunos</h1>
               <p className="app-muted">Gerencie os alunos da sua instituição</p>
             </div>
+
+
+            <div className="flex items-center gap-4 ">
+            <input
+              type="text"
+              placeholder="Buscar no sistema..."
+              className="app-input w-full max-w-80"
+            />
+          </div>
+
+
+
+            <button 
+            type="submit"
+            className="app-button-relatorio ">
+              <Plus size={18} />
+              Novo aluno
+            </button>
           
           
             <div className="flex items-center gap-4">
@@ -143,24 +173,102 @@ export function Alunos() {
               </div>
               <span className="text-lg font-semibold text-gray-900 dark:text-[#f5fffc]">Lohran</span>
             </div>
+          </div>
+
+          <div className="app-grid-relatorio p-5"> 
+            <div className="app-report-stat">
+              <div className="app-report-icon blue">
+                <Users size={20} />
+              </div>
+              <div>
+                <p>Total de alunos</p>
+                <span className="text-black font-bold">428</span>
+                
+              </div>
+            </div>
+
+            <div className="app-report-stat">
+              <div className="app-report-icon green">
+                <TrendingUp size={20} />
+              </div>
+              <div>
+                <p>Ativos</p>
+                <span className="text-black font-bold">280</span>
+                
+              </div>
+            </div>
+
+            <div className="app-report-stat">
+              <div className="app-report-icon yellow">
+                <AlertTriangle size={20} />
+              </div>
+              <div>
+                <p>Alunos em atenção</p>
+                <span className="text-black font-bold">12</span>
+                
+              </div>
+            </div>
+
+            <div className="app-report-stat">
+              <div className="app-report-icon purple">
+                <BarChart3 size={20} />
+              </div>
+              <div>
+                <p>Novas matrículas</p>
+                <span className="text-black font-bold">8</span>
+                
+              </div>
+            </div>
+            
+          
           </div> 
 
 
           <div className="app-page-grid"> 
 
-            <div className="app-card h-40 p-5">
+            
 
-              <h1 className="absolute top-6 left-4 right-0 text-2xl font-bold text-gray-950 dark:text-[#f5fffc]">
-                Pesquisar alunos por nome, email ou matrícula
-              </h1>
+            <div className="app-report-filters">
 
-              <div className="mt-16">
-                <input 
-                  type="text"
-                  placeholder="Ex: kauan, kauan@email.com, 123456"
-                  className="app-input w-full h-14"
-                />
+              <div className="app-report-search">
+                <label>Pesquisar</label>
+                <div>
+                  <Search size={17} />
+                  <input placeholder="Pesquisar aluno..." />
+                </div>
               </div>
+
+
+
+              <div>
+                <label>Turma</label>
+                <select>
+                  <option>Todas as turmas</option>
+                  <option>9º Ano A</option>
+                  <option>9º Ano B</option>
+                </select>
+              </div>
+
+              <div>
+                <label>Status</label>
+                <select>
+                  <option>Todos</option>
+                  <option>Bom</option>
+                  <option>Em atenção</option>
+                  <option>Risco</option>
+                </select>
+              </div>
+
+              <div>
+                <label>Filtrar</label>
+                <select>
+                  <option>Todos</option>
+                  <option>Ordem alfabética</option>
+                  <option>Crescente</option>
+                  <option>Decrecente</option>
+                </select>
+              </div>
+
             </div>
             
 
@@ -168,38 +276,52 @@ export function Alunos() {
 
             <table className="w-full text-left border-collapse ">
               <thead>
-                <tr>
-                  <th className="py-4 p-2">Nome</th>
-                  <th>Email</th>
-                  <th>Matrícula</th>
-                  <th>Série/turma</th>
-                  <th>CPF</th>
-                  <th>Data de nascimento</th>
-                  <th>Responsável</th>
+              <tr className="border-b  border-slate-200 text-left dark:border-white/10">
+                <th className=" py-3 p-2">#</th>
+                <th>Aluno</th>
+                <th>Turma</th>
+                <th>Presença</th>
+                <th>Média</th>
+                <th>Situação</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+              <tbody>
+              {alunos.map((aluno) => (
+                <tr
+                  key={aluno.id}
+                  className="border-b border-slate-200 dark:border-white/5 hover:bg-gray-100 dark:hover:bg-[#101f27]"
+                >
+                  <td className="py-3 p-2  ">{aluno.id}</td>
+                  <td>{aluno.nome}</td>
+                  <td>{aluno.turma}</td>
+                  <td>{aluno.presenca}</td>
+                  <td>{aluno.media}</td>
+                  <td>
+                    <span className={aluno.situacao === "Bom" ? "app-status-green" : aluno.situacao === "Em atenção" ? "app-status-yellow" : "app-status-red"}>
+                      {aluno.situacao}
+                    </span>
+                  </td>
+                  <td>•••</td>
                 </tr>
-              </thead>
-              <tbody className="border-t border-gray-300 dark:border-gray-700">
-                <tr >
-                  <td className="py-4 p-2">Kauan</td>
-                  <td>kauan@email.com</td>
-                  <td>123456</td>
-                  <td>6º ano</td>
-                  <td>123.456.789-00</td>
-                  <td>01/01/2010</td>
-                  <td>Maria Silva</td>
-                </tr>
-                <tr className="border-t border-gray-300 dark:bg-gray-700">
-                  <td className="py-4 p-2">João</td>
-                  <td>joao@email.com</td>
-                  <td>654321</td>
-                  <td>7º ano</td>
-                  <td>987.654.321-00</td>
-                  <td>02/02/2011</td>
-                  <td>José Santos</td>
-                </tr>
-
-              </tbody>
+              ))}
+            </tbody>
             </table>
+          </div>
+
+          <div className="flex justify-end gap-2 mt-4">
+            <div className="app-card-strong h-10 w-10 ">
+            
+            </div>
+            <div className="app-card h-10 w-10 ">
+            
+            </div>
+            <div className="app-card h-10 w-10 ">
+            
+            </div>
+            <div className="app-card h-10 w-10 ">
+            
+            </div>
           </div>  
           </div>       
         </div>
