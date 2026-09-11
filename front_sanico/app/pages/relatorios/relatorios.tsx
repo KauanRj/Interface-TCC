@@ -15,6 +15,7 @@ import {
   AlertTriangle,
   BarChart3,
   Search,
+  User,
 } from "lucide-react";
 import Lohran from "../../../public/lohran.png";
 import { useNavigate } from "react-router";
@@ -63,7 +64,7 @@ export function Relatorios() {
             className="app-nav-link-between"
           >
             <div className="flex items-center gap-3">
-              <Mail size={20} />
+              <Users size={20} />
               <span>Team</span>
             </div>
           </a>
@@ -88,7 +89,7 @@ export function Relatorios() {
             onClick={() => navigate("/alunos")}
             className="app-nav-link"
           >
-            <Users size={20} />
+            <User size={20} />
             <span>Alunos</span>
           </a>
         </nav>
@@ -126,7 +127,7 @@ export function Relatorios() {
         </div>
       </aside>
 
-      <div className="flex-1 flex flex-col">
+      <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
 
         <div className="app-header">
           <div>
@@ -138,7 +139,7 @@ export function Relatorios() {
             </p>
           </div>  
           <button 
-          type="submit"
+          type="button"
           className="app-button-relatorio ">
             <Download size={18} />
             Gerar relatorio
@@ -163,8 +164,8 @@ export function Relatorios() {
             </span>
           </div>
         </div>
-
-        <div className="app-page-grid">
+       <div className="min-h-0 flex-1 overflow-y-auto">
+        <div className="app-page-grid ">
 
           <div className="app-grid-relatorio">
 
@@ -173,8 +174,8 @@ export function Relatorios() {
                 <Users size={20} />
               </div>
               <div>
-                <span>428</span>
                 <p>Total de alunos</p>
+                <span>428</span>
               </div>
             </div>
 
@@ -183,8 +184,8 @@ export function Relatorios() {
                 <TrendingUp size={20} />
               </div>
               <div>
-                <span>82%</span>
                 <p>Taxa de presença</p>
+                <span>82%</span>                
               </div>
             </div>
 
@@ -193,8 +194,8 @@ export function Relatorios() {
                 <AlertTriangle size={20} />
               </div>
               <div>
-                <span>12</span>
                 <p>Alunos em atenção</p>
+                <span>12</span>                
               </div>
             </div>
 
@@ -203,8 +204,9 @@ export function Relatorios() {
                 <BarChart3 size={20} />
               </div>
               <div>
-                <span>8</span>
                 <p>Alunos com risco</p>
+                <span>8</span>
+                
               </div>
             </div>
 
@@ -249,13 +251,7 @@ export function Relatorios() {
           </select>
         </div>
 
-        <div className="app-report-search">
-          <label>Pesquisar</label>
-          <div>
-            <Search size={17} />
-            <input placeholder="Pesquisar aluno..." />
-          </div>
-        </div>
+
 
       </div>
 
@@ -282,6 +278,13 @@ export function Relatorios() {
         </div>
 
       </div>
+      <div className="app-report-search">
+          <label>Pesquisar</label>
+          <div>
+            <Search size={17} />
+            <input placeholder="Pesquisar aluno..." />
+          </div>
+        </div>
 
       <div className="app-card overflow-hidden">
 
@@ -336,6 +339,7 @@ export function Relatorios() {
          
 
         </div>
+      </div>
 
       </div>
 

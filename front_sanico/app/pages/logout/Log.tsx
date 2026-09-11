@@ -3,8 +3,8 @@ import {
   GraduationCap,
   ArrowRight,
   Eye,
-  Lock,
-  GraduationCapIcon,
+  EyeOff,
+  Lock, 
   Users,
   BarChart3,
   Zap,
@@ -12,12 +12,14 @@ import {
 import login from "./frente.jpeg";
 import { useNavigate } from "react-router";
 import { useState } from "react";
+import type { Button } from "react-native";
 
 export function Log() {
   const navigate = useNavigate();
 
   const[email,setEmail] = useState("");
   const[password,setPassword] = useState("");
+  const[showPassword, setShowPassword ] = useState(false)
 
   const handlelogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -169,17 +171,18 @@ export function Log() {
 
           <input
             id="password"
-            type="password"
+            type={showPassword  ? "text" : "password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Sua senha"
             className="w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-gray-900 placeholder-gray-500 outline-none focus:border-[#0d7f70] dark:border-white/15 dark:bg-[#151515] dark:text-white dark:focus:border-[#22c7a9]"
           />
-
-          <Eye
-            size={20}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
-          />
+          <button
+          type="button"
+          onClick={() => setShowPassword(!showPassword)}
+          className="app-login-show">
+            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+          </button>
         </div>
       </div>
 

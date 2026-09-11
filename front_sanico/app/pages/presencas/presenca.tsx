@@ -124,7 +124,7 @@ export function Presenca() {
         </div>
       </aside>
 
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 min-w-0 flex flex-col overflow-hidden">
           <div className="app-header">
             <div>
               <h1 className="text-2xl font-bold">Welcome back, Lohran!</h1>
@@ -151,6 +151,8 @@ export function Presenca() {
               <span className="text-lg font-semibold text-gray-900 dark:text-[#f5fffc]">Lohran</span>
             </div>
           </div>
+
+          <div className="min-h-0 flex-1 overflow-y-auto"></div>
           
           
         </div>
