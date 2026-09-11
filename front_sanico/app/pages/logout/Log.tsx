@@ -3,8 +3,8 @@ import {
   GraduationCap,
   ArrowRight,
   Eye,
-  Lock,
-  GraduationCapIcon,
+  EyeOff,
+  Lock, 
   Users,
   BarChart3,
   Zap,
@@ -12,12 +12,14 @@ import {
 import login from "./frente.jpeg";
 import { useNavigate } from "react-router";
 import { useState } from "react";
+import type { Button } from "react-native";
 
 export function Log() {
   const navigate = useNavigate();
 
   const[email,setEmail] = useState("");
   const[password,setPassword] = useState("");
+  const[showPassword, setShowPassword ] = useState(false)
 
   const handlelogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,11 +27,12 @@ export function Log() {
     if (email === "admin@educontrol.com" && password === "244466666") {
       navigate("/home");
     } else {
-      alert("E-mail ou senha incorretos.");
+      alert("Errou ai irmao kkk.");
     }
   };
   return (
-    <main className="app-shell">
+    <main className="app-login-shell">
+      <div className="app-login-container">
       <div className="relative hidden h-screen w-1/2 overflow-hidden lg:block">
       <img
          src={login}
@@ -126,10 +129,10 @@ export function Log() {
 
     <div className="app-login-welcome">
       <h2 className="app-login-title2">
-        Welcome back!
+        Seja bem vindo!
       </h2>
       <p className="app-login-description">
-        Please enter your details
+        Por favor insira seus dados
       </p>
     </div>
       
@@ -150,8 +153,7 @@ export function Log() {
             type="email"
             placeholder="seu@email.com"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-lg border border-white/15 bg-[#151515] py-3 pl-10 pr-4 text-white outline-none transition placeholder:text-gray-500 focus:border-[#B59A72] focus:ring-2 focus:ring-[#B59A72]/30"
+            onChange={(e) => setEmail(e.target.value)}className="w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-gray-900 placeholder-gray-500 outline-none focus:border-[#0d7f70] dark:border-white/15 dark:bg-[#151515] dark:text-white dark:focus:border-[#22c7a9]"
           />
         </div>
       </div>
@@ -169,17 +171,18 @@ export function Log() {
 
           <input
             id="password"
-            type="password"
+            type={showPassword  ? "text" : "password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Sua senha"
-            className="w-full rounded-lg border border-white/15 bg-[#151515] py-3 pl-10 pr-10 text-white outline-none transition placeholder:text-gray-500 focus:border-[#B59A72] focus:ring-2 focus:ring-[#B59A72]/30"
+            className="w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-gray-900 placeholder-gray-500 outline-none focus:border-[#0d7f70] dark:border-white/15 dark:bg-[#151515] dark:text-white dark:focus:border-[#22c7a9]"
           />
-
-          <Eye
-            size={20}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
-          />
+          <button
+          type="button"
+          onClick={() => setShowPassword(!showPassword)}
+          className="app-login-show">
+            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+          </button>
         </div>
       </div>
 
@@ -235,6 +238,7 @@ export function Log() {
          </form>
        </div>
       </section>
+      </div>
     </main>
   );
 }

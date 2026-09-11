@@ -3,12 +3,13 @@ import {
   LayoutDashboard,
   List,
   Filter,
-  Mail,
+  UserCircle,
   ClipboardCheck,
   DoorOpen,
   Users,
+  UserRound,
   Settings,
-  HelpCircle,
+  User,
   LogOut,
   BellRing,
   TrendingUp,
@@ -26,13 +27,11 @@ export function Welcome() {
 
       <aside className="app-sidebar">
         <div className="flex items-center gap-3 mb-10">
-          <div className="app-logo-mark">
-            <Home size={21} />
-          </div>
 
-          <h1 className="text-base font-bold">
-            Home
-          </h1>
+          <span className="sm:text-2xl">
+             <span className="app-login-logo-edu">Edu</span>
+             <span className="app-login-logo-control">Control</span>
+           </span>
         </div>
 
         <nav className="flex flex-col gap-2">
@@ -65,7 +64,7 @@ export function Welcome() {
             className="app-nav-link-between"
           >
             <div className="flex items-center gap-3">
-              <Mail size={20} />
+              <Users size={20} />
               <span>Team</span>
             </div>
           </a>
@@ -90,7 +89,7 @@ export function Welcome() {
             onClick={() => navigate("/alunos")}
             className="app-nav-link"
           >
-            <Users size={20} />
+            <UserRound size={20} />
             <span>Alunos</span>
           </a>
         </nav>
@@ -111,11 +110,11 @@ export function Welcome() {
 
         <div className="flex flex-col gap-3">
           <a
-            onClick={() => navigate("/ajuda")}
+            onClick={() => navigate("/perfil")}
             className="app-nav-link"
           >
-            <HelpCircle size={20} />
-            <span>Ajuda</span>
+            <UserCircle size={20} />
+            <span>Perfil</span>
           </a>
 
           <a
@@ -128,14 +127,14 @@ export function Welcome() {
         </div>
       </aside>
 
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 min-w-0 flex flex-col overflow-hidden">
         <div className="app-header">
           <div>
             <h1 className="app-title">
-              Welcome back, Lohran!
+              Bem-vindo de volta, Lohran!
             </h1>
             <p className="app-muted">
-              blablabla
+              O que deseja fazer ou ver hoje?
             </p>
           </div>
 
@@ -164,6 +163,8 @@ export function Welcome() {
           </div>
         </div>
 
+        
+
         <div className="app-content-grid">
           <div className="app-card-strong flex flex-col justify-around p-4">
             <h1 className="absolute top-4 left-0 right-0 text-lg font-bold text-white text-center">
@@ -183,7 +184,7 @@ export function Welcome() {
 
             <TrendingUp
               size={20}
-              className="text-[#f5fffc] absolute bottom-4 left-4"
+              className=" text-gray-950 dark:text-[#f5fffc] absolute bottom-4 left-4"
             />
           </div>
 
@@ -194,7 +195,7 @@ export function Welcome() {
 
             <TrendingDown
               size={20}
-              className="text-[#f5fffc] absolute bottom-4 left-4"
+              className=" text-gray-950 dark:text-[#f5fffc] absolute bottom-4 left-4"
             />
           </div>
 

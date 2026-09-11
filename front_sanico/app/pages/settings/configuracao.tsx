@@ -8,11 +8,13 @@ import {
   DoorOpen,
   Users,
   Settings,
-  HelpCircle,
+  
   LogOut,
   BellRing,
   TrendingUp,
   TrendingDown,
+  UserRound,
+  UserCircle,
 }from "lucide-react";
 import Lohran from "../../../public/lohran.png";
 import { useNavigate } from "react-router";
@@ -24,13 +26,10 @@ export function Configuracao() {
    
       <aside className="app-sidebar">
         <div className="flex items-center gap-3 mb-10">
-          <div className="app-logo-mark">
-            <Home size={21} />
-          </div>
-
-          <h1 className="text-base font-bold">
-            Home
-          </h1>
+          <span className="sm:text-2xl">
+             <span className="app-login-logo-edu">Edu</span>
+             <span className="app-login-logo-control">Control</span>
+           </span>
         </div>
 
         <nav className="flex flex-col gap-2">
@@ -63,7 +62,7 @@ export function Configuracao() {
             className="app-nav-link-between"
           >
             <div className="flex items-center gap-3">
-              <Mail size={20} />
+              <Users size={20} />
               <span>Team</span>
             </div>
 
@@ -89,7 +88,7 @@ export function Configuracao() {
             onClick={() => navigate("/alunos")}
             className="app-nav-link"
           >
-            <Users size={20} />
+            <UserRound size={20} />
             <span>Alunos</span>
           </a>
         </nav>
@@ -110,11 +109,11 @@ export function Configuracao() {
 
         <div className="flex flex-col gap-3">
           <a
-            onClick={() => navigate("/ajuda")}
+            onClick={() => navigate("/perfil")}
             className="app-nav-link"
           >
-            <HelpCircle size={20} />
-            <span>Ajuda</span>
+            <UserCircle size={20} />
+            <span>Perfil</span>
           </a>
 
           <a
@@ -127,7 +126,7 @@ export function Configuracao() {
         </div>
       </aside>
 
-        <div className="flex-1 flex flex-col">
+        <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
           <div className="app-header">
             <div>
               <h1 className="text-2xl font-bold">Welcome back, Lohran!</h1>

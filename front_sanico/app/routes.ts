@@ -3,9 +3,9 @@ import { type RouteConfig, index, route } from "@react-router/dev/routes";
 export default [
     index("routes/_index.tsx"),
     route("home", "routes/home.tsx"),
-    route("ajuda", "routes/ajuda.tsx"),
+    route("perfil", "routes/perfil.tsx"),
     route("alunos", "routes/alunos.tsx"),
-    route("ia", "routes/iA.tsx"),
+    route("ia", "routes/IA.tsx"),
     route("log", "routes/Log.tsx"),
     route("presenca", "routes/presenca.tsx"),
     route("relatorios", "routes/relatorios.tsx"),

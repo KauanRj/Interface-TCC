@@ -8,11 +8,14 @@ import {
   DoorOpen,
   Users,
   Settings,
-  HelpCircle,
+  
   LogOut,
   BellRing,
   TrendingUp,
   TrendingDown,
+  User,
+  UserRound,
+  UserCircle,
 }from "lucide-react";
 import Lohran from "../../../public/lohran.png";
 import { useNavigate } from "react-router";
@@ -26,13 +29,10 @@ export function Team() {
    
       <aside className="app-sidebar">
         <div className="flex items-center gap-3 mb-10">
-          <div className="app-logo-mark">
-            <Home size={21} />
-          </div>
-
-          <h1 className="text-base font-bold">
-            Home
-          </h1>
+          <span className="sm:text-2xl">
+             <span className="app-login-logo-edu">Edu</span>
+             <span className="app-login-logo-control">Control</span>
+           </span>
         </div>
 
         <nav className="flex flex-col gap-2">
@@ -65,7 +65,7 @@ export function Team() {
             className="app-nav-active"
           >
             <div className="flex items-center gap-3">
-              <Mail size={20} />
+              <Users size={20} />
               <span>Team</span>
             </div>
 
@@ -91,7 +91,7 @@ export function Team() {
             onClick={() => navigate("/alunos")}
             className="app-nav-link"
           >
-            <Users size={20} />
+            <UserRound size={20} />
             <span>Alunos</span>
           </a>
         </nav>
@@ -112,11 +112,11 @@ export function Team() {
 
         <div className="flex flex-col gap-3">
           <a
-            onClick={() => navigate("/ajuda")}
+            onClick={() => navigate("/perfil")}
             className="app-nav-link"
           >
-            <HelpCircle size={20} />
-            <span>Ajuda</span>
+            <UserCircle size={20} />
+            <span>Perfil</span>
           </a>
 
           <a
@@ -129,7 +129,7 @@ export function Team() {
         </div>
       </aside>
 
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 min-w-0 flex flex-col overflow-hidden">
           <div className="app-header">
             <div>
               <h1 className="text-2xl font-bold">Welcome back, Lohran!</h1>
@@ -157,6 +157,9 @@ export function Team() {
             </div>
           </div>
           
+          <div className="min-h-0 flex-1 overflow-y-auto">
+
+          </div>
           
         </div>
         
