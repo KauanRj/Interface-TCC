@@ -146,30 +146,30 @@ export function Relatorios() {
               Acompanhe o desempenho, a frequenia e outros indicadores da sua escola
             </p>
           </div>  
-          <button 
-          type="button"
-          className="app-button-relatorio ">
-            <Download size={18} />
-            Gerar relatorio
-          </button>
+          <div className="app-header-actions">
+            <button 
+            type="button"
+            className="app-button-relatorio">
+              <Download size={18} />
+              Gerar relatorio
+            </button>
 
-          <div className="flex items-center gap-4">
             <BellRing
-              size={20}
-              className="text-gray-700 dark:text-[#b9d2cc]"
-            />
-
-            <div className="app-avatar">
-              <img
-                src={Lohran}
-                alt="Profile"
-                className="rounded-full"
+                size={20}
+                className="text-gray-700 dark:text-[#b9d2cc]"
               />
-            </div>
 
-            <span className="text-lg font-semibold text-gray-900 dark:text-[#f5fffc]">
-              Lohran
-            </span>
+              <div className="app-avatar">
+                <img
+                  src={Lohran}
+                  alt="Profile"
+                  className="rounded-full"
+                />
+              </div>
+
+              <span className="text-lg font-semibold text-gray-900 dark:text-[#f5fffc]">
+                Lohran
+              </span>
           </div>
         </div>
        <div className="min-h-0 flex-1 overflow-y-auto">

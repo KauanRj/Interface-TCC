@@ -147,26 +147,14 @@ export function Alunos() {
               <p className="app-muted">Gerencie os alunos da sua instituição</p>
             </div>
 
+            <div className="app-header-actions">
+              <button 
+              type="submit"
+              className="app-button-relatorio">
+                <Plus size={18} />
+                Novo aluno
+              </button>
 
-            <div className="flex items-center gap-4 ">
-            <input
-              type="text"
-              placeholder="Buscar no sistema..."
-              className="app-input w-full max-w-80"
-            />
-          </div>
-
-
-
-            <button 
-            type="submit"
-            className="app-button-relatorio ">
-              <Plus size={18} />
-              Novo aluno
-            </button>
-          
-          
-            <div className="flex items-center gap-4">
               <BellRing size={20} />
               <div className="app-avatar">
                 <img

@@ -149,25 +149,17 @@ export function Salas() {
               <p className="app-muted">Gerencie as salas e turmas da sua instituição</p>
             </div>
 
-            <div className="flex items-center gap-4 ">
-            <input
-              type="text"
-              placeholder="Buscar no sistema..."
-              className="app-input w-full max-w-80"
-            />
-          </div>
+        
 
 
+            <div className="app-header-actions">
+              <button 
+              type="submit"
+              className="app-button-relatorio">
+                <Plus size={18} />
+                Nova sala 
+              </button>
 
-            <button 
-            type="submit"
-            className="app-button-relatorio ">
-              <Plus size={18} />
-              Nova sala 
-            </button>
-          
-          
-            <div className="flex items-center gap-4">
               <BellRing size={20} />
               <div className="app-avatar">
                 <img

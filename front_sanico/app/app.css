@@ -48,6 +48,10 @@ body {
      dark:bg-[#071015]/95 dark:shadow-black/30 dark:border-white/10;
   }
 
+  .app-header-actions {
+    @apply ml-auto flex items-center justify-end gap-4;
+  }
+
   .app-title {
     @apply text-xl font-bold text-gray-950 sm:text-2xl dark:text-[#f5fffc];
   }
