@@ -2,7 +2,7 @@
 
 > **Escopo deste documento:** referência visual do Design System **atual** do EduControl. É documentação apenas — nenhuma regra aqui altera código, componentes, CSS ou layout do projeto. Serve para orientar futuros desenvolvimentos e manter consistência visual.
 >
-> **Stack de referência:** React 19 + React Router v7 (framework mode), TypeScript/TSX, Tailwind CSS v4 (`@tailwindcss/vite`) e ícones `lucide-react`. Os tokens de estilo estão centralizados em `app/app.css` dentro de `@layer components`, e a tipografia é carregada via Google Fonts (Inter).
+> **Stack de referência:** React 19 + React Router (framework mode), TypeScript/TSX, Tailwind CSS v4 (`@tailwindcss/vite`) e ícones `lucide-react`. Os tokens de estilo estão centralizados em `app/app.css` dentro de `@layer components`, e a tipografia é carregada via Google Fonts (Inter).
 
 ---
 
@@ -265,7 +265,7 @@ Todas as transições usam `transition` (e `duration-200` nos cards) para suavid
 
 - **Biblioteca:** `lucide-react`.
 - **Tamanhos comuns:** `size={20}` (navegação/header), `size={21}` (logo-mark), `size={22}` (features do login), `h-12 w-12` (ícone da marca `GraduationCap`).
-- **Ícones em uso:** `LayoutDashboard`, `List`, `Filter`, `Mail`, `ClipboardCheck`, `DoorOpen`, `Users`, `Settings`, `HelpCircle`, `LogOut`, `BellRing`, `TrendingUp`, `TrendingDown`, `Home`, `GraduationCap`, `ArrowRight`, `Eye`, `Lock`, `BarChart3`, `Zap`.
+- **Ícones em uso:** `LayoutDashboard`, `List`, `Filter`, `Mail`, `ClipboardCheck`, `DoorOpen`, `Users`, `Settings`, `LogOut`, `BellRing`, `TrendingUp`, `TrendingDown`, `Home`, `GraduationCap`, `ArrowRight`, `Eye`, `Lock`, `BarChart3`, `AlertTriangle`, `Search`, `Download`.
 - **Cor dos ícones:**
   - Na sidebar herdam a cor do link (petróleo-claro → branco no hover/ativo).
   - Ícones de feature do login: `#0d7f70` no Light, `#22c7a9` no Dark, sobre fundo tint `/10` com borda `/20`.
@@ -287,7 +287,7 @@ Definida por `app-sidebar`:
 - **Marcador de logo (`app-logo-mark`):** círculo com tint teal `#22c7a9/15`, ícone `#7ff5df`, anel `/20` que intensifica no hover.
 - **Itens de navegação:** `app-nav-link` (inativo), `app-nav-active` (ativo), `app-nav-link-between` (item com conteúdo à direita, ex.: "Team").
 - **Divisor:** `app-divider` (`border-t border-white/10 my-7`) separa a navegação principal de "Settings".
-- **Rodapé fixo:** "Ajuda" e "Log out" empurrados para baixo com um `flex-1` spacer.
+- **Rodapé fixo:** "Perfil" e "Log out" empurrados para baixo com um `flex-1` spacer.
 
 ---
 
@@ -428,5 +428,383 @@ Diretrizes para manter o Design System coeso em novos desenvolvimentos:
 | `#7ff5df` | Verde-menta | Realces da sidebar (logo/ativo) | Ambos |
 | `#edf7f4` / `#f5fffc` | Texto claro Dark | Texto/títulos no Dark | Dark |
 | `#B59A72` | Dourado (login) | Foco dos inputs do login | Login |
+
+---
+
+## 25. Documentação prática do `app.css`
+
+Esta seção explica o `app/app.css` de forma mais direta, pensando em manutenção do projeto. O arquivo funciona como um mini **Design System**: em vez de repetir muitas classes Tailwind dentro de cada página, o projeto cria classes `app-*` reutilizáveis.
+
+### 25.1 Base do Tailwind e tema
+
+```css
+@import "tailwindcss";
 ```
+
+Importa o Tailwind CSS.
+
+```css
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+    "Noto Color Emoji";
+}
+```
+
+Define a fonte padrão do projeto como **Inter**, com fontes de fallback do sistema.
+
+```css
+html {
+  color-scheme: light dark;
+}
+```
+
+Informa ao navegador que o site suporta tema claro e escuro. Isso ajuda elementos nativos, como inputs e scrollbars, a respeitarem o tema do sistema.
+
+```css
+body {
+  @apply bg-gray-100 text-gray-900 antialiased dark:bg-[#03080c] dark:text-[#edf7f4];
+}
+```
+
+Define o fundo e a cor do texto geral:
+
+- No tema claro: fundo cinza claro e texto escuro.
+- No tema escuro: fundo quase preto `#03080c` e texto claro `#edf7f4`.
+- `antialiased` suaviza a renderização da fonte.
+
+### 25.2 Estrutura geral da aplicação
+
+```css
+.app-shell
+```
+
+É a classe usada no `<main>` das páginas internas. Ela cria a estrutura principal da tela: sidebar à esquerda e conteúdo à direita.
+
+```css
+.app-sidebar
+```
+
+Define a sidebar lateral:
+
+- largura fixa `w-55`;
+- altura mínima da tela inteira;
+- fundo institucional `#0d4c5c`;
+- texto branco;
+- padding interno;
+- borda direita sutil;
+- sombra para dar profundidade.
+
+```css
+.app-divider
+```
+
+Cria a linha divisória dentro da sidebar.
+
+### 25.3 Navegação da sidebar
+
+```css
+.app-nav-active
+```
+
+Representa o item ativo do menu. Exemplo: se a pessoa está em Relatórios, o item "Relatórios" usa essa classe.
+
+Ela aplica:
+
+- fundo teal translúcido;
+- texto branco;
+- fonte mais forte;
+- anel/borda de destaque;
+- sombra leve;
+- hover com brilho maior.
+
+```css
+.app-nav-link
+```
+
+Representa os links normais da sidebar. No hover:
+
+- o item anda um pouco para a direita (`hover:translate-x-1`);
+- ganha fundo branco bem transparente;
+- o texto fica branco.
+
+```css
+.app-nav-link-between
+```
+
+É uma variação para itens que precisam distribuir conteúdo nas pontas com `justify-between`. No projeto, aparece em itens como `Team`.
+
+### 25.4 Header e textos principais
+
+```css
+.app-header
+```
+
+É a barra superior das páginas internas. Ela define:
+
+- fundo branco translúcido no Light Mode;
+- fundo escuro translúcido no Dark Mode;
+- sombra;
+- borda inferior;
+- layout flexível com `flex-wrap`;
+- blur de fundo.
+
+```css
+.app-title
+```
+
+Título principal da página. Usa:
+
+- `text-xl`;
+- `sm:text-2xl` em telas maiores;
+- `font-bold`;
+- cor escura no Light Mode;
+- cor clara no Dark Mode.
+
+```css
+.app-muted
+```
+
+Texto secundário, usado em descrições abaixo dos títulos. Ele tem menos contraste para não competir com o título.
+
+### 25.5 Inputs e avatar
+
+```css
+.app-input
+```
+
+Input padrão do sistema. Define:
+
+- altura `h-10`;
+- bordas arredondadas;
+- fundo diferente para Light/Dark;
+- placeholder;
+- borda sutil;
+- hover na borda;
+- foco com `ring-2`.
+
+No Light Mode, o foco usa `#0d4c5c`. No Dark Mode, usa `#45dbc2`.
+
+```css
+.app-avatar
+```
+
+Define a bolinha da foto do usuário:
+
+- `w-10 h-10`;
+- `rounded-full`;
+- `overflow-hidden`;
+- anel sutil;
+- hover com pequeno zoom.
+
+### 25.6 Grids e cards
+
+```css
+.app-content-grid
+```
+
+Grid usado no dashboard principal. Começa com 1 coluna e vira 3 colunas em telas grandes (`lg:grid-cols-3`).
+
+```css
+.app-page-grid
+```
+
+Grid simples para páginas internas, com uma coluna e espaçamento padrão.
+
+```css
+.app-card
+```
+
+Card padrão do sistema. Aplica:
+
+- fundo branco no Light;
+- fundo `#0a141a` no Dark;
+- borda sutil;
+- sombra;
+- hover com leve subida;
+- borda de destaque no hover;
+- sombra maior no hover.
+
+```css
+.app-card-strong
+```
+
+Card de destaque, com fundo `#0d4c5c`. É usado quando um card precisa chamar mais atenção, como o primeiro card de presença.
+
+```css
+.app-card-title
+```
+
+Título interno de card.
+
+### 25.7 Login
+
+As classes `app-login-*` pertencem à tela de login.
+
+```css
+.app-login-shell
+```
+
+Define a base da tela de login, com altura de tela cheia e fundo claro/escuro.
+
+```css
+.app-login-container
+```
+
+Container central do login, com largura máxima, sombra forte e cantos arredondados.
+
+```css
+.app-button-entrar
+```
+
+Botão principal de login. Usa fundo petróleo, texto claro e hover com teal.
+
+```css
+.app-login-forgot
+```
+
+Link "Esqueceu sua senha?". Muda de cor e ganha underline no hover.
+
+```css
+.app-login-rigth
+```
+
+Posiciona o conteúdo textual por cima da imagem lateral do login. O nome tem um pequeno erro de digitação: deveria ser `right`, mas atualmente está `rigth`.
+
+```css
+.app-login-title2
+```
+
+Título grande do formulário de login, usando fonte serifada.
+
+```css
+.app-login-logo,
+.app-login-logo-icon,
+.app-login-logo-text,
+.app-login-logo-edu,
+.app-login-logo-control
+```
+
+Controlam a marca `EduControl`, separando visualmente `Edu` e `Control`.
+
+```css
+.app-login-divider
+```
+
+Cria o divisor do texto "ou continue", com duas linhas laterais.
+
+```css
+.app-google-button
+```
+
+Botão visual de Google. Atualmente está sem funcionalidade de login.
+
+```css
+.app-login-feature,
+.app-login-feature-icon
+```
+
+Servem para listar funcionalidades/benefícios na tela de login com ícone + texto.
+
+### 25.8 Relatórios
+
+As classes `app-report-*` são específicas da página de relatórios.
+
+```css
+.app-button-relatorio
+```
+
+Botão "Gerar relatório".
+
+```css
+.app-grid-relatorio
+```
+
+Grid dos cards de estatísticas. O comportamento responsivo é:
+
+- 1 coluna em telas pequenas;
+- 2 colunas em telas médias;
+- 4 colunas em telas grandes.
+
+```css
+.app-report-stat
+```
+
+Card pequeno de estatística, como:
+
+- Total de alunos;
+- Taxa de presença;
+- Alunos em atenção;
+- Alunos com risco.
+
+```css
+.app-report-icon.blue,
+.app-report-icon.green,
+.app-report-icon.yellow,
+.app-report-icon.red
+```
+
+Definem as cores dos ícones de estatísticas.
+
+```css
+.app-report-filters
+```
+
+Grid dos filtros da página de relatórios.
+
+```css
+.app-report-filters select
+```
+
+Estilo dos campos `<select>` dos filtros.
+
+```css
+.app-report-search
+```
+
+Controla o input de busca com ícone de lupa dentro.
+
+Importante: o input de busca de relatórios **não usa `@apply app-input`**, porque Tailwind não permite aplicar uma classe customizada dentro de outra classe usando `@apply`. Por isso o estilo do `.app-input` foi repetido ali com utilities Tailwind reais.
+
+```css
+.app-report-title
+```
+
+Título dos blocos da página de relatórios.
+
+```css
+.app-report-status
+```
+
+Badge/status usado na tabela, como `Bom`, `Em atenção` ou `Risco`.
+
+---
+
+## 26. Rotas e nomes atuais das páginas
+
+Depois das últimas atualizações, os nomes principais ficaram assim:
+
+| Página | Rota | Arquivo de rota | Página/componente |
+|--------|------|-----------------|-------------------|
+| Login | `/` e `/log` | `routes/_index.tsx`, `routes/Log.tsx` | `pages/logout/Log.tsx` |
+| Home | `/home` | `routes/home.tsx` | `pages/welcome/welcome.tsx` |
+| Relatórios | `/relatorios` | `routes/relatorios.tsx` | `pages/relatorios/relatorios.tsx` |
+| Assistente de IA | `/ia` | `routes/IA.tsx` | `pages/assistenteIA/IA.tsx` |
+| Team | `/team` | `routes/team.tsx` | `pages/Team/team.tsx` |
+| Presença | `/presenca` | `routes/presenca.tsx` | `pages/presencas/presenca.tsx` |
+| Perfil | `/perfil` | `routes/perfil.tsx` | `pages/perfil/perfil.tsx` |
+
+Regra importante: como o projeto roda em Windows, às vezes `IA.tsx` e `iA.tsx` parecem iguais, mas o TypeScript pode acusar erro de casing. Manter o nome do arquivo e o import com a mesma capitalização evita esse problema.
+
+---
+
+## 27. Resumo para manutenção
+
+- Classes `app-*` são o padrão do projeto.
+- `dark:` deve sempre acompanhar as classes principais para manter tema claro/escuro automático.
+- O fundo principal do Dark Mode é `#03080c`.
+- A sidebar e o card forte usam `#0d4c5c`.
+- A cor viva de interação é `#22c7a9`.
+- Nunca usar `@apply` com uma classe customizada como `app-input`; usar apenas utilities Tailwind dentro do `@apply`.
+- Para novas telas, manter a estrutura: `app-shell` → `app-sidebar` + conteúdo → `app-header` + `app-page-grid`/cards.
 

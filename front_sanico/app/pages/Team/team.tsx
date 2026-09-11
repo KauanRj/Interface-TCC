@@ -26,13 +26,10 @@ export function Team() {
    
       <aside className="app-sidebar">
         <div className="flex items-center gap-3 mb-10">
-          <div className="app-logo-mark">
-            <Home size={21} />
-          </div>
-
-          <h1 className="text-base font-bold">
-            Home
-          </h1>
+          <span className="sm:text-2xl">
+             <span className="app-login-logo-edu">Edu</span>
+             <span className="app-login-logo-control">Control</span>
+           </span>
         </div>
 
         <nav className="flex flex-col gap-2">
