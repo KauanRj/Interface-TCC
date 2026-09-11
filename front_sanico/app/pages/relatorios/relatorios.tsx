@@ -15,7 +15,8 @@ import {
   AlertTriangle,
   BarChart3,
   Search,
-  User,
+  UserRound,
+  UserCircle,
 } from "lucide-react";
 import Lohran from "../../../public/lohran.png";
 import { useNavigate } from "react-router";
@@ -89,7 +90,7 @@ export function Relatorios() {
             onClick={() => navigate("/alunos")}
             className="app-nav-link"
           >
-            <User size={20} />
+            <UserRound size={20} />
             <span>Alunos</span>
           </a>
         </nav>
@@ -113,7 +114,7 @@ export function Relatorios() {
             onClick={() => navigate("/perfil")}
             className="app-nav-link"
           >
-            <Users size={20} />
+            <UserCircle size={20} />
             <span>Perfil</span>
           </a>
 

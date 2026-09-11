@@ -13,6 +13,9 @@ import {
   BellRing,
   TrendingUp,
   TrendingDown,
+  User,
+  UserRound,
+  UserCircle,
 }from "lucide-react";
 import Lohran from "../../../public/lohran.png";
 import { useNavigate } from "react-router";
@@ -62,7 +65,7 @@ export function Team() {
             className="app-nav-active"
           >
             <div className="flex items-center gap-3">
-              <Mail size={20} />
+              <Users size={20} />
               <span>Team</span>
             </div>
 
@@ -88,7 +91,7 @@ export function Team() {
             onClick={() => navigate("/alunos")}
             className="app-nav-link"
           >
-            <Users size={20} />
+            <UserRound size={20} />
             <span>Alunos</span>
           </a>
         </nav>
@@ -112,7 +115,7 @@ export function Team() {
             onClick={() => navigate("/perfil")}
             className="app-nav-link"
           >
-            <Users size={20} />
+            <UserCircle size={20} />
             <span>Perfil</span>
           </a>
 
