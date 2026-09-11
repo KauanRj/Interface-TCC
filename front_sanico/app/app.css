@@ -300,10 +300,6 @@ body {
     @apply text-base font-semibold text-gray-900 dark:text-white;
   }
 
-  /*.app-report-status {
-    @apply rounded-full bg-emerald-500/15 px-2 py-1 text-xs font-medium text-emerald-500;
-  }*/ 
-
   .app-status-green{
     @apply rounded-full bg-emerald-500/15 px-2 py-1 text-xs font-medium text-emerald-500;
   }
