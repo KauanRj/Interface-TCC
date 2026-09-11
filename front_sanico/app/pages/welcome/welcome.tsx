@@ -126,7 +126,7 @@ export function Welcome() {
         </div>
       </aside>
 
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 min-w-0 flex flex-col overflow-hidden">
         <div className="app-header">
           <div>
             <h1 className="app-title">
@@ -161,6 +161,8 @@ export function Welcome() {
             </span>
           </div>
         </div>
+
+        
 
         <div className="app-content-grid">
           <div className="app-card-strong flex flex-col justify-around p-4">
