@@ -183,7 +183,7 @@ export function Salas() {
           <div className="app-grid-relatorio p-5"> 
             <div className="app-report-stat relative">
               <div className="app-report-icon blue">
-                <Users size={20} />
+                <Building2 size={20} />
               </div>
               <div>
                 <div>
@@ -193,7 +193,7 @@ export function Salas() {
                 
 
                 <div className="flex justify-end gap-1">
-                    <Building2
+                    <ChartNoAxesCombined
                     size={20}
                     className="absolute bottom-5 right-5 text-blue-300  "
                   />
@@ -215,7 +215,7 @@ export function Salas() {
                 
 
                 <div className="flex justify-end gap-1">
-                    <DoorClosed 
+                    <ChartNoAxesCombined 
                     size={20}
                     className="absolute bottom-5 right-5 text-green-300  "
                   />

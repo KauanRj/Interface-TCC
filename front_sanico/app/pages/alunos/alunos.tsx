@@ -207,7 +207,7 @@ export function Alunos() {
                 <UserCheck size={20} />
               </div>
               <div>
-                <div>
+                
                   <p>Ativos</p>
                   <span>280</span>
                 </div>
