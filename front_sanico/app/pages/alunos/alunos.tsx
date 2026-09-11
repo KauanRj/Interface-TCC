@@ -8,7 +8,6 @@ import {
   DoorOpen,
   Users,
   Settings,
-  
   LogOut,
   BellRing,
   TrendingUp,
@@ -20,6 +19,9 @@ import {
   AlertTriangle,
   UserRound,
   UserCircle,
+  ChartNoAxesColumnIncreasing,
+  ChartNoAxesCombined,
+  UserCheck,
 }from "lucide-react";
 import Lohran from "../../../public/lohran.png";
 import { useNavigate } from "react-router";
@@ -178,46 +180,88 @@ export function Alunos() {
           </div>
 
           <div className="app-grid-relatorio p-5"> 
-            <div className="app-report-stat">
+            <div className="app-report-stat relative">
               <div className="app-report-icon blue">
-                <Users size={20} />
+                <UserRound size={20} />
               </div>
               <div>
-                <p>Total de alunos</p>
-                <span className="text-black font-bold">428</span>
+                <div>
+                  <p>Total de alunos</p>
+                  <span>428</span>
+                </div>
+
+                <div className="flex justify-end gap-1">
+                    <ChartNoAxesCombined 
+                    size={20}
+                    className="absolute bottom-5 right-5 text-blue-300  "
+                  />
+
+                </div>
+                
                 
               </div>
             </div>
 
-            <div className="app-report-stat">
+            <div className="app-report-stat relative">
               <div className="app-report-icon green">
-                <TrendingUp size={20} />
+                <UserCheck size={20} />
               </div>
               <div>
-                <p>Ativos</p>
-                <span className="text-black font-bold">280</span>
+                <div>
+                  <p>Ativos</p>
+                  <span>280</span>
+                </div>
                 
+                <div className="flex justify-end gap-1">
+                    <ChartNoAxesCombined 
+                    size={20}
+                    className="absolute bottom-5 right-5 text-green-300  "
+                  />
+
+                </div>
               </div>
             </div>
 
-            <div className="app-report-stat">
+            <div className="app-report-stat relative">
               <div className="app-report-icon yellow">
                 <AlertTriangle size={20} />
               </div>
-              <div>
-                <p>Alunos em atenção</p>
-                <span className="text-black font-bold">12</span>
-                
-              </div>
+              <div className="  flex justify-around">
+
+                <div>
+                  <p>Alunos em atenção</p>
+                  <span>12</span>
+                </div>
+                 
+
+                  <div className="flex justify-end gap-1">
+                    <ChartNoAxesCombined 
+                    size={20}
+                    className="absolute bottom-5 right-5 text-yellow-300  "
+                  />
+
+                  </div>
+              </div> 
             </div>
 
-            <div className="app-report-stat">
+            <div className="app-report-stat relative">
               <div className="app-report-icon purple">
-                <BarChart3 size={20} />
+                <ChartNoAxesColumnIncreasing size={20} />
               </div>
               <div>
-                <p>Novas matrículas</p>
-                <span className="text-black font-bold">8</span>
+                <div>
+                  <p>Novas matrículas</p>
+                  <span>8</span>
+                </div>
+
+                <div className="flex justify-end gap-1">
+                    <ChartNoAxesCombined 
+                    size={20}
+                    className="absolute bottom-5 right-5 text-purple-300  "
+                  />
+
+                  </div>
+                
                 
               </div>
             </div>

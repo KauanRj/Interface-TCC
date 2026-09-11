@@ -19,6 +19,11 @@ import {
   Plus,
   UserRound,
   UserCircle,
+  WrenchIcon,
+  WrenchOff,
+  ChartNoAxesCombined,
+  Building2,
+  DoorClosed,
 }from "lucide-react";
 import Lohran from "../../../public/lohran.png";
 import { useNavigate } from "react-router";
@@ -176,46 +181,90 @@ export function Salas() {
           </div>
 
           <div className="app-grid-relatorio p-5"> 
-            <div className="app-report-stat">
+            <div className="app-report-stat relative">
               <div className="app-report-icon blue">
                 <Users size={20} />
               </div>
               <div>
-                <p>Total de salas</p>
-                <span className="text-black font-bold">428</span>
+                <div>
+                  <p>Total de salas</p>
+                  <span>428</span>
+                </div>
+                
+
+                <div className="flex justify-end gap-1">
+                    <Building2
+                    size={20}
+                    className="absolute bottom-5 right-5 text-blue-300  "
+                  />
+
+                </div>
                 
               </div>
             </div>
 
-            <div className="app-report-stat">
+            <div className="app-report-stat relative">
               <div className="app-report-icon green">
-                <TrendingUp size={20} />
+                <DoorClosed size={20} />
               </div>
               <div>
-                <p>Salas em uso</p>
-                <span className="text-black font-bold">280</span>
+                <div>
+                  <p>Salas em uso</p>
+                  <span>280</span>
+                </div>
+                
+
+                <div className="flex justify-end gap-1">
+                    <DoorClosed 
+                    size={20}
+                    className="absolute bottom-5 right-5 text-green-300  "
+                  />
+
+                </div>
                 
               </div>
             </div>
 
-            <div className="app-report-stat">
+            <div className="app-report-stat relative">
               <div className="app-report-icon gray">
-                <AlertTriangle size={20} />
+                <DoorOpen size={20} />
               </div>
               <div>
-                <p>Salas disponíveis</p>
-                <span className="text-black font-bold">12</span>
+                <div>
+                  <p>Salas disponíveis</p>
+                  <span>12</span>
+                </div>
+                
+
+                <div className="flex justify-end gap-1">
+                    <ChartNoAxesCombined 
+                    size={20}
+                    className="absolute bottom-5 right-5 text-gray-300  "
+                  />
+
+                </div>
                 
               </div>
             </div>
 
-            <div className="app-report-stat">
+            <div className="app-report-stat relative">
               <div className="app-report-icon red">
-                <BarChart3 size={20} />
+                <WrenchOff size={20} />
               </div>  
               <div>
-                <p>Salas em manutenção</p>
-                <span className="text-black font-bold">8</span>
+                <div>
+                  <p>Salas em manutenção</p>
+                  <span>8</span>
+                </div>
+                
+
+                <div className="flex justify-end gap-1">
+                    <ChartNoAxesCombined 
+                    size={20}
+                    className="absolute bottom-5 right-5 text-red-300  "
+                  />
+
+                </div>
                 
               </div>
             </div>

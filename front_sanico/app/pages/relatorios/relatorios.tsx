@@ -24,6 +24,13 @@ import { useNavigate } from "react-router";
 export function Relatorios() {
   const navigate = useNavigate();
 
+  const alunos = [
+    { id: 1, nome: "Ana Clara Silva", turma: "9º Ano A", presenca: "95%", media: "8,7", situacao: "Bom" },
+    { id: 2, nome: "Bruno Almeida", turma: "8º Ano B", presenca: "78%", media: "6,9", situacao: "Em atenção" },
+    { id: 3, nome: "Carlos Eduardo", turma: "9º Ano A", presenca: "60%", media: "5,4", situacao: "Risco" },
+    { id: 4, nome: "Daniela Santos", turma: "7º Ano A", presenca: "88%", media: "7,8", situacao: "Bom" },
+  ];  
+
   return (
     <main className="app-shell">
 
@@ -310,24 +317,19 @@ export function Relatorios() {
             </thead>
 
             <tbody>
-              {[
-                ["1", "Ana Clara Silva", "9º Ano A", "95%", "8,7", "Bom"],
-                ["2", "Bruno Almeida", "8º Ano B", "78%", "6,9", "Em atenção"],
-                ["3", "Carlos Eduardo", "9º Ano A", "60%", "5,4", "Risco"],
-                ["4", "Daniela Santos", "7º Ano A", "88%", "7,8", "Bom"],
-              ].map((aluno) => (
+              {alunos.map((aluno) => (
                 <tr
-                  key={aluno[0]}
+                  key={aluno.id}
                   className="border-b border-slate-200 dark:border-white/5"
                 >
-                  <td className="py-3 p-2">{aluno[0]}</td>
-                  <td>{aluno[1]}</td>
-                  <td>{aluno[2]}</td>
-                  <td>{aluno[3]}</td>
-                  <td>{aluno[4]}</td>
+                  <td className="py-3 p-2">{aluno.id}</td>
+                  <td>{aluno.nome}</td>
+                  <td>{aluno.turma}</td>
+                  <td>{aluno.presenca}</td>
+                  <td>{aluno.media}</td>
                   <td>
-                    <span className="app-report-status">
-                      {aluno[5]}
+                    <span className={aluno.situacao === "Bom" ? "app-status-green" : aluno.situacao === "Em atenção" ? "app-status-yellow" : "app-status-red"}>
+                      {aluno.situacao}
                     </span>
                   </td>
                   <td>•••</td>
