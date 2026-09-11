@@ -355,21 +355,7 @@ export function Alunos() {
             </table>
           </div>
 
-          <div className="flex justify-end gap-2 mt-4">
-            <div className="app-card-strong h-10 w-10 ">
-            
-            </div>
-            <div className="app-card h-10 w-10 ">
-            
-            </div>
-            <div className="app-card h-10 w-10 ">
-            
-            </div>
-            <div className="app-card h-10 w-10 ">
-            
-            </div>
-          </div>  
-          </div>       
+                
         </div>
         
         
