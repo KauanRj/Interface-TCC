@@ -37,7 +37,7 @@ export function Alunos() {
   ];  
   return (
     <main className="app-shell block-s">
-      <div>
+   
       <aside className="app-sidebar">
         <div className="flex items-center gap-3 mb-10">
           <span className="sm:text-2xl">
@@ -355,26 +355,11 @@ export function Alunos() {
             </table>
           </div>
 
-          <div className="flex justify-end gap-2 mt-4">
-            <div className="app-card-strong h-10 w-10 ">
-            1
-            </div>
-            <div className="app-card h-10 w-10 ">
-            2
-            </div>
-            <div className="app-card h-10 w-10 ">
-            3
-            </div>
-            <div className="app-card h-10 w-10 ">
-            43
-            </div>
-          </div>  
-              
+                
         </div>
-
         
         
-      </div>
+      
     </main>
   );
 }
