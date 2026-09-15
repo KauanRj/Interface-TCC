@@ -129,8 +129,8 @@ export function Perfil() {
         <div className="app-header">
           <div>
             <h1 className="app-title p-4">
-              Meu perfil
-            </h1>
+              Meu perfi222
+            </h1>4
           </div>
 
           <div className="flex items-center gap-4">
