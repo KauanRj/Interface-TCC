@@ -275,14 +275,38 @@ export function Relatorios() {
           </div>
         </div>
 
-        <div className="app-card p-5">
+        <div className="app-card p-3">
           <h2 className="app-report-title">
             Frequência dos alunos
           </h2>
 
-          <div className="flex h-64 items-center justify-center text-gray-400">
-            Gráfico de frequência
-          </div>
+          
+            <div className="flex items-center justify-center">
+                    <div className="flex h-32 w-32 items-center justify-center rounded-full bg-[conic-gradient(#22c7a9_0_84%,#ef4444_84%_92%,#f59e0b_92%_97%,#60a5fa_97%_100%)]">
+                      <div className="flex h-22 w-22 flex-col items-center justify-center rounded-full bg-white dark:bg-[#0a141a]">
+                        <strong className="text-2xl text-gray-900 dark:text-white">84%</strong>
+                        <span className="text-xs text-gray-500 dark:text-[#8fb1aa]">Presença</span>
+                      </div>
+                    </div>
+                  </div>
+          <div className="mt-4 space-y-2 text-sm">
+                    <div className="flex items-center justify-between">
+                      <span className="text-emerald-500">Presentes</span>
+                      <strong>362</strong>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-red-500">Ausentes</span>
+                      <strong>34</strong>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-yellow-500">Atrasados</span>
+                      <strong>18</strong>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-blue-500">Justificados</span>
+                      <strong>14</strong>
+                    </div>
+                  </div>
         </div>
 
       </div>

@@ -234,6 +234,10 @@ body {
     @apply grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4;
   }
 
+  .app-grid-team{
+    @apply grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-6;
+  }
+
   .app-report-stat{
     @apply flex items-center gap-4 rounded-lg border border-slate-200 bg-white p-4 shadow-lg
     dark:border-white/10 dark:bg-[#0a141a];

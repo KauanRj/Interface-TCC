@@ -8,7 +8,7 @@ import {
   DoorOpen,
   Users,
   Settings,
-  
+
   LogOut,
   BellRing,
   TrendingUp,
@@ -16,6 +16,9 @@ import {
   User,
   UserRound,
   UserCircle,
+  Plus,
+  BarChart3,
+  AlertTriangle,
 }from "lucide-react";
 import Lohran from "../../../public/lohran.png";
 import { useNavigate } from "react-router";
@@ -131,20 +134,19 @@ export function Team() {
 
         <div className="flex-1 min-w-0 flex flex-col overflow-hidden">
           <div className="app-header">
-            <div>
-              <h1 className="text-2xl font-bold">Welcome back, Lohran!</h1>
-              <p className="app-muted">blablabla</p>
+            <div >
+              <h1 className="text-2xl font-bold">Team</h1>
+              <p className="app-muted">Gerencie a equipe e acompanhe responsabilidades</p>
             </div>
-          
-            <div>
-              <input
-                type="text"
-                placeholder="Pesquisar..."
-                className="app-input w-full max-w-80"
-              />
-            </div>
-          
-            <div className="flex items-center gap-4">
+
+            <div className="app-header-actions">
+              <button 
+              type="submit"
+              className="app-button-relatorio">
+                <Plus size={18} />
+                Novo funcionario 
+              </button>
+
               <BellRing size={20} />
               <div className="app-avatar">
                 <img
@@ -159,6 +161,73 @@ export function Team() {
           
           <div className="min-h-0 flex-1 overflow-y-auto">
 
+            <div className="app-page-grid">
+
+              <div className="app-grid-team">
+
+            <div className="app-report-stat">
+              <div className="app-report-icon blue">
+                <Users size={20} />
+              </div>
+              <div>
+                <p>Total de funcionarios</p>
+                <span>428</span>
+              </div>
+            </div>
+
+            <div className="app-report-stat">
+              <div className="app-report-icon green">
+                <TrendingUp size={20} />
+              </div>
+              <div>
+                <p>Diretores</p>
+                <span>82%</span>                
+              </div>
+            </div>
+
+            <div className="app-report-stat">
+              <div className="app-report-icon yellow">
+                <AlertTriangle size={20} />
+              </div>
+              <div>
+                <p>Coordenadores</p>
+                <span>12</span>                
+              </div>
+            </div>
+
+            <div className="app-report-stat">
+              <div className="app-report-icon red">
+                <BarChart3 size={20} />
+              </div>
+              <div>
+                <p>supervisores</p>
+                <span>8</span>
+                
+              </div>
+            </div>
+            <div className="app-report-stat">
+              <div className="app-report-icon red">
+                <BarChart3 size={20} />
+              </div>
+              <div>
+                <p>secretarios</p>
+                <span>8</span>
+                
+              </div>
+            </div>
+            <div className="app-report-stat">
+              <div className="app-report-icon red">
+                <BarChart3 size={20} />
+              </div>
+              <div>
+                <p>professores</p>
+                <span>8</span>
+                
+              </div>
+            </div>
+
+          </div>
+            </div>
           </div>
           
         </div>
