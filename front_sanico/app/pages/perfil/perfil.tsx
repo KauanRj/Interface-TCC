@@ -8,7 +8,7 @@ import {
   DoorOpen,
   Users,
   Settings,
-  
+  Lock,
   LogOut,
   BellRing,
   TrendingUp,
@@ -129,8 +129,8 @@ export function Perfil() {
         <div className="app-header">
           <div>
             <h1 className="app-title p-4">
-              Meu perfi222
-            </h1>4
+              Meu perfil
+            </h1>
           </div>
 
           <div className="flex items-center gap-4">
@@ -152,6 +152,72 @@ export function Perfil() {
             </span>
           </div>
         </div>
+
+        <div className="app-page-grid">
+          <div className="grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1fr)_320px]">
+              <div className="app-card min-h-60 overflow-hidden p-4">
+                 <div className="mb-4 flex flex-col gap-2">
+                  <label htmlFor="email" className="font-medium text-white/60">
+                    E-mail
+                  </label>
+
+                  <div className="relative">
+                    <Mail
+                      size={20}
+                      className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                    />
+
+                    <input
+                      id="email"
+                      type="email"
+                      placeholder="seu@email.com"
+                      className="w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-gray-900 placeholder-gray-500 outline-none focus:border-[#0d7f70] dark:border-white/15 dark:bg-[#151515] dark:text-white dark:focus:border-[#22c7a9]"
+                    />
+                  </div>
+                </div>
+
+                <div className="mb-4 flex flex-col gap-2">
+                  <label htmlFor="password" className="font-medium text-white/60">
+                    Senha
+                  </label>
+
+                  <div className="relative">
+                    <Lock
+                      size={20}
+                      className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                    />
+
+                    <input
+                      id="password"
+                      type= "password"
+                     
+                      placeholder="Sua senha"
+                      className="w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-gray-900 placeholder-gray-500 outline-none focus:border-[#0d7f70] dark:border-white/15 dark:bg-[#151515] dark:text-white dark:focus:border-[#22c7a9]"
+                    />
+
+                  </div>
+                </div>             
+              </div>
+
+              <aside className="grid gap-4">
+                <div className="app-card p-4">
+                    2
+                </div> 
+
+                <div className="app-card p-4">
+                  2
+                </div> 
+                
+
+
+
+              </aside> 
+
+
+          </div>
+        </div>
+
+        
           
           
         </div>
