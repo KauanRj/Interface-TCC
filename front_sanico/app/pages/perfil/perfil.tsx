@@ -205,7 +205,7 @@ export function Perfil() {
                 </div> 
 
                 <div className="app-card p-4">
-                  2
+                  2 test
                 </div> 
                 
 
