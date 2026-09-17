@@ -16,6 +16,7 @@ import {
   UserCheck,
   UserCircle,
   UserRound,
+  Plus,
 }from "lucide-react";
 import Lohran from "../../../public/lohran.png";
 import { useNavigate } from "react-router";
@@ -128,32 +129,27 @@ export function IA() {
       </aside>
 
         <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
-          <div className="app-header">
-            <div>
-              <h1 className="text-2xl font-bold">Welcome back, Lohran!</h1>
-              <p className="app-muted">blablabla</p>
-            </div>
           
-            <div>
-              <input
-                type="text"
-                placeholder="Pesquisar..."
-                className="app-input w-full max-w-80"
-              />
-            </div>
+                    <div className="app-header">
+                      <div >
+                        <h1 className="text-2xl font-bold">Assistente de IA</h1>
+                        <p className="app-muted">Receba análises e sugestões para melhorar o acompanhamento escolar</p>
+                      </div>
           
-            <div className="flex items-center gap-4">
-              <BellRing size={20} />
-              <div className="app-avatar">
-                <img
-                  src={Lohran}
-                  alt="Profile"
-                  className="rounded-full"
-                />
-              </div>
-              <span className="text-lg font-semibold text-gray-900 dark:text-[#f5fffc]">Lohran</span>
-            </div>
-          </div>
+                      <div className="app-header-actions">
+                          
+          
+                        <BellRing size={20} />
+                        <div className="app-avatar">
+                          <img
+                            src={Lohran}
+                            alt="Profile"
+                            className="rounded-full"
+                          />
+                        </div>
+                        <span className="text-lg font-semibold text-gray-900 dark:text-[#f5fffc]">Lohran</span>
+                      </div>
+                    </div>
           
          
         </div>

@@ -19,12 +19,33 @@ import {
   Plus,
   BarChart3,
   AlertTriangle,
+  ShieldCheck,
+  GraduationCap,
+  BriefcaseBusiness,
+  ClipboardList,
+  UserCog,
+  Phone,
 }from "lucide-react";
 import Lohran from "../../../public/lohran.png";
 import { useNavigate } from "react-router";
 
 export function Team() {
   const navigate = useNavigate();
+
+  const funcionarios = [
+    { id: 1, nome: "Mariana Silva", cargo: "Professora", setor: "Matematica", status: "Ativo" },
+    { id: 2, nome: "Carlos Mendes", cargo: "Coordenador", setor: "Pedagogico", status: "Ativo" },
+    { id: 3, nome: "Fernanda Lima", cargo: "Diretora", setor: "Gestao", status: "Ativo" },
+    { id: 4, nome: "Juliana Costa", cargo: "Secretaria", setor: "Administrativo", status: "Pendente" },
+    { id: 5, nome: "Ricardo Santos", cargo: "Supervisor", setor: "Ensino Medio", status: "Ativo" },
+  ];
+
+  const cargos = [
+    { nome: "Professores", quantidade: 24, largura: "88%" },
+    { nome: "Coordenadores", quantidade: 5, largura: "55%" },
+    { nome: "Administrativo", quantidade: 7, largura: "65%" },
+    { nome: "Supervisao", quantidade: 3, largura: "38%" },
+  ];
 
 
   return (
@@ -164,69 +185,143 @@ export function Team() {
             <div className="app-page-grid">
 
               <div className="app-grid-team">
+                <div className="app-report-stat">
+                  <div className="app-report-icon bg-cyan-500/15 text-cyan-500">
+                    <Users size={20} />
+                  </div>
+                  <div>
+                    <p>Total da equipe</p>
+                    <span>50</span>
+                  </div>
+                </div>
 
-            <div className="app-report-stat">
-              <div className="app-report-icon blue">
-                <Users size={20} />
-              </div>
-              <div>
-                <p>Total de funcionarios</p>
-                <span>428</span>
-              </div>
-            </div>
+                <div className="app-report-stat">
+                  <div className="app-report-icon bg-emerald-500/15 text-emerald-500">
+                    <GraduationCap size={20} />
+                  </div>
+                  <div>
+                    <p>Professores</p>
+                    <span>32</span>
+                  </div>
+                </div>
 
-            <div className="app-report-stat">
-              <div className="app-report-icon green">
-                <TrendingUp size={20} />
-              </div>
-              <div>
-                <p>Diretores</p>
-                <span>82%</span>                
-              </div>
-            </div>
+                <div className="app-report-stat">
+                  <div className="app-report-icon bg-indigo-500/15 text-indigo-500">
+                    <ShieldCheck size={20} />
+                  </div>
+                  <div>
+                    <p>Coordenadores</p>
+                    <span>3</span>
+                  </div>
+                </div>
 
-            <div className="app-report-stat">
-              <div className="app-report-icon yellow">
-                <AlertTriangle size={20} />
-              </div>
-              <div>
-                <p>Coordenadores</p>
-                <span>12</span>                
-              </div>
-            </div>
+                <div className="app-report-stat">
+                  <div className="app-report-icon bg-orange-500/15 text-orange-500">
+                    <BriefcaseBusiness size={20} />
+                  </div>
+                  <div>
+                    <p>Administrativo</p>
+                    <span>6</span>
+                  </div>
+                </div>
 
-            <div className="app-report-stat">
-              <div className="app-report-icon red">
-                <BarChart3 size={20} />
-              </div>
-              <div>
-                <p>supervisores</p>
-                <span>8</span>
-                
-              </div>
-            </div>
-            <div className="app-report-stat">
-              <div className="app-report-icon red">
-                <BarChart3 size={20} />
-              </div>
-              <div>
-                <p>secretarios</p>
-                <span>8</span>
-                
-              </div>
-            </div>
-            <div className="app-report-stat">
-              <div className="app-report-icon red">
-                <BarChart3 size={20} />
-              </div>
-              <div>
-                <p>professores</p>
-                <span>8</span>
-                
-              </div>
-            </div>
+                <div className="app-report-stat">
+                  <div className="app-report-icon bg-rose-500/15 text-rose-500">
+                    <UserCog size={20} />
+                  </div>
+                  <div>
+                    <p>Supervisores</p>
+                    <span>4</span>
+                  </div>
+                </div>
 
-          </div>
+                <div className="app-report-stat">
+                  <div className="app-report-icon bg-violet-500/15 text-violet-500">
+                    <ClipboardList size={20} />
+                  </div>
+                  <div>
+                    <p>Secretarios</p>
+                    <span>5</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1fr)_340px]">
+                <div className="app-card overflow-hidden p-4">
+                  <h2 className="app-report-title mb-4">Funcionarios cadastrados</h2>
+
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="border-b border-slate-200 text-left dark:border-white/10">
+                        <th className="py-3 p-2">#</th>
+                        <th>Nome</th>
+                        <th>Cargo</th>
+                        <th>Setor</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {funcionarios.map((funcionario) => (
+                        <tr
+                          key={funcionario.id}
+                          className="border-b border-slate-200 dark:border-white/5 hover:bg-gray-100 dark:hover:bg-[#101f27]"
+                        >
+                          <td className="py-3 p-2">{funcionario.id}</td>
+                          <td>{funcionario.nome}</td>
+                          <td>{funcionario.cargo}</td>
+                          <td>{funcionario.setor}</td>
+                          <td>
+                            <span className={funcionario.status === "Ativo" ? "app-status-green" : "app-status-yellow"}>
+                              {funcionario.status}
+                            </span>
+                          </td>
+                          <td>•••</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <aside className="grid gap-4">
+                  <div className="app-card p-4">
+                    <h2 className="app-report-title mb-4">Distribuicao por cargo</h2>
+
+                    <div className="space-y-4">
+                      {cargos.map((cargo) => (
+                        <div key={cargo.nome}>
+                          <div className="mb-1 flex items-center justify-between text-sm">
+                            <span>{cargo.nome}</span>
+                            <strong>{cargo.quantidade}</strong>
+                          </div>
+                          <div className="h-2 rounded-full bg-gray-200 dark:bg-white/10">
+                            <div className="h-2 rounded-full bg-[#22c7a9]" style={{ width: cargo.largura }} />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="app-card p-4">
+                    <h2 className="app-report-title mb-4">Contatos rapidos</h2>
+
+                    <div className="space-y-3 text-sm">
+                      <div className="flex items-center gap-3">
+                        <Mail size={18} className="text-cyan-500" />
+                        <span>Admir@educontrol.com</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <Phone size={18} className="text-emerald-500" />
+                        <span>(02) 4002-8922</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <ClipboardList size={18} className="text-violet-500" />
+                        <span>4 tarefas pendentes</span>
+                      </div>
+                    </div>
+                  </div>
+                </aside>
+              </div>
             </div>
           </div>
           
