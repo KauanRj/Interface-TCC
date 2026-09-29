@@ -1,28 +1,89 @@
 import {
-  Home,
   LayoutDashboard,
   List,
   Filter,
-  Mail,
   ClipboardCheck,
   DoorOpen,
   Users,
   Settings,
-  
   LogOut,
   BellRing,
-  TrendingUp,
-  TrendingDown,
-  UserCheck,
   UserCircle,
   UserRound,
-  Plus,
+  Send,
+  Bot,
+  User
 }from "lucide-react";
 import Lohran from "../../../public/lohran.png";
 import { useNavigate } from "react-router";
 
+import { useState } from "react";
+import { testarGemini } from "../../testeGemini";
+
 export function IA() {
   const navigate = useNavigate();
+
+  const [mensagem, setMensagem] = useState("");
+  const [carregando, setCarregando] = useState(false);
+
+  const [mensagens, setMensagens] = useState([
+    {
+      tipo: "ia",
+      texto: "Olá! 👋 Sou o assistente do EduControl. Como posso ajudar?"
+    }
+  ]);
+
+async function enviarMensagem() {
+  if (mensagem.trim() === "") {
+    return;
+  }
+
+  const pergunta = mensagem;
+
+  const novaMensagem = {
+    tipo: "usuario",
+    texto: pergunta
+  };
+
+  setMensagens([...mensagens, novaMensagem]);
+  setMensagem("");
+  setCarregando(true);
+
+  try {
+    const resposta = await testarGemini(pergunta);
+
+    const novaResposta = {
+      tipo: "ia",
+      texto: resposta
+    };
+
+    setMensagens((mensagensAtuais) => [
+      ...mensagensAtuais,
+      novaResposta
+    ]);
+
+ } catch (erro) {
+  console.log("Erro no Gemini:", erro);
+
+  const mensagemErro =
+    erro instanceof Error
+      ? erro.message
+      : String(erro);
+
+  const novaResposta = {
+    tipo: "ia",
+    texto: "Erro: " + mensagemErro
+  };
+
+  setMensagens((mensagensAtuais) => [
+    ...mensagensAtuais,
+    novaResposta
+  ]);
+} finally {
+    setCarregando(false);
+  }
+}
+
   return (
     <main className="app-shell">
    
@@ -150,11 +211,82 @@ export function IA() {
                         <span className="text-lg font-semibold text-gray-900 dark:text-[#f5fffc]">Lohran</span>
                       </div>
                     </div>
-          
-         
+                    
+        <div className="flex-1 p-6">
+
+        <div className="h-full rounded-xl border border-gray-700 bg-[#0d1519]">
+
+          <div className="flex-1 p-6">
+            {mensagens.map((msg, index) => (
+          <div
+             key={index}
+             className="flex items-start gap-3 mb-5" >
+
+            {msg.tipo === "ia" ? (
+              <Bot size={24} />
+            ) : (
+
+              <User size={24} />
+            )}
+
+         <div>
+           <p className="font-semibold">
+             {msg.tipo === "ia" ? "EduControl IA" : "Você"}
+           </p>
+
+           <p className="text-gray-400">
+             {msg.texto}
+           </p>
+         </div>
+         </div>
+         ))}
+
+         {carregando && (
+          <div className="flex items-start gap-3 mb-5">
+          <Bot size={24} />
+
+           <div>
+            <p className="font-semibold">EduControl IA</p>
+            <p className="text-gray-400">
+              Pensando...
+            </p>
+           </div>
+          </div>
+          )}
+
         </div>
+
+          <div className="flex gap-3 border-t border-gray-700 p-4">
+            <input
+             type="text"
+             placeholder="Digite sua mensagem..."
+             value={mensagem}
+             onChange={(e) => setMensagem(e.target.value)}
+             onKeyDown={(e) => {
+               if (e.key === "Enter") {
+                 enviarMensagem();
+                 }
+                 }}
+             className="flex-1 rounded-lg border border-gray-700 bg-[#050b0e] px-4 py-3 outline-none"
+             />  
+
+          <button
+            onClick={enviarMensagem}
+            disabled={carregando}
+            className="rounded-lg bg-[#0d4c5c] px-4"
+          >
+          <Send size={20} />  
+          </button>
+
+        </div>
+  
+        </div>
+</div>
+         
         
-      
-    </main>
+       </div>
+       
+     
+   </main>
   );
 }

@@ -33,12 +33,8 @@ export function Log() {
   return (
     <main className="app-login-shell">
       <div className="app-login-container">
-      <div className="relative hidden h-screen w-1/2 overflow-hidden lg:block">
-      <img
-         src={login}
-         alt="Imagem de login"
-         className="h-full w-full object-cover"
-       />
+      <div className="relative hidden h-screen w-1/2 overflow-hidden lg:block bg-[#0d4c5c]">
+      
 
        <div className="app-login-rigth">
 
@@ -153,7 +149,8 @@ export function Log() {
             type="email"
             placeholder="seu@email.com"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}className="w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-gray-900 placeholder-gray-500 outline-none focus:border-[#0d7f70] dark:border-white/15 dark:bg-[#151515] dark:text-white dark:focus:border-[#22c7a9]"
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-gray-900 placeholder-gray-500 outline-none focus:border-[#0d7f70] dark:border-white/15 dark:bg-[#151515] dark:text-white dark:focus:border-[#22c7a9]"
           />
         </div>
       </div>
