@@ -12,6 +12,7 @@ import {
   UserRound, 
   Send, 
   Bot, 
+  Trash2,
   User 
 } from "lucide-react";
 
@@ -19,12 +20,13 @@ import Lohran from "../../../public/lohran.png";
 import { useNavigate } from "react-router";
 
 import { useEffect, useRef, useState } from "react";
-import { testarGemini } from "../../testeGemini";
+import { enviarParaIA } from "../../services/iaService";
 
 export function IA() {
 
   const navigate = useNavigate();
 
+  const [mostrarConfirmacao, setMostrarConfirmacao] = useState(false);
   const [mensagem, setMensagem] = useState("");
   const [carregando, setCarregando] = useState(false);
 
@@ -50,82 +52,96 @@ export function IA() {
     }
 
   }, [mensagens, autoScroll]);
+async function enviarMensagem() {
+  if (carregando) {
+    return;
+  }
 
-  async function enviarMensagem() {
+  if (mensagem.trim() === "") {
+    return;
+  }
 
-    if (mensagem.trim() === "") {
-      return;
-    }
+  const pergunta = mensagem;
 
-    const pergunta = mensagem;
+  const novaMensagem = {
+    tipo: "usuario",
+    texto: pergunta
+  };
 
-    const novaMensagem = {
-      tipo: "usuario",
-      texto: pergunta
+  setMensagens((mensagensAtuais) => [
+    ...mensagensAtuais,
+    novaMensagem
+  ]);
+
+  setMensagem("");
+  setCarregando(true);
+
+  try {
+    const novaResposta = {
+      tipo: "ia",
+      texto: "..."
     };
 
-    setMensagens([...mensagens, novaMensagem]);
+    setMensagens((mensagensAtuais) => [
+      ...mensagensAtuais,
+      novaResposta
+    ]);
 
-    setMensagem("");
-    setCarregando(true);
-
-    try {
-
-      const novaResposta = {
-        tipo: "ia",
-        texto: ""
-      };
-
-      setMensagens((mensagensAtuais) => [
-        ...mensagensAtuais,
-        novaResposta
-      ]);
-
-      await testarGemini(pergunta, (texto) => {
-
-        setMensagens((mensagensAtuais) => {
-
-          const novasMensagens = [...mensagensAtuais];
-
-          novasMensagens[novasMensagens.length - 1] = {
-            tipo: "ia",
-            texto: texto
-          };
-
-          return novasMensagens;
-
-        });
-
-      });
-
-    } catch (erro) {
-
-      console.log("Erro no Gemini:", erro);
-
+    await enviarParaIA(pergunta, mensagens, (texto) => {
       setMensagens((mensagensAtuais) => {
-
         const novasMensagens = [...mensagensAtuais];
 
         novasMensagens[novasMensagens.length - 1] = {
           tipo: "ia",
-          texto: "Não consegui responder agora. Tente novamente em alguns instantes."
+          texto: texto
         };
 
         return novasMensagens;
-
       });
+    });
 
-    } finally {
+  } catch (erro) {
+    console.log("Erro no Gemini:", erro);
 
-      setCarregando(false);
+    setMensagens((mensagensAtuais) => {
+      const novasMensagens = [...mensagensAtuais];
 
-    }
+      novasMensagens[novasMensagens.length - 1] = {
+        tipo: "ia",
+        texto: "Não consegui responder agora. Tente novamente em alguns instantes."
+      };
 
+      return novasMensagens;
+    });
+
+  } finally {
+    setCarregando(false);
   }
+}
+
+function limparConversa() {
+  setMostrarConfirmacao(true);
+}
+
+  function usarSugestao(pergunta: string) {
+  setMensagem(pergunta);
+}
+function confirmarLimpeza() {
+  setMensagens([
+    {
+      tipo: "ia",
+      texto: "Olá! 👋 Sou o assistente do EduControl. Como posso ajudar?"
+    }
+  ]);
+
+  setMensagem("");
+  setAutoScroll(true);
+  setMostrarConfirmacao(false);
+}
 
   return (
 
-    <main className="app-shell">
+    <main className="app-shell h-screen overflow-hidden">
 
       <aside className="app-sidebar">
 
@@ -250,7 +266,7 @@ export function IA() {
 
       </aside>
 
-      <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
 
         <div className="app-header">
 
@@ -288,12 +304,34 @@ export function IA() {
 
         </div>
 
-        <div className="flex-1 p-6">
+        <div className="flex-1 min-h-0 p-6">
 
-          <div className="flex h-full flex-col rounded-xl border border-gray-700 bg-[#0d1519]">
+          <div className="flex h-full  min-h-0  flex-col rounded-xl border border-gray-700 bg-[#0d1519]">
+             <div className="flex items-center justify-between border-b border-gray-700 p-4">
 
+              <div>
+
+                <h2 className="font-semibold">
+                  EduControl IA
+                </h2>
+
+                <p className="text-sm text-gray-500">
+                  Assistente inteligente
+                </p>
+
+              </div>
+
+              <button
+                onClick={limparConversa}
+                disabled={carregando}
+                className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-gray-400 hover:bg-gray-800 hover:text-white disabled:cursor-not-allowed disabled:opacity-50">
+                <Trash2 size={18} />
+                Limpar conversa
+              </button>
+
+            </div>
             <div
-              className="flex-1 overflow-y-auto p-6"
+              className="min-h-0    flex-1 overflow-y-auto p-6"
               onScroll={(e) => {
 
                 const elemento = e.currentTarget;
@@ -339,7 +377,13 @@ export function IA() {
                     </p>
 
                     <p className="text-gray-400">
-                      {msg.texto}
+                     {msg.texto === "..." ? (
+                      <span className="animate-pulse">
+                        ● ● ●
+                      </span>
+                      ) : (
+                         msg.texto
+                      )}
                     </p>
 
                   </div>
@@ -352,24 +396,53 @@ export function IA() {
 
               ))}
 
-              {carregando && (
-
-                <div className="flex items-start gap-3 mb-5">
-
-                  <Bot size={24} />
-
-                  <div>
-
-                    <p className="font-semibold">
-                      EduControl IA
-                    </p>
-
-                    <p className="text-gray-400">
-                      Pensando...
-                    </p>
-
+              {mensagens.length === 1 &&  !carregando && (
+              
+                <div className="mt-8">
+                
+                  <p className="mb-3 text-sm text-gray-500">
+                    Sugestões rápidas
+                  </p>
+              
+                  <div className="grid grid-cols-2 gap-3">
+              
+                    <button
+                      onClick={() =>
+                        usarSugestao("Como funciona o EduControl?")
+                      }
+                      className="rounded-lg border border-gray-700 bg-[#111c21] p-4 text-left text-sm text-gray-300 hover:bg-[#16252b]"
+                    >
+                      Como funciona o EduControl?
+                    </button>
+                                        
+                    <button
+                      onClick={() =>
+                        usarSugestao("Como funciona o controle de presença?")
+                      }
+                      className="rounded-lg border border-gray-700 bg-[#111c21] p-4 text-left text-sm text-gray-300 hover:bg-[#16252b]"
+                    >
+                      Como funciona o controle de presença?
+                    </button>
+                    
+                    <button
+                      onClick={() =>
+                        usarSugestao("Como gerar um relatório?")
+                      }
+                      className="rounded-lg border border-gray-700 bg-[#111c21] p-4 text-left text-sm text-gray-300 hover:bg-[#16252b]"
+                    >
+                      Como gerar um relatório?
+                    </button>
+                                        
+                    <button
+                      onClick={() =>
+                        usarSugestao("O que posso perguntar para você?")
+                      }
+                      className="rounded-lg border border-gray-700 bg-[#111c21] p-4 text-left text-sm text-gray-300 hover:bg-[#16252b]"
+                    >
+                      O que posso perguntar para você?
+                    </button>
+                    
                   </div>
-
                 </div>
 
               )}
@@ -392,7 +465,8 @@ export function IA() {
                   }
 
                 }}
-                className="flex-1 rounded-lg border border-gray-700 bg-[#050b0e] px-4 py-3 outline-none"
+                disabled={carregando}
+                className="flex-1 rounded-lg border border-gray-700 bg-[#050b0e] px-4 py-3 outline-none disabled:cursor-not-allowed disabled:opacity-50"
               />
 
               <button
@@ -412,6 +486,47 @@ export function IA() {
         </div>
 
       </div>
+
+          {mostrarConfirmacao && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          
+            <div className="w-full max-w-md rounded-xl border border-gray-700 bg-[#0d1519] p-6 shadow-2xl">
+            
+              <h2 className="text-lg font-semibold text-white">
+                Limpar conversa?
+              </h2>
+            
+              <p className="mt-2 text-sm text-gray-400">
+                Tem certeza que deseja apagar toda a conversa?
+              </p>
+            
+              <p className="mt-1 text-sm text-gray-500">
+                Essa ação não poderá ser desfeita.
+              </p>
+            
+              <div className="mt-6 flex justify-end gap-3">
+            
+                <button
+                  onClick={() => setMostrarConfirmacao(false)}
+                  className="rounded-lg px-4 py-2 text-sm text-gray-400 hover:bg-gray-800 hover:text-white"
+                >
+                  Cancelar
+                </button>
+            
+                <button
+                  onClick={confirmarLimpeza}
+                  className="rounded-lg bg-red-600 px-4 py-2 text-sm text-white hover:bg-red-700"
+                >
+                  Limpar conversa
+                </button>
+            
+              </div>
+            
+            </div>
+
+    </div>
+  )}
+
 
     </main>
 

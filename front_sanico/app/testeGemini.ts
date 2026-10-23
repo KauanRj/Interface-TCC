@@ -6,8 +6,28 @@ const ai = new GoogleGenAI({
 
 export async function testarGemini(
   pergunta: string,
+  historico: { tipo: string; texto: string }[],
   atualizarResposta: (texto: string) => void
 ) {
+
+  const conversa = historico.map((mensagem) => ({
+    role: mensagem.tipo === "ia" ? "model" : "user",
+    parts: [
+      {
+        text: mensagem.texto
+      }
+    ]
+  }));
+
+  conversa.push({
+    role: "user",
+    parts: [
+      {
+        text: pergunta
+      }
+    ]
+  });
+
   const response = await ai.models.generateContentStream({
     model: "gemini-3.5-flash-lite",
 
@@ -32,12 +52,13 @@ Regras:
       `,
     },
 
-    contents: pergunta,
+    contents: conversa,
   });
 
   let respostaCompleta = "";
 
   for await (const chunk of response) {
+
     const texto = chunk.text || "";
 
     respostaCompleta += texto;
