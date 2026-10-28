@@ -1,3 +1,4 @@
+import { RotaProtegida } from "~/auth/RotaProtegida";
 import { Alunos } from "~/pages/alunos/alunos";
 import type { Route } from "../+types/root";
 
@@ -11,5 +12,5 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function AlunosPage() {
-  return <Alunos /> };
+  return <RotaProtegida permissao="pagina.alunos"><Alunos /></RotaProtegida> };
 

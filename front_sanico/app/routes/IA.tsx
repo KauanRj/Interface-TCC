@@ -1,3 +1,4 @@
+import { RotaProtegida } from "~/auth/RotaProtegida";
 import { IA } from "~/pages/assistenteIA/IA";
 import type { Route } from "../+types/root";
 
@@ -11,5 +12,5 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function IAPage() {
-  return <IA /> };
+  return <RotaProtegida permissao="pagina.ia"><IA /></RotaProtegida> };
 

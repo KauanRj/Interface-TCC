@@ -1,3 +1,4 @@
+import { RotaProtegida } from "~/auth/RotaProtegida";
 import { Configuracao } from "~/pages/settings/configuracao";
 import type { Route } from "../+types/root";
 
@@ -11,5 +12,5 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function SettingsPage() {
-  return <Configuracao /> };
+  return <RotaProtegida permissao="pagina.configuracoes"><Configuracao /></RotaProtegida> };
 

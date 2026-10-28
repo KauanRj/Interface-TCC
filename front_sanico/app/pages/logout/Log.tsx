@@ -9,10 +9,9 @@ import {
   BarChart3,
   Zap,
 }from "lucide-react";
-import login from "./frente.jpeg";
 import { useNavigate } from "react-router";
+import { fazerLogin } from "~/auth/sessao";
 import { useState } from "react";
-import type { Button } from "react-native";
 
 export function Log() {
   const navigate = useNavigate();
@@ -20,20 +19,28 @@ export function Log() {
   const[email,setEmail] = useState("");
   const[password,setPassword] = useState("");
   const[showPassword, setShowPassword ] = useState(false)
+  const[mensagemErro,setMensagemErro] = useState("");
 
   const handlelogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setMensagemErro("");
 
-    if (email === "admin@educontrol.com" && password === "244466666") {
+    const usuario = fazerLogin(email, password);
+
+    if (usuario !== null) {
       navigate("/home");
     } else {
-      alert("Errou ai irmao kkk.");
+      setMensagemErro("E-mail ou senha incorretos.");
     }
   };
   return (
     <main className="app-login-shell">
       <div className="app-login-container">
       <div className="relative hidden h-screen w-1/2 overflow-hidden lg:block bg-[#0d4c5c]">
+
+       <div className="pointer-events-none absolute -right-20 -top-20 h-80 w-80 rounded-full bg-white/10"></div>
+       <div className="pointer-events-none absolute -bottom-28 -left-24 h-96 w-96 rounded-full bg-white/[0.07]"></div>
+       <div className="pointer-events-none absolute right-10 top-[55%] h-24 w-24 rounded-full bg-white/5"></div>
       
 
        <div className="app-login-rigth">
@@ -131,6 +138,12 @@ export function Log() {
         Por favor insira seus dados
       </p>
     </div>
+
+      {mensagemErro !== "" && (
+        <p role="alert" className="mb-4 rounded-lg border border-red-400/40 bg-red-500/10 px-3 py-2 text-sm text-red-300">
+          {mensagemErro}
+        </p>
+      )}
       
 
       <div className="mb-4 flex flex-col gap-2">

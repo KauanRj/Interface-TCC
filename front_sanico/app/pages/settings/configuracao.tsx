@@ -1,14 +1,7 @@
 import {
-  LayoutDashboard,
-  List,
-  Filter,
-  ClipboardCheck,
-  DoorOpen,
   Users,
   Settings,
-  LogOut,
   BellRing,
-  UserRound,
   UserCircle,
   ShieldCheck,
   Bell,
@@ -20,20 +13,40 @@ import {
   KeyRound,
   Check,
   ChevronRight,
-  PanelLeftClose,
-  PanelLeftOpen,
 } from "lucide-react";
+import { leitorAtivo } from "~/utils/rfid";
+import { Sidebar } from "~/components/Sidebar";
+import { useUsuario } from "~/hooks/useUsuario";
+import { nomeDoPerfil } from "~/auth/permissoes";
 
-import Lohran from "../../../public/lohran.png";
+import Lohran from "../../../public/lohran-avatar.png";
 import { useNavigate } from "react-router";
-import { useState, useEffect, type FormEvent } from "react";
+import { useState, useEffect } from "react";
+
+const ABAS = [
+  { nome: "Geral", editar: "configuracoes.pessoais" },
+  { nome: "Notificações", editar: "configuracoes.notificacoesGlobais" },
+  { nome: "Regras da escola", editar: "configuracoes.regrasEscola" },
+  { nome: "Permissões", editar: "configuracoes.permissoes" },
+  { nome: "Segurança", editar: "perfil.alterarSenha" },
+  { nome: "RFID", editar: "configuracoes.rfid" },
+];
 
 export function Configuracao() {
   const navigate = useNavigate();
 
-  const [sidebarRecolhido, setSidebarRecolhido] = useState(false);
   const [mensagem, setMensagem] = useState("");
   const [aba, setAba] = useState("Geral");
+  const { pode, usuario } = useUsuario();
+  let permissaoDaAba = "configuracoes.pessoais";
+  for (let i = 0; i < ABAS.length; i++) {
+    if (ABAS[i].nome === aba) {
+      permissaoDaAba = ABAS[i].editar;
+    }
+  }
+  const podeEditarAba = pode(permissaoDaAba);
+  const podeEditarNotificacoes = pode("configuracoes.notificacoesGlobais");
+  const podeEditarRegras = pode("configuracoes.regrasEscola");
 
   const [notificacoes, setNotificacoes] = useState(true);
   const [faltas, setFaltas] = useState(true);
@@ -75,17 +88,27 @@ export function Configuracao() {
   }, []);
 
   function salvarConfiguracoes() {
-    const configuracoes = {
-      notificacoes,
-      faltas,
-      alunosRisco,
-      novosAlunos,
-      professoresAusentes,
-      emailRelatorios,
-      horarioLimite,
-      anoLetivo,
-      turno,
-    };
+    let configuracoes: any = {};
+    try {
+      configuracoes = JSON.parse(localStorage.getItem("educontrol-configuracoes") || "{}");
+    } catch {
+      configuracoes = {};
+    }
+
+    if (podeEditarNotificacoes) {
+      configuracoes.notificacoes = notificacoes;
+      configuracoes.faltas = faltas;
+      configuracoes.alunosRisco = alunosRisco;
+      configuracoes.novosAlunos = novosAlunos;
+      configuracoes.professoresAusentes = professoresAusentes;
+      configuracoes.emailRelatorios = emailRelatorios;
+    }
+
+    if (podeEditarRegras) {
+      configuracoes.horarioLimite = horarioLimite;
+      configuracoes.anoLetivo = anoLetivo;
+      configuracoes.turno = turno;
+    }
 
     try {
       localStorage.setItem(
@@ -103,7 +126,7 @@ export function Configuracao() {
     }
   }
 
-  function alterarSenha(e: FormEvent<HTMLFormElement>) {
+  function alterarSenha(e: any) {
     e.preventDefault();
 
     if (!senhaAtual || !senhaNova || !confirmarSenha) {
@@ -119,156 +142,10 @@ export function Configuracao() {
     }
   }
 
-  const classeRecolhida = sidebarRecolhido
-    ? "!justify-center !px-0"
-    : "";
 
   return (
     <main className="app-shell">
-      <aside
-        className={`app-sidebar relative transition-[width,min-width] duration-300 ${
-          sidebarRecolhido ? "!w-[72px] !min-w-[72px]" : ""
-        }`}
-      >
-        <button
-          type="button"
-          onClick={() => setSidebarRecolhido((anterior) => !anterior)}
-          title={sidebarRecolhido ? "Expandir menu" : "Recolher menu"}
-          aria-label={sidebarRecolhido ? "Expandir menu" : "Recolher menu"}
-          className={`absolute top-4 z-20 rounded-md p-1 text-current hover:bg-black/10 dark:hover:bg-white/10 ${
-            sidebarRecolhido ? "left-1/2 -translate-x-1/2" : "right-2"
-          }`}
-        >
-          {sidebarRecolhido ? (
-            <PanelLeftOpen size={20} />
-          ) : (
-            <PanelLeftClose size={20} />
-          )}
-        </button>
-
-        <div
-          className={`flex items-center gap-3 mb-10 ${
-            sidebarRecolhido ? "justify-center" : ""
-          }`}
-        >
-          {sidebarRecolhido ? (
-            <span className="sm:text-2xl" title="EduControl">
-              <span className="app-login-logo-edu"> ㅤ</span>
-            </span>
-          ) : (
-            <span className="sm:text-2xl">
-              <span className="app-login-logo-edu">Edu</span>
-              <span className="app-login-logo-control">Control</span>
-            </span>
-          )}
-        </div>
-
-        <nav className="flex flex-col gap-2">
-          <a
-            onClick={() => navigate("/home")}
-            title={sidebarRecolhido ? "Início" : undefined}
-            className={`app-nav-link cursor-pointer ${classeRecolhida}`}
-          >
-            <LayoutDashboard size={20} />
-            {!sidebarRecolhido && <span>Início</span>}
-          </a>
-
-          <a
-            onClick={() => navigate("/relatorios")}
-            title={sidebarRecolhido ? "Relatórios" : undefined}
-            className={`app-nav-link cursor-pointer ${classeRecolhida}`}
-          >
-            <List size={20} />
-            {!sidebarRecolhido && <span>Relatórios</span>}
-          </a>
-
-          <a
-            onClick={() => navigate("/ia")}
-            title={sidebarRecolhido ? "Assistente de IA" : undefined}
-            className={`app-nav-link cursor-pointer ${classeRecolhida}`}
-          >
-            <Filter size={20} />
-            {!sidebarRecolhido && <span>Assistente de IA</span>}
-          </a>
-
-          <a
-            onClick={() => navigate("/team")}
-            title={sidebarRecolhido ? "Team" : undefined}
-            className={`app-nav-link-between cursor-pointer ${classeRecolhida}`}
-          >
-            <div
-              className={`flex items-center ${
-                sidebarRecolhido ? "justify-center" : "gap-3"
-              }`}
-            >
-              <Users size={20} />
-              {!sidebarRecolhido && <span>Team</span>}
-            </div>
-          </a>
-
-          <a
-            onClick={() => navigate("/presenca")}
-            title={sidebarRecolhido ? "Presenças" : undefined}
-            className={`app-nav-link cursor-pointer ${classeRecolhida}`}
-          >
-            <ClipboardCheck size={20} />
-            {!sidebarRecolhido && <span>Presenças</span>}
-          </a>
-
-          <a
-            onClick={() => navigate("/salas")}
-            title={sidebarRecolhido ? "Salas" : undefined}
-            className={`app-nav-link cursor-pointer ${classeRecolhida}`}
-          >
-            <DoorOpen size={20} />
-            {!sidebarRecolhido && <span>Salas</span>}
-          </a>
-
-          <a
-            onClick={() => navigate("/alunos")}
-            title={sidebarRecolhido ? "Alunos" : undefined}
-            className={`app-nav-link cursor-pointer ${classeRecolhida}`}
-          >
-            <UserRound size={20} />
-            {!sidebarRecolhido && <span>Alunos</span>}
-          </a>
-        </nav>
-
-        <div className="app-divider" />
-
-        <nav className="flex flex-col gap-2">
-          <a
-            onClick={() => navigate("/settings")}
-            title={sidebarRecolhido ? "Settings" : undefined}
-            className={`app-nav-active cursor-pointer ${classeRecolhida}`}
-          >
-            <Settings size={20} />
-            {!sidebarRecolhido && <span>Settings</span>}
-          </a>
-        </nav>
-
-        <div className="flex-1" />
-
-        <div className="flex flex-col gap-3">
-          <a
-            onClick={() => navigate("/perfil")}
-            title={sidebarRecolhido ? "Perfil" : undefined}
-            className={`app-nav-link cursor-pointer ${classeRecolhida}`}
-          >
-            <UserCircle size={20} />
-            {!sidebarRecolhido && <span>Perfil</span>}
-          </a>
-
-          <a
-            onClick={() => navigate("/log")}
-            title={sidebarRecolhido ? "Log out" : undefined}
-            className={`app-nav-link cursor-pointer ${classeRecolhida}`}
-          >
-            <LogOut size={20} />
-            {!sidebarRecolhido && <span>Log out</span>}
-          </a>
-        </div>
-      </aside>
+      <Sidebar ativo="/settings" />
 
       <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
         <header className="app-header">
@@ -299,13 +176,13 @@ export function Configuracao() {
               <div className="app-avatar">
                 <img
                   src={Lohran}
-                  alt="Lohran"
-                  className="rounded-full"
+                  alt={usuario?.nome ?? "Usuário"}
+                  className="h-full w-full rounded-full object-cover"
                 />
               </div>
 
               <span className="text-lg font-semibold text-gray-900 dark:text-[#f5fffc]">
-                Lohran
+                {usuario?.nome ?? ""}
               </span>
             </button>
           </div>
@@ -322,14 +199,7 @@ export function Configuracao() {
             )}
 
             <div className="app-card flex flex-wrap gap-2 p-4">
-              {[
-                "Geral",
-                "Notificações",
-                "Regras da escola",
-                "Permissões",
-                "Segurança",
-                "RFID",
-              ].map((nome) => (
+              {ABAS.map(({ nome }) => (
                 <button
                   key={nome}
                   type="button"
@@ -344,6 +214,13 @@ export function Configuracao() {
                 </button>
               ))}
             </div>
+
+            {!podeEditarAba && (
+              <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-3 text-sm text-amber-700 dark:text-amber-300">
+                Somente leitura: apenas o administrador pode alterar estas
+                configurações.
+              </div>
+            )}
 
             {aba === "Geral" && (
               <>
@@ -363,7 +240,7 @@ export function Configuracao() {
                       <label className="mb-2 block text-sm font-medium">
                         Nome
                       </label>
-                      <input value="Lohran" readOnly className="app-input w-full" />
+                      <input value={usuario?.nome ?? ""} readOnly className="app-input w-full" />
                     </div>
 
                     <div>
@@ -371,7 +248,7 @@ export function Configuracao() {
                         E-mail
                       </label>
                       <input
-                        value="lohran@educontrol.local"
+                        value={usuario?.email ?? ""}
                         readOnly
                         className="app-input w-full"
                       />
@@ -382,7 +259,7 @@ export function Configuracao() {
                         Cargo
                       </label>
                       <input
-                        value="Administrador"
+                        value={usuario ? nomeDoPerfil(usuario.perfil) : ""}
                         readOnly
                         className="app-input w-full"
                       />
@@ -497,7 +374,8 @@ export function Configuracao() {
                         type="checkbox"
                         checked={item.valor}
                         onChange={(e) => item.alterar(e.target.checked)}
-                        className="h-4 w-4 accent-[#0d8f7b]"
+                        disabled={!podeEditarNotificacoes}
+                        className="h-4 w-4 accent-[#0d8f7b] disabled:cursor-not-allowed disabled:opacity-50"
                       />
                     </div>
                   ))}
@@ -531,7 +409,8 @@ export function Configuracao() {
                         type="time"
                         value={horarioLimite}
                         onChange={(e) => setHorarioLimite(e.target.value)}
-                        className="app-input w-full pl-10"
+                        disabled={!podeEditarRegras}
+                        className="app-input w-full pl-10 disabled:cursor-not-allowed disabled:opacity-60"
                       />
                     </div>
                   </div>
@@ -543,7 +422,8 @@ export function Configuracao() {
                     <select
                       value={anoLetivo}
                       onChange={(e) => setAnoLetivo(e.target.value)}
-                      className="app-input w-full"
+                      disabled={!podeEditarRegras}
+                      className="app-input w-full disabled:cursor-not-allowed disabled:opacity-60"
                     >
                       <option value="2026">2026</option>
                       <option value="2027">2027</option>
@@ -558,7 +438,8 @@ export function Configuracao() {
                     <select
                       value={turno}
                       onChange={(e) => setTurno(e.target.value)}
-                      className="app-input w-full"
+                      disabled={!podeEditarRegras}
+                      className="app-input w-full disabled:cursor-not-allowed disabled:opacity-60"
                     >
                       <option>Matutino</option>
                       <option>Vespertino</option>
@@ -680,24 +561,28 @@ export function Configuracao() {
                   <div>
                     <p className="font-medium">Leitor de cartões</p>
                     <p className="app-muted text-sm">
-                      O status do leitor será exibido após a integração com a
-                      API.
+                      {leitorAtivo()
+                        ? "Ativo. Use o card Leitor RFID na tela inicial para ativar, desativar e simular leituras."
+                        : "Inativo. Use o card Leitor RFID na tela inicial para ativar e simular leituras."}{" "}
+                      O status real do leitor virá da API.
                     </p>
                   </div>
                 </div>
               </section>
             )}
 
-            <div className="flex justify-end pb-6">
-              <button
-                type="button"
-                onClick={salvarConfiguracoes}
-                className="flex items-center gap-2 rounded-lg bg-[#0d8f7b] px-5 py-3 font-semibold text-white transition hover:bg-[#0b7567]"
-              >
-                <Save size={18} />
-                Salvar configurações
-              </button>
-            </div>
+            {podeEditarAba && (
+              <div className="flex justify-end pb-6">
+                <button
+                  type="button"
+                  onClick={salvarConfiguracoes}
+                  className="flex items-center gap-2 rounded-lg bg-[#0d8f7b] px-5 py-3 font-semibold text-white transition hover:bg-[#0b7567]"
+                >
+                  <Save size={18} />
+                  Salvar configurações
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

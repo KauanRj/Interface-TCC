@@ -1,3 +1,4 @@
+import { RotaProtegida } from "~/auth/RotaProtegida";
 import { Perfil } from "~/pages/perfil/perfil";
 import type { Route } from "../+types/root";
 
@@ -11,5 +12,5 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function PerfilPage() {
-  return <Perfil /> };
+  return <RotaProtegida permissao="pagina.perfil"><Perfil /></RotaProtegida> };
 

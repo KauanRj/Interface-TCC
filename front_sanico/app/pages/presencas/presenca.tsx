@@ -1,161 +1,65 @@
 import {
-  Home,
-  LayoutDashboard,
-  List,
-  Filter,
-  Mail,
-  ClipboardCheck,
-  DoorOpen,
   Users,
-  Settings,
-  Plus,
   AlertTriangle,
   BarChart3,
   Search,
-  LogOut,
-  BellRing,
   TrendingUp,
-  UserCircle,
-  UserRound,
   FilePlus,
   FilePenLine,
-}from "lucide-react";
-import Lohran from "../../../public/lohran.png";
-import { useNavigate } from "react-router";
+  Filter,
+} from "lucide-react";
+import { Notificacoes } from "~/components/Notificacoes";
+import { DetalhesAluno } from "~/components/DetalhesAluno";
+import { acharAlunoPorNome } from "~/utils/alunosCadastrados";
+import { Sidebar } from "~/components/Sidebar";
+import { useState } from "react";
+import { filtrarPresencas } from "~/utils/filtros";
+import { useUsuario } from "~/hooks/useUsuario";
+import { Paginacao } from "~/components/Paginacao";
+import { usePaginacao } from "~/hooks/usePaginacao";
+import { RegistrarPresenca } from "~/components/RegistrarPresenca";
+import { alunosDeHoje, presencasAtuais } from "~/utils/registroHoje";
+import { contarPorStatus, presencaPorTurma } from "~/utils/resumoDia";
+import { formatarDataCurta } from "~/utils/formatacao";
+import Lohran from "../../../public/lohran-avatar.png";
 
 export function Presenca() {
-  const navigate = useNavigate();
+  const [filtrosAbertos, setFiltrosAbertos] = useState(false);
+  const { usuario, pode } = useUsuario();
 
-  const alunos = [
-    { id: 1, nome: "Ana Clara Silva", turma: "9º Ano A", entrada: "95%", status: "Presente" },
-    { id: 2, nome: "Bruno Almeida", turma: "8º Ano B", entrada: "78%", status: "Atrasado" },
-    { id: 3, nome: "Carlos Eduardo", turma: "9º Ano A", entrada: "60%",  status: "Justificado" },
-    { id: 4, nome: "Daniela Santos", turma: "7º Ano A", entrada: "88%",  status: "Ausente" },
-    { id: 5, nome: "Eduardo Lima", turma: "8º Ano A", entrada: "90%", status: "Presente" },
-    { id: 6, nome: "Fernanda Costa", turma: "7º Ano B", entrada: "82%", status: "Presente" },
-    { id: 7, nome: "Gabriel Martins", turma: "9º Ano B", entrada: "70%", status: "Atrasado" },
-    { id: 8, nome: "Helena Ribeiro", turma: "8º Ano B", entrada: "93%", status: "Presente" },
-    { id: 9, nome: "Igor Fernandes", turma: "7º Ano A", entrada: "58%", status: "Ausente" },
-    { id: 10, nome: "Julia Almeida", turma: "9º Ano A", entrada: "85%", status: "Presente" },
-    { id: 11, nome: "Lucas Pereira", turma: "8º Ano A", entrada: "76%", status: "Justificado" },
-    { id: 12, nome: "Mariana Souza", turma: "7º Ano B", entrada: "91%", status: "Presente" },
-    { id: 13, nome: "Nicolas Santos", turma: "9º Ano B", entrada: "64%", status: "Ausente" },
-    { id: 14, nome: "Olivia Rocha", turma: "8º Ano B", entrada: "87%", status: "Presente" },
-    { id: 15, nome: "Pedro Henrique", turma: "7º Ano A", entrada: "73%", status: "Atrasado" },
-    { id: 16, nome: "Rafaela Mendes", turma: "9º Ano A", entrada: "96%", status: "Presente" },
-  ]; 
+  const [busca, setBusca] = useState("");
+  const [periodo, setPeriodo] = useState("Hoje");
+  const [turma, setTurma] = useState("Todas as turmas");
+  const [status, setStatus] = useState("Todos os status");
+  const [alunoAberto, setAlunoAberto] = useState<any>(null);
+  const [modalAberto, setModalAberto] = useState(false);
+  const [aviso, setAviso] = useState("");
 
-  const turmas = [
-    { nome: "7º Ano A", porcentagem: "92%" },
-    { nome: "8º Ano B", porcentagem: "85%" },
-    { nome: "9º Ano A", porcentagem: "81%" },
-    { nome: "9º Ano B", porcentagem: "79%" },
-  ];
+  const alunos = filtrarPresencas(presencasAtuais(), busca, periodo, turma, status);
+  const paginacao = usePaginacao(alunos);
+
+  const alunosHoje = alunosDeHoje();
+  const resumo = contarPorStatus(alunosHoje);
+  const turmas = presencaPorTurma(alunosHoje);
+
+  let fundoRosca = "#94a3b8";
+  if (resumo.marcados > 0) {
+    const pPresentes = (resumo.presentes / resumo.marcados) * 100;
+    const pAusentes = pPresentes + (resumo.ausentes / resumo.marcados) * 100;
+    const pAtrasados = pAusentes + (resumo.atrasados / resumo.marcados) * 100;
+    fundoRosca = `conic-gradient(#22c7a9 0 ${pPresentes}%, #ef4444 ${pPresentes}% ${pAusentes}%, #f59e0b ${pAusentes}% ${pAtrasados}%, #60a5fa ${pAtrasados}% 100%)`;
+  }
+
+  function aoSalvarRegistro(quantidade: number) {
+    setModalAberto(false);
+    setAviso(quantidade + (quantidade === 1 ? " presença registrada" : " presenças registradas") + " neste navegador. O envio definitivo depende da integração com a API.");
+    setTimeout(() => setAviso(""), 6000);
+  }
 
   return (
     <main className="app-shell">
    
-      <aside className="app-sidebar">
-        <div className="flex items-center gap-3 mb-10">
-          <span className="sm:text-2xl">
-             <span className="app-login-logo-edu">Edu</span>
-             <span className="app-login-logo-control">Control</span>
-           </span>
-        </div>
-
-        <nav className="flex flex-col gap-2">
-          <a
-            onClick={() => navigate("/home")}
-            className="app-nav-link"
-          >
-            <LayoutDashboard size={20} />
-            <span>Início</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/relatorios")}
-            className="app-nav-link"
-          >
-            <List size={20} />
-            <span>Relatórios</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/ia")}
-            className="app-nav-link"
-          >
-            <Filter size={20} />
-            <span>Assistente de IA</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/team")}
-            className="app-nav-link-between"
-          >
-            <div className="flex items-center gap-3">
-              <Users size={20} />
-              <span>Team</span>
-            </div>
-
-          </a>
-
-          <a
-            onClick={() => navigate("/presenca")}
-            className="app-nav-active"
-          >
-            <ClipboardCheck size={20} />
-            <span>Presenças</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/salas")}
-            className="app-nav-link"
-          >
-            <DoorOpen size={20} />
-            <span>Salas</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/alunos")}
-            className="app-nav-link"
-          >
-            <UserRound size={20} />
-            <span>Alunos</span>
-          </a>
-        </nav>
-
-        <div className="app-divider" />
-
-        <nav>
-          <a
-            onClick={() => navigate("/settings")}
-            className="app-nav-link"
-          >
-            <Settings size={20} />
-            <span>Settings</span>
-          </a>
-        </nav>
-
-        <div className="flex-1" />
-
-        <div className="flex flex-col gap-3">
-          <a
-            onClick={() => navigate("/perfil")}
-            className="app-nav-link"
-          >
-            <UserCircle size={20} />
-            <span>Perfil</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/log")}
-            className="app-nav-link"
-          >
-            <LogOut size={20} />
-            <span>Log out</span>
-          </a>
-        </div>
-      </aside>
+      <Sidebar ativo="/presenca" />
 
        
 
@@ -167,24 +71,26 @@ export function Presenca() {
             </div>
 
 
-
             <div className="app-header-actions">
-              <button 
-              type="button"
-              className="app-button-relatorio w-50">
-                <FilePlus size={18} />
-                Registrar presença
-              </button>
+              {pode("presenca.registrar") && (
+                <button
+                  type="button"
+                  onClick={() => setModalAberto(true)}
+                  className="app-button-relatorio w-50">
+                  <FilePlus size={18} />
+                  Registrar presença
+                </button>
+              )}
 
-              <BellRing size={20} />
+              <Notificacoes />
               <div className="app-avatar">
                 <img
                   src={Lohran}
                   alt="Profile"
-                  className="rounded-full"
+                  className="h-full w-full rounded-full object-cover"
                 />
               </div>
-              <span className="text-lg font-semibold text-gray-900 dark:text-[#f5fffc]">Lohran</span>
+              <span className="text-lg font-semibold text-gray-900 dark:text-[#f5fffc]">{usuario?.nome ?? ""}</span>
             </div>
           </div>
 
@@ -196,7 +102,7 @@ export function Presenca() {
               </div>
               <div>
                 <p>Total de alunos</p>
-                <span>428</span>
+                <span>{alunosHoje.length}</span>
               </div>
             </div>
 
@@ -206,7 +112,7 @@ export function Presenca() {
               </div>
               <div>
                 <p>Ausentes</p>
-                <span>280</span>
+                <span>{resumo.ausentes}</span>
                 
               </div>
             </div>
@@ -217,7 +123,7 @@ export function Presenca() {
               </div>
               <div>
                 <p>Atrasados</p>
-                <span>12</span>
+                <span>{resumo.atrasados}</span>
                 
               </div>
             </div>
@@ -228,7 +134,7 @@ export function Presenca() {
               </div>
               <div>
                 <p>Justificados</p>
-                <span>8</span>
+                <span>{resumo.justificados}</span>
                 
               </div>
             </div>
@@ -239,53 +145,102 @@ export function Presenca() {
 
           <div className="app-page-grid"> 
 
-            
+            {aviso && (
+              <div
+                role="status"
+                className="rounded-lg border border-green-500/30 bg-green-500/10 p-3 text-sm text-green-700 dark:text-green-300"
+              >
+                {aviso}
+              </div>
+            )}
 
             <div className="app-report-filters">
 
-              <div className="app-report-search">
+              <div className="app-report-search col-span-3">
                 <label>Pesquisar</label>
                 <div>
                   <Search size={17} />
-                  <input placeholder="Pesquisar aluno..." />
+                  <input
+                    placeholder="Pesquisar aluno..."
+                    value={busca}
+                    onChange={(e) => {
+                      setBusca(e.target.value);
+                      paginacao.irPara(0);
+                    }}
+                  />
                 </div>
               </div>
 
+              <div className="flex items-end">
+                <button
+                  type="button"
+                  className="app-button-filtrar"
+                  aria-expanded={filtrosAbertos}
+                  onClick={() => setFiltrosAbertos(!filtrosAbertos)}
+                >
+                  <Filter size={16} />
+                  Filtrar
+                </button>
+              </div>
 
+              {filtrosAbertos && (
+              <>
 
               <div>
                 <label>Data</label>
-                <select>
-                  <option>Todas as datas</option>
+                <select
+                  value={periodo}
+                  onChange={(e) => {
+                    setPeriodo(e.target.value);
+                    paginacao.irPara(0);
+                  }}
+                >
                   <option>Hoje</option>
                   <option>Esta semana</option>
                   <option>Este mês</option>
-                
+                  <option>Todas as datas</option>
                 </select>
               </div>
 
               <div>
                 <label>Turmas</label>
-                <select>
+                <select
+                  value={turma}
+                  onChange={(e) => {
+                    setTurma(e.target.value);
+                    paginacao.irPara(0);
+                  }}
+                >
                   <option>Todas as turmas</option>
-                  <option>7º Ano</option>
-                  <option>8º Ano</option>
-                  <option>9º Ano</option>
-                  <option>Ensino Médio</option>
+                  <option>7º Ano A</option>
+                  <option>7º Ano B</option>
+                  <option>8º Ano A</option>
+                  <option>8º Ano B</option>
+                  <option>9º Ano A</option>
+                  <option>9º Ano B</option>
                 </select>
               </div>
 
               <div>
                 <label>Status</label>
-                <select>
+                <select
+                  value={status}
+                  onChange={(e) => {
+                    setStatus(e.target.value);
+                    paginacao.irPara(0);
+                  }}
+                >
                   <option>Todos os status</option>
                   <option>Presente</option>
                   <option>Ausente</option>
                   <option>Atrasado</option>
                   <option>Justificado</option>
+                  <option>Pendente</option>
                 </select>
               </div>
 
+              </>
+              )}
             </div>
 
             <div className="grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1fr)_320px]">
@@ -296,13 +251,21 @@ export function Presenca() {
                       <th className="py-3 p-2">#</th>
                       <th>Aluno</th>
                       <th>Turma</th>
+                      <th>Data</th>
                       <th>Entrada</th>
                       <th>Status</th>
                       <th>Ações</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {alunos.map((aluno) => (
+                    {alunos.length === 0 && (
+                      <tr>
+                        <td colSpan={7} className="py-8 text-center app-muted">
+                          Nenhum registro encontrado com esses filtros.
+                        </td>
+                      </tr>
+                    )}
+                    {paginacao.bloco.map((aluno) => (
                       <tr
                         key={aluno.id}
                         className="border-b border-slate-200 dark:border-white/5 hover:bg-gray-100 dark:hover:bg-[#101f27]"
@@ -310,17 +273,37 @@ export function Presenca() {
                         <td className="py-3 p-2">{aluno.id}</td>
                         <td>{aluno.nome}</td>
                         <td>{aluno.turma}</td>
+                        <td>{formatarDataCurta(aluno.data)}</td>
                         <td>{aluno.entrada}</td>
                         <td>
-                          <span className={aluno.status === "Presente" ? "app-status-green" : aluno.status === "Atrasado" ? "app-status-yellow" : aluno.status === "Justificado" ? "app-status-gray" : "app-status-red"}>
+                          <span className={aluno.status === "Presente" ? "app-status-green" : aluno.status === "Atrasado" || aluno.status === "Pendente" ? "app-status-yellow" : aluno.status === "Justificado" ? "app-status-gray" : "app-status-red"}>
                             {aluno.status}
                           </span>
                         </td>
-                        <td>•••</td>
+                        <td>
+                    <button
+                      type="button"
+                      aria-label={"Ver detalhes de " + aluno.nome}
+                      title="Ver detalhes"
+                      onClick={() => setAlunoAberto(acharAlunoPorNome(aluno.nome))}
+                      className="cursor-pointer px-2"
+                    >
+                      •••
+                    </button>
+                  </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
+
+                <Paginacao
+ paginaAtual={paginacao.paginaAtual}
+ totalPaginas={paginacao.totalPaginas}
+ totalItens={paginacao.totalItens}
+ tamanho={paginacao.tamanho}
+ irPara={paginacao.irPara}
+ rotulo="registros"
+ />
               </div>
 
               <aside className="grid gap-4">
@@ -334,9 +317,9 @@ export function Presenca() {
                   </div>
 
                   <div className="flex items-center justify-center">
-                    <div className="flex h-32 w-32 items-center justify-center rounded-full bg-[conic-gradient(#22c7a9_0_84%,#ef4444_84%_92%,#f59e0b_92%_97%,#60a5fa_97%_100%)]">
+                    <div className="flex h-32 w-32 items-center justify-center rounded-full" style={{ background: fundoRosca }}>
                       <div className="flex h-22 w-22 flex-col items-center justify-center rounded-full bg-white dark:bg-[#0a141a]">
-                        <strong className="text-2xl text-gray-900 dark:text-white">84%</strong>
+                        <strong className="text-2xl text-gray-900 dark:text-white">{resumo.marcados > 0 ? resumo.taxa + "%" : "—"}</strong>
                         <span className="text-xs text-gray-500 dark:text-[#8fb1aa]">Presença</span>
                       </div>
                     </div>
@@ -345,19 +328,19 @@ export function Presenca() {
                   <div className="mt-4 space-y-2 text-sm">
                     <div className="flex items-center justify-between">
                       <span className="text-emerald-500">Presentes</span>
-                      <strong>362</strong>
+                      <strong>{resumo.presentes}</strong>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-red-500">Ausentes</span>
-                      <strong>34</strong>
+                      <strong>{resumo.ausentes}</strong>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-yellow-500">Atrasados</span>
-                      <strong>18</strong>
+                      <strong>{resumo.atrasados}</strong>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-blue-500">Justificados</span>
-                      <strong>14</strong>
+                      <strong>{resumo.justificados}</strong>
                     </div>
                   </div>
                 </div>
@@ -372,10 +355,10 @@ export function Presenca() {
                         <div className="h-2 rounded-full bg-gray-200 dark:bg-white/10">
                           <div
                             className="h-2 rounded-full bg-[#22c7a9]"
-                            style={{ width: turma.porcentagem }}
+                            style={{ width: turma.porcentagem + "%" }}
                           />
                         </div>
-                        <strong>{turma.porcentagem}</strong>
+                        <strong>{turma.porcentagem}%</strong>
                       </div>
                     ))}
                   </div>
@@ -390,6 +373,22 @@ export function Presenca() {
   
         
       
+
+      {modalAberto && (
+        <RegistrarPresenca
+          aoFechar={() => setModalAberto(false)}
+          aoSalvar={aoSalvarRegistro}
+          podeCorrigir={pode("presenca.corrigir")}
+        />
+      )}
+    {alunoAberto && (
+        <DetalhesAluno
+          aluno={alunoAberto}
+          aoFechar={() => setAlunoAberto(null)}
+          podeEditar={pode("alunos.editar")}
+          podeExcluir={pode("alunos.excluir")}
+        />
+      )}
     </main>
   );
 }

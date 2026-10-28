@@ -1,174 +1,104 @@
 import {
-  Home,
-  LayoutDashboard,
-  List,
-  Filter,
-  Mail,
-  ClipboardCheck,
   DoorOpen,
-  Users,
-  Settings,
-  
-  LogOut,
-  BellRing,
-  TrendingUp,
-  TrendingDown,
   Search,
-  BarChart3,
-  AlertTriangle,
   Plus,
-  UserRound,
-  UserCircle,
-  WrenchIcon,
   WrenchOff,
   ChartNoAxesCombined,
   Building2,
   DoorClosed,
-}from "lucide-react";
-import Lohran from "../../../public/lohran.png";
-import { useNavigate } from "react-router";
+  Filter,
+} from "lucide-react";
+import { Notificacoes } from "~/components/Notificacoes";
+import { NovaSala } from "~/components/NovaSala";
+import { lerSalasNovas } from "~/utils/salasCadastradas";
+import { SALAS_BASE } from "~/data/salasFicticias";
+import { Sidebar } from "~/components/Sidebar";
+import { useState } from "react";
+import { filtrarSalas } from "~/utils/filtros";
+import { useUsuario } from "~/hooks/useUsuario";
+import Lohran from "../../../public/lohran-avatar.png";
 
 
 export function Salas() {
-  const salas = [
-    { nome: "Sala 1", capacidade: "30", andar: "Térreo", cor: "Em uso" },
-    { nome: "Sala 2", capacidade: "25", andar: "1º Andar", cor: "Em manutenção" },
-    { nome: "Sala 3", capacidade: "35", andar: "2º Andar", cor: "Disponível" },
-    { nome: "Sala 4", capacidade: "20", andar: "Térreo", cor: "Em uso" },
-  ];
-  const navigate = useNavigate();
+  const [filtrosAbertos, setFiltrosAbertos] = useState(false);
+  const { pode, usuario } = useUsuario();
+  const salasBase = SALAS_BASE;
+  const [salasNovas, setSalasNovas] = useState<any[]>(lerSalasNovas);
+  const [cadastroAberto, setCadastroAberto] = useState(false);
+  const [aviso, setAviso] = useState("");
+  const todasSalas = salasBase.concat(salasNovas);
+
+  let emUso = 0;
+  let disponiveis = 0;
+  let emManutencao = 0;
+  for (let i = 0; i < todasSalas.length; i++) {
+    if (todasSalas[i].cor === "Em uso") {
+      emUso = emUso + 1;
+    }
+    if (todasSalas[i].cor === "Disponível") {
+      disponiveis = disponiveis + 1;
+    }
+    if (todasSalas[i].cor === "Em manutenção") {
+      emManutencao = emManutencao + 1;
+    }
+  }
+
+  function aoCadastrar(sala: any) {
+    setSalasNovas(lerSalasNovas());
+    setCadastroAberto(false);
+    setBusca("");
+    setAndar("Todos os andares");
+    setStatus("Todos os status");
+    setTurma("Todas as turmas");
+    setAviso(sala.nome + " foi cadastrada neste navegador. O cadastro definitivo depende da integração com a API.");
+    setTimeout(() => setAviso(""), 6000);
+  }
+
+  const [busca, setBusca] = useState("");
+  const [andar, setAndar] = useState("Todos os andares");
+  const [status, setStatus] = useState("Todos os status");
+  const [turma, setTurma] = useState("Todas as turmas");
+
+  const salas = filtrarSalas(todasSalas, busca, andar, status, turma);
   return (
     <main className="app-shell">
    
-      <aside className="app-sidebar">
-        <div className="flex items-center gap-3 mb-10">
-          <span className="sm:text-2xl">
-             <span className="app-login-logo-edu">Edu</span>
-             <span className="app-login-logo-control">Control</span>
-           </span>
-        </div>
-
-        <nav className="flex flex-col gap-2">
-          <a
-            onClick={() => navigate("/home")}
-            className="app-nav-link"
-          >
-            <LayoutDashboard size={20} />
-            <span>Início</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/relatorios")}
-            className="app-nav-link"
-          >
-            <List size={20} />
-            <span>Relatórios</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/ia")}
-            className="app-nav-link"
-          >
-            <Filter size={20} />
-            <span>Assistente de IA</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/team")}
-            className="app-nav-link-between"
-          >
-            <div className="flex items-center gap-3">
-              <Users size={20} />
-              <span>Team</span>
-            </div>
-
-          </a>
-
-          <a
-            onClick={() => navigate("/presenca")}
-            className="app-nav-link"
-          >
-            <ClipboardCheck size={20} />
-            <span>Presenças</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/salas")}
-            className="app-nav-active"
-          >
-            <DoorOpen size={20} />
-            <span>Salas</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/alunos")}
-            className="app-nav-link"
-          >
-            <UserRound size={20} />
-            <span>Alunos</span>
-          </a>
-        </nav>
-
-        <div className="app-divider" />
-
-        <nav>
-          <a
-            onClick={() => navigate("/settings")}
-            className="app-nav-link"
-          >
-            <Settings size={20} />
-            <span>Settings</span>
-          </a>
-        </nav>
-
-        <div className="flex-1" />
-
-        <div className="flex flex-col gap-3">
-          <a
-            onClick={() => navigate("/perfil")}
-            className="app-nav-link"
-          >
-            <UserCircle size={20} />
-            <span>Perfil</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/log")}
-            className="app-nav-link"
-          >
-            <LogOut size={20} />
-            <span>Log out</span>
-          </a>
-        </div>
-      </aside>
+      <Sidebar ativo="/salas" />
 
         <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
           <div className="app-header">
             <div>
               <h1 className="text-2xl font-bold">Salas e turmas</h1>
-              <p className="app-muted">Gerencie as salas e turmas da sua instituição</p>
+              <p className="app-muted">
+                {pode("salas.gerenciar")
+                  ? "Gerencie as salas e turmas da sua instituição"
+                  : "Consulte as salas e turmas da sua instituição"}
+              </p>
             </div>
 
         
 
 
             <div className="app-header-actions">
-              <button 
-              type="submit"
-              className="app-button-relatorio">
-                <Plus size={18} />
-                Nova sala 
-              </button>
+              {pode("salas.gerenciar") && (
+                <button
+                  type="button"
+                  onClick={() => setCadastroAberto(true)}
+                  className="app-button-relatorio">
+                  <Plus size={18} />
+                  Nova sala
+                </button>
+              )}
 
-              <BellRing size={20} />
+              <Notificacoes />
               <div className="app-avatar">
                 <img
                   src={Lohran}
                   alt="Profile"
-                  className="rounded-full"
+                  className="h-full w-full rounded-full object-cover"
                 />
               </div>
-              <span className="text-lg font-semibold text-gray-900 dark:text-[#f5fffc]">Lohran</span>
+              <span className="text-lg font-semibold text-gray-900 dark:text-[#f5fffc]">{usuario?.nome ?? ""}</span>
             </div>
           </div>
 
@@ -180,7 +110,7 @@ export function Salas() {
               <div>
                 <div>
                   <p>Total de salas</p>
-                  <span>428</span>
+                  <span>{todasSalas.length}</span>
                 </div>
                 
 
@@ -202,7 +132,7 @@ export function Salas() {
               <div>
                 <div>
                   <p>Salas em uso</p>
-                  <span>280</span>
+                  <span>{emUso}</span>
                 </div>
                 
 
@@ -224,7 +154,7 @@ export function Salas() {
               <div>
                 <div>
                   <p>Salas disponíveis</p>
-                  <span>12</span>
+                  <span>{disponiveis}</span>
                 </div>
                 
 
@@ -246,7 +176,7 @@ export function Salas() {
               <div>
                 <div>
                   <p>Salas em manutenção</p>
-                  <span>8</span>
+                  <span>{emManutencao}</span>
                 </div>
                 
 
@@ -265,24 +195,50 @@ export function Salas() {
           </div> 
 
 
-
           <div className="app-page-grid">
+
+            {aviso && (
+              <div
+                role="status"
+                className="rounded-lg border border-green-500/30 bg-green-500/10 p-3 text-sm text-green-700 dark:text-green-300"
+              >
+                {aviso}
+              </div>
+            )}
+
             <div className="app-report-filters">
 
-              <div className="app-report-search">
+              <div className="app-report-search col-span-3">
                 <label>Pesquisar</label>
                 <div>
                   <Search size={17} />
-                  <input placeholder="Buscar sala..." />
+                  <input
+                    placeholder="Buscar sala..."
+                    value={busca}
+                    onChange={(e) => setBusca(e.target.value)}
+                  />
                 </div>
               </div>
 
+              <div className="flex items-end">
+                <button
+                  type="button"
+                  className="app-button-filtrar"
+                  aria-expanded={filtrosAbertos}
+                  onClick={() => setFiltrosAbertos(!filtrosAbertos)}
+                >
+                  <Filter size={16} />
+                  Filtrar
+                </button>
+              </div>
 
+              {filtrosAbertos && (
+              <>
 
               <div>
                 <label>Andar</label>
-                <select>
-                  <option>Todas os andares</option>
+                <select value={andar} onChange={(e) => setAndar(e.target.value)}>
+                  <option>Todos os andares</option>
                   <option>Térreo</option>
                   <option>1º Andar</option>
                   <option>2º Andar</option>
@@ -291,28 +247,30 @@ export function Salas() {
 
               <div>
                 <label>Status</label>
-                <select>
+                <select value={status} onChange={(e) => setStatus(e.target.value)}>
                   <option>Todos os status</option>
                   <option>Em uso</option>
                   <option>Em manutenção</option>
-                  <option>disponivel</option>
+                  <option>Disponível</option>
                 </select>
               </div>
 
               <div>
-                <label>Aplicar Filtro</label>
-                <select>
-                  <option>Filtros</option>
-                  <option>6° Ano</option>
-                  <option>7° Ano</option>
-                  <option>8° Ano</option>
-                  <option>9° Ano</option>
-                  <option>1° Ano EM</option>
-                  <option>2° Ano EM</option>
-                  <option>3° Ano EM</option>
+                <label>Turma</label>
+                <select value={turma} onChange={(e) => setTurma(e.target.value)}>
+                  <option>Todas as turmas</option>
+                  <option>6º Ano</option>
+                  <option>7º Ano</option>
+                  <option>8º Ano</option>
+                  <option>9º Ano</option>
+                  <option>1º Ano EM</option>
+                  <option>2º Ano EM</option>
+                  <option>3º Ano EM</option>
                 </select>
               </div>
 
+              </>
+              )}
             </div>  
 
 
@@ -325,12 +283,19 @@ export function Salas() {
                 <th className=" py-3 p-2">Salas</th>
                 <th>Capacidade</th>
                 <th>Andar</th>
+                <th>Turma</th>
                 <th>Status</th>
-                <th>Ações</th>
                 
               </tr>
             </thead>
               <tbody>
+              {salas.length === 0 && (
+                <tr>
+                  <td colSpan={5} className="py-8 text-center app-muted">
+                    Nenhuma sala encontrada com esses filtros.
+                  </td>
+                </tr>
+              )}
               {salas.map((salas) => (
                 <tr
                   key={salas.nome}
@@ -339,13 +304,13 @@ export function Salas() {
                   <td className="py-3 p-2  ">{salas.nome}</td>
                   <td>{salas.capacidade}</td>
                   <td>{salas.andar}</td>
+                  <td>{salas.turma}</td>
                   <td>
                     
                     <span className={salas.cor === "Em uso" ? "app-status-green" : salas.cor === "Em manutenção" ? "app-status-red" : "app-status-gray"}>
                       {salas.cor}
                     </span>
                   </td>
-                  <td>•••</td>
                 </tr>
               ))}
             </tbody>
@@ -363,6 +328,9 @@ export function Salas() {
 
               
       
-    </main>
+    {cadastroAberto && (
+        <NovaSala aoFechar={() => setCadastroAberto(false)} aoSalvar={aoCadastrar} salasExistentes={todasSalas} />
+      )}
+      </main>
   );
 }

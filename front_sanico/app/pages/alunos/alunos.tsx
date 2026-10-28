@@ -1,144 +1,68 @@
 import {
-  Home,
-  LayoutDashboard,
-  List,
-  Filter,
-  Mail,
-  ClipboardCheck,
-  DoorOpen,
-  Users,
-  Settings,
-  LogOut,
-  BellRing,
   TrendingUp,
-  TrendingDown,
   Search,
-  Download,
   Plus,
-  BarChart3,
   AlertTriangle,
   UserRound,
-  UserCircle,
   ChartNoAxesColumnIncreasing,
   ChartNoAxesCombined,
-  UserCheck,
-}from "lucide-react";
-import Lohran from "../../../public/lohran.png";
-import { useNavigate } from "react-router";
+  Filter,
+} from "lucide-react";
+import { Notificacoes } from "~/components/Notificacoes";
+import { NovoAluno } from "~/components/NovoAluno";
+import { DetalhesAluno } from "~/components/DetalhesAluno";
+import { Sidebar } from "~/components/Sidebar";
+import { Paginacao } from "~/components/Paginacao";
+import { usePaginacao } from "~/hooks/usePaginacao";
+import { todosOsAlunos } from "~/utils/alunosCadastrados";
+import { useState } from "react";
+import { filtrarAlunos, textoDaData } from "~/utils/filtros";
+import { useUsuario } from "~/hooks/useUsuario";
+import Lohran from "../../../public/lohran-avatar.png";
 
 export function Alunos() {
-  const navigate = useNavigate();
+  const [filtrosAbertos, setFiltrosAbertos] = useState(false);
+  const { pode, usuario } = useUsuario();
 
-  const alunos = [
-    { id: 1, nome: "Ana Clara Silva", turma: "9º Ano A", presenca: "95%", media: "8,7", situacao: "Bom" },
-    { id: 2, nome: "Bruno Almeida", turma: "8º Ano B", presenca: "78%", media: "6,9", situacao: "Em atenção" },
-    { id: 3, nome: "Carlos Eduardo", turma: "9º Ano A", presenca: "60%", media: "5,4", situacao: "Risco" },
-    { id: 4, nome: "Daniela Santos", turma: "7º Ano A", presenca: "88%", media: "7,8", situacao: "Bom" },
-  ];  
+  const [alunoAberto, setAlunoAberto] = useState<any>(null);
+  const [lista, setLista] = useState<any[]>(todosOsAlunos);
+  const [cadastroAberto, setCadastroAberto] = useState(false);
+  const [aviso, setAviso] = useState("");
+  const [busca, setBusca] = useState("");
+  const [turma, setTurma] = useState("Todas as turmas");
+  const [status, setStatus] = useState("Todos");
+  const [ordem, setOrdem] = useState("Todos");
+
+  const todos = lista;
+  const alunos = filtrarAlunos(todos, busca, turma, status, ordem);
+  const paginacao = usePaginacao(alunos);
+
+  let emAtencao = 0;
+  let novasMatriculas = 0;
+  const mesAtual = textoDaData(new Date()).slice(0, 7);
+  for (let i = 0; i < todos.length; i++) {
+    if (todos[i].situacao === "Em atenção") {
+      emAtencao = emAtencao + 1;
+    }
+    if (todos[i].detalhes && todos[i].detalhes.dataMatricula.slice(0, 7) === mesAtual) {
+      novasMatriculas = novasMatriculas + 1;
+    }
+  }
+
+  function aoCadastrar(aluno: any) {
+    setLista(todosOsAlunos());
+    setCadastroAberto(false);
+    setBusca("");
+    setTurma("Todas as turmas");
+    setStatus("Todos");
+    paginacao.irPara(0);
+    setAviso(aluno.nome + " foi cadastrado neste navegador. O cadastro definitivo depende da integração com a API.");
+    setTimeout(() => setAviso(""), 6000);
+  }
   return (
     <main className="app-shell block-s">
    
-      <aside className="app-sidebar">
-        <div className="flex items-center gap-3 mb-10">
-          <span className="sm:text-2xl">
-             <span className="app-login-logo-edu">Edu</span>
-             <span className="app-login-logo-control">Control</span>
-           </span>
-        </div>
-
-        <nav className="flex flex-col gap-2">
-          <a
-            onClick={() => navigate("/home")}
-            className="app-nav-link"
-          >
-            <LayoutDashboard size={20} />
-            <span>Início</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/relatorios")}
-            className="app-nav-link"
-          >
-            <List size={20} />
-            <span>Relatórios</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/ia")}
-            className="app-nav-link"
-          >
-            <Filter size={20} />
-            <span>Assistente de IA</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/team")}
-            className="app-nav-link-between"
-          >
-            <div className="flex items-center gap-3">
-              <Users size={20} />
-              <span>Team</span>
-            </div>
-
-          </a>
-
-          <a
-            onClick={() => navigate("/presenca")}
-            className="app-nav-link"
-          >
-            <ClipboardCheck size={20} />
-            <span>Presenças</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/salas")}
-            className="app-nav-link"
-          >
-            <DoorOpen size={20} />
-            <span>Salas</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/alunos")}
-            className="app-nav-active"
-          >
-            <UserRound size={20} />
-            <span>Alunos</span>
-          </a>
-        </nav>
-
-        <div className="app-divider" />
-
-        <nav>
-          <a
-            onClick={() => navigate("/settings")}
-            className="app-nav-link"
-          >
-            <Settings size={20} />
-            <span>Settings</span>
-          </a>
-        </nav>
-
-        <div className="flex-1" />
-
-        <div className="flex flex-col gap-3">
-          <a
-            onClick={() => navigate("/perfil")}
-            className="app-nav-link"
-          >
-            <UserCircle size={20} />
-            <span>Perfil</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/log")}
-            className="app-nav-link"
-          >
-            <LogOut size={20} />
-            <span>Log out</span>
-          </a>
-        </div>
-      </aside>
+      <Sidebar ativo="/alunos" />
 
         <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
           <div className="app-header">
@@ -148,25 +72,29 @@ export function Alunos() {
             </div>
 
             <div className="app-header-actions">
-              <button 
-              type="submit"
-              className="app-button-relatorio">
-                <Plus size={18} />
-                Novo aluno
-              </button>
+              {pode("alunos.cadastrar") && (
+                <button
+                  type="button"
+                  onClick={() => setCadastroAberto(true)}
+                  className="app-button-relatorio">
+                  <Plus size={18} />
+                  Novo aluno
+                </button>
+              )}
 
-              <BellRing size={20} />
+              <Notificacoes />
               <div className="app-avatar">
                 <img
                   src={Lohran}
                   alt="Profile"
-                  className="rounded-full"
+                  className="h-full w-full rounded-full object-cover"
                 />
               </div>
-              <span className="text-lg font-semibold text-gray-900 dark:text-[#f5fffc]">Lohran</span>
+              <span className="text-lg font-semibold text-gray-900 dark:text-[#f5fffc]">{usuario?.nome ?? ""}</span>
             </div>
           </div>
 
+          <div className="min-h-0 flex-1 overflow-y-auto">
           <div className="app-grid-relatorio p-5"> 
             <div className="app-report-stat relative">
               <div className="app-report-icon blue">
@@ -175,7 +103,7 @@ export function Alunos() {
               <div>
                 <div>
                   <p>Total de alunos</p>
-                  <span>428</span>
+                  <span>{todos.length}</span>
                 </div>
 
                 <div className="flex justify-end gap-1">
@@ -197,7 +125,7 @@ export function Alunos() {
               <div>
                 <div>
                   <p>Ativos</p>
-                  <span>280</span>
+                  <span>{todos.length}</span>
                 </div>
                 
                 <div className="flex justify-end gap-1">
@@ -218,7 +146,7 @@ export function Alunos() {
 
                 <div>
                   <p>Alunos em atenção</p>
-                  <span>12</span>
+                  <span>{emAtencao}</span>
                 </div>
                  
 
@@ -239,7 +167,7 @@ export function Alunos() {
               <div>
                 <div>
                   <p>Novas matrículas</p>
-                  <span>8</span>
+                  <span>{novasMatriculas}</span>
                 </div>
 
                 <div className="flex justify-end gap-1">
@@ -260,24 +188,64 @@ export function Alunos() {
 
           <div className="app-page-grid"> 
 
+            {aviso && (
+              <div
+                role="status"
+                className="rounded-lg border border-green-500/30 bg-green-500/10 p-3 text-sm text-green-700 dark:text-green-300"
+              >
+                {aviso}
+              </div>
+            )}
+
+
             
 
             <div className="app-report-filters">
 
-              <div className="app-report-search">
+              <div className="app-report-search col-span-3">
                 <label>Pesquisar</label>
                 <div>
                   <Search size={17} />
-                  <input placeholder="Pesquisar aluno..." />
+                  <input
+                    placeholder="Pesquisar aluno..."
+                    value={busca}
+                    onChange={(e) => {
+                      setBusca(e.target.value);
+                      paginacao.irPara(0);
+                    }}
+                  />
                 </div>
               </div>
 
+              <div className="flex items-end">
+                <button
+                  type="button"
+                  className="app-button-filtrar"
+                  aria-expanded={filtrosAbertos}
+                  onClick={() => setFiltrosAbertos(!filtrosAbertos)}
+                >
+                  <Filter size={16} />
+                  Filtrar
+                </button>
+              </div>
 
+              {filtrosAbertos && (
+              <>
 
               <div>
                 <label>Turma</label>
-                <select>
+                <select
+                  value={turma}
+                  onChange={(e) => {
+                    setTurma(e.target.value);
+                    paginacao.irPara(0);
+                  }}
+                >
                   <option>Todas as turmas</option>
+                  <option>7º Ano A</option>
+                  <option>7º Ano B</option>
+                  <option>8º Ano A</option>
+                  <option>8º Ano B</option>
                   <option>9º Ano A</option>
                   <option>9º Ano B</option>
                 </select>
@@ -285,7 +253,13 @@ export function Alunos() {
 
               <div>
                 <label>Status</label>
-                <select>
+                <select
+                  value={status}
+                  onChange={(e) => {
+                    setStatus(e.target.value);
+                    paginacao.irPara(0);
+                  }}
+                >
                   <option>Todos</option>
                   <option>Bom</option>
                   <option>Em atenção</option>
@@ -294,15 +268,23 @@ export function Alunos() {
               </div>
 
               <div>
-                <label>Filtrar</label>
-                <select>
+                <label>Ordenar</label>
+                <select
+                  value={ordem}
+                  onChange={(e) => {
+                    setOrdem(e.target.value);
+                    paginacao.irPara(0);
+                  }}
+                >
                   <option>Todos</option>
                   <option>Ordem alfabética</option>
-                  <option>Crescente</option>
-                  <option>Decrecente</option>
+                  <option>Média crescente</option>
+                  <option>Média decrescente</option>
                 </select>
               </div>
 
+              </>
+              )}
             </div>
             
 
@@ -321,7 +303,14 @@ export function Alunos() {
               </tr>
             </thead>
               <tbody>
-              {alunos.map((aluno) => (
+              {alunos.length === 0 && (
+                <tr>
+                  <td colSpan={7} className="py-8 text-center app-muted">
+                    Nenhum aluno encontrado com esses filtros.
+                  </td>
+                </tr>
+              )}
+              {paginacao.bloco.map((aluno) => (
                 <tr
                   key={aluno.id}
                   className="border-b border-slate-200 dark:border-white/5 hover:bg-gray-100 dark:hover:bg-[#101f27]"
@@ -336,32 +325,45 @@ export function Alunos() {
                       {aluno.situacao}
                     </span>
                   </td>
-                  <td>•••</td>
+                  <td>
+                    <button
+                      type="button"
+                      aria-label={"Ver detalhes de " + aluno.nome}
+                      title="Ver detalhes"
+                      onClick={() => setAlunoAberto(aluno)}
+                      className="cursor-pointer px-2"
+                    >
+                      •••
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
             </table>
           </div>
 
-          <div className="flex justify-end gap-2 mt-4">
-            <div className="app-card-strong h-10 w-10 ">
-            
-            </div>
-            <div className="app-card h-10 w-10 ">
-            
-            </div>
-            <div className="app-card h-10 w-10 ">
-            
-            </div>
-            <div className="app-card h-10 w-10 ">
-            
-            </div>
-          </div>  
-          </div>       
+          <Paginacao
+ paginaAtual={paginacao.paginaAtual}
+ totalPaginas={paginacao.totalPaginas}
+ totalItens={paginacao.totalItens}
+ tamanho={paginacao.tamanho}
+ irPara={paginacao.irPara}
+ />
+          </div>
+          </div>
         </div>
         
         
       
-    </main>
+    {alunoAberto && (
+        <DetalhesAluno
+          aluno={alunoAberto}
+          aoFechar={() => setAlunoAberto(null)}
+          podeEditar={pode("alunos.editar")}
+          podeExcluir={pode("alunos.excluir")}
+        />
+      )}
+    {cadastroAberto && <NovoAluno aoFechar={() => setCadastroAberto(false)} aoSalvar={aoCadastrar} />}
+      </main>
   );
 }

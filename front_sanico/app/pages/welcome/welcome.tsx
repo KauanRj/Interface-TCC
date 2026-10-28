@@ -1,25 +1,22 @@
   import {
-    Home,
-    LayoutDashboard,
-    List,
-    Filter,
-    UserCircle,
-    ClipboardCheck,
-    DoorOpen,
-    Users,
-    UserRound,
-    Settings,
-    User,
-    LogOut,
-    BellRing,
     TrendingUp,
     TrendingDown,
-    PanelLeftClose,
-    PanelLeftOpen,
+    X,
   } from "lucide-react";
-  import Lohran from "../../../public/lohran.png";
-  import { useNavigate } from "react-router";
-  import { useState } from "react";
+  import { useEffect, useState } from "react";
+  import { Notificacoes } from "~/components/Notificacoes";
+import { DetalhesAluno } from "~/components/DetalhesAluno";
+import { acharAlunoPorNome } from "~/utils/alunosCadastrados";
+import { LeitorRfid } from "~/components/LeitorRfid";
+import { BuscaGlobal } from "~/components/BuscaGlobal";
+import { DetalhesFuncionario } from "~/components/DetalhesFuncionario";
+import { useNavigate } from "react-router";
+import { Sidebar } from "~/components/Sidebar";
+import { primeiroNome } from "~/utils/formatacao";
+import { useUsuario } from "~/hooks/useUsuario";
+import { alunosDeHoje } from "~/utils/registroHoje";
+import { resumoDoDia, porcentagem } from "~/utils/resumoDia";
+  import Lohran from "../../../public/lohran-avatar.png";
 
   import {
     LineChart,
@@ -33,13 +30,69 @@
 
 
   export function Welcome() {
+    const { usuario, pode } = useUsuario();
+    const [alunoAberto, setAlunoAberto] = useState<any>(null);
+    const [categoria, setCategoria] = useState("");
+    const [leituras, setLeituras] = useState(0);
+    const [funcionarioAberto, setFuncionarioAberto] = useState<any>(null);
     const navigate = useNavigate();
 
-    const [sidebarRecolhido, setSidebarRecolhido] = useState(false);
+    function escolherResultado(resultado: any) {
+      if (resultado.tipo === "Aluno") {
+        setAlunoAberto(resultado.item);
+      }
+      if (resultado.tipo === "Funcionário") {
+        setFuncionarioAberto(resultado.item);
+      }
+      if (resultado.tipo === "Sala") {
+        navigate("/salas");
+      }
+    }
 
-    const classeRecolhida = sidebarRecolhido
-      ? "!justify-center !px-0"
-      : "";
+    const resumo = resumoDoDia(alunosDeHoje());
+    const pctPresentes = porcentagem(resumo.presentes.length, resumo.total);
+    const pctFaltas = porcentagem(resumo.faltas.length, resumo.total);
+    const pctPendentes = 100 - pctPresentes - pctFaltas;
+
+    useEffect(() => {
+      if (categoria === "") {
+        return;
+      }
+
+      function aoTeclar(evento: any) {
+        if (evento.key === "Escape") {
+          setCategoria("");
+        }
+      }
+
+      window.addEventListener("keydown", aoTeclar);
+      return () => window.removeEventListener("keydown", aoTeclar);
+    }, [categoria]);
+
+    let listaDoModal: any[] = [];
+    if (categoria === "Presentes") {
+      listaDoModal = resumo.presentes;
+    }
+    if (categoria === "Pendentes") {
+      listaDoModal = resumo.pendentes;
+    }
+    if (categoria === "Faltou") {
+      listaDoModal = resumo.faltas;
+    }
+
+    function classeStatus(status: string) {
+      if (status === "Presente") {
+        return "app-status-green";
+      }
+      if (status === "Atrasado" || status === "Pendente") {
+        return "app-status-yellow";
+      }
+      if (status === "Justificado") {
+        return "app-status-gray";
+      }
+      return "app-status-red";
+    }
+
 
     const dadosFrequencia = [
       { dia: "5", presentes: 800, faltosos: 250, pendentes: 150 },
@@ -55,20 +108,20 @@
     ];
 
     const cardsInicio = [
-      { titulo: "Presentes", valor: "362", texto: "84% do total", tipo: "strong" },
-      { titulo: "Pendentes", valor: "6", texto: "chamadas abertas", tipo: "normal" },
-      { titulo: "Faltou", valor: "34", texto: "8% do total", tipo: "normal" },
+      { titulo: "Presentes", valor: String(resumo.presentes.length), texto: pctPresentes + "% do total", tipo: "strong" },
+      { titulo: "Pendentes", valor: String(resumo.pendentes.length), texto: "aguardando marcação", tipo: "normal" },
+      { titulo: "Faltou", valor: String(resumo.faltas.length), texto: pctFaltas + "% do total", tipo: "normal" },
     ];
 
     const preRelatorio = [
-      { label: "presentes", valor: 362, cor: "bg-emerald-500" },
-      { label: "faltosos", valor: 34, cor: "bg-red-500" },
-      { label: "faltam marcar presença", valor: 6, cor: "bg-yellow-500" },
+      { label: "presentes", valor: resumo.presentes.length, cor: "bg-emerald-500", categoria: "Presentes" },
+      { label: "faltosos", valor: resumo.faltas.length, cor: "bg-red-500", categoria: "Faltou" },
+      { label: "faltam marcar presença", valor: resumo.pendentes.length, cor: "bg-yellow-500", categoria: "Pendentes" },
     ];
 
     const alunosAtencao = [
-      { id: 1, nome: "Carlos Eduardo", turma: "9º Ano A", motivo: "Media baixa", status: "Risco" },
-      { id: 2, nome: "Bruno Almeida", turma: "8º Ano B", motivo: "Frequencia baixa", status: "Atenção" },
+      { id: 1, nome: "Carlos Eduardo", turma: "9º Ano A", motivo: "Média baixa", status: "Risco" },
+      { id: 2, nome: "Bruno Almeida", turma: "8º Ano B", motivo: "Frequência baixa", status: "Atenção" },
       { id: 3, nome: "Igor Fernandes", turma: "7º Ano A", motivo: "Faltas recentes", status: "Risco" },
       { id: 4, nome: "Lucas Pereira", turma: "8º Ano A", motivo: "Notas pendentes", status: "Atenção" },
     ];
@@ -76,156 +129,13 @@
     return (
       <main className="app-shell">
 
-        <aside
-          className={`app-sidebar relative transition-[width,min-width] duration-300 ${
-            sidebarRecolhido ? "!w-[72px] !min-w-[72px]" : ""
-          }`}
-        >
-          <button
-            type="button"
-            onClick={() => setSidebarRecolhido((anterior) => !anterior)}
-            title={sidebarRecolhido ? "Expandir menu" : "Recolher menu"}
-            aria-label={sidebarRecolhido ? "Expandir menu" : "Recolher menu"}
-            className={`absolute top-4 z-20 rounded-md p-1 text-current hover:bg-black/10 dark:hover:bg-white/10 ${
-              sidebarRecolhido ? "left-1/2 -translate-x-1/2" : "right-2"
-            }`}
-          >
-            {sidebarRecolhido ? (
-              <PanelLeftOpen size={20} />
-            ) : (
-              <PanelLeftClose size={20} />
-            )}
-          </button>
-
-          <div
-            className={`mb-10 flex items-center gap-3 ${
-              sidebarRecolhido ? "justify-center" : ""
-            }`}
-          >
-            {sidebarRecolhido ? (
-              <span className="sm:text-2xl" title="EduControl">
-                <span className="app-login-logo-edu">ㅤ</span>
-              </span>
-            ) : (
-              <span className="sm:text-2xl">
-                <span className="app-login-logo-edu">Edu</span>
-                <span className="app-login-logo-control">Control</span>
-              </span>
-            )}
-          </div>
-
-          <nav className="flex flex-col gap-2">
-            <a
-              onClick={() => navigate("/home")}
-              title={sidebarRecolhido ? "Início" : undefined}
-              className={`app-nav-active cursor-pointer ${classeRecolhida}`}
-            >
-              <LayoutDashboard size={20} />
-              {!sidebarRecolhido && <span>Início</span>}
-            </a>
-
-            <a
-              onClick={() => navigate("/relatorios")}
-              title={sidebarRecolhido ? "Relatórios" : undefined}
-              className={`app-nav-link cursor-pointer ${classeRecolhida}`}
-            >
-              <List size={20} />
-              {!sidebarRecolhido && <span>Relatórios</span>}
-            </a>
-
-            <a
-              onClick={() => navigate("/ia")}
-              title={sidebarRecolhido ? "Assistente de IA" : undefined}
-              className={`app-nav-link cursor-pointer ${classeRecolhida}`}
-            >
-              <Filter size={20} />
-              {!sidebarRecolhido && <span>Assistente de IA</span>}
-            </a>
-
-            <a
-              onClick={() => navigate("/team")}
-              title={sidebarRecolhido ? "Team" : undefined}
-              className={`app-nav-link-between cursor-pointer ${classeRecolhida}`}
-            >
-              <div
-                className={`flex items-center ${
-                  sidebarRecolhido ? "justify-center" : "gap-3"
-                }`}
-              >
-                <Users size={20} />
-                {!sidebarRecolhido && <span>Team</span>}
-              </div>
-            </a>
-
-            <a
-              onClick={() => navigate("/presenca")}
-              title={sidebarRecolhido ? "Presenças" : undefined}
-              className={`app-nav-link cursor-pointer ${classeRecolhida}`}
-            >
-              <ClipboardCheck size={20} />
-              {!sidebarRecolhido && <span>Presenças</span>}
-            </a>
-
-            <a
-              onClick={() => navigate("/salas")}
-              title={sidebarRecolhido ? "Salas" : undefined}
-              className={`app-nav-link cursor-pointer ${classeRecolhida}`}
-            >
-              <DoorOpen size={20} />
-              {!sidebarRecolhido && <span>Salas</span>}
-            </a>
-
-            <a
-              onClick={() => navigate("/alunos")}
-              title={sidebarRecolhido ? "Alunos" : undefined}
-              className={`app-nav-link cursor-pointer ${classeRecolhida}`}
-            >
-              <UserRound size={20} />
-              {!sidebarRecolhido && <span>Alunos</span>}
-            </a>
-          </nav>
-
-          <div className="app-divider" />
-
-          <nav className="flex flex-col gap-2">
-            <a
-              onClick={() => navigate("/settings")}
-              title={sidebarRecolhido ? "Settings" : undefined}
-              className={`app-nav-link cursor-pointer ${classeRecolhida}`}
-            >
-              <Settings size={20} />
-              {!sidebarRecolhido && <span>Settings</span>}
-            </a>
-          </nav>
-
-          <div className="flex-1" />
-
-          <div className="flex flex-col gap-3">
-            <a
-              onClick={() => navigate("/perfil")}
-              title={sidebarRecolhido ? "Perfil" : undefined}
-              className={`app-nav-link cursor-pointer ${classeRecolhida}`}
-            >
-              <UserCircle size={20} />
-              {!sidebarRecolhido && <span>Perfil</span>}
-            </a>
-
-            <a
-              onClick={() => navigate("/log")}
-              title={sidebarRecolhido ? "Log out" : undefined}
-              className={`app-nav-link cursor-pointer ${classeRecolhida}`}
-            >
-              <LogOut size={20} />
-              {!sidebarRecolhido && <span>Log out</span>}
-            </a>
-          </div>
-        </aside>
+        <Sidebar ativo="/home" />
 
         <div className="flex-1 min-w-0 flex flex-col overflow-hidden">
           <div className="app-header">
             <div>
               <h1 className="app-title">
-                Bem-vindo de volta, Lohran!
+                Bem-vindo de volta, {primeiroNome(usuario?.nome)}!
               </h1>
               <p className="app-muted">
                 O que deseja fazer ou ver hoje?
@@ -233,26 +143,25 @@
             </div>
 
             <div>
-              <input
-                type="text"
-                placeholder="Pesquisar..."
-                className="app-input w-full max-w-80"
+              <BuscaGlobal
+                podeVer={{ alunos: pode("pagina.alunos"), equipe: pode("pagina.team"), salas: pode("pagina.salas") }}
+                aoEscolher={escolherResultado}
               />
             </div>
 
             <div className="flex items-center gap-4">
-              <BellRing size={20} className="text-gray-900 dark:text-[#f5fffc]" />
+              <Notificacoes className="text-gray-900 dark:text-[#f5fffc]" />
 
               <div className="app-avatar">
                 <img
                   src={Lohran}
-                  alt="Lohran"
-                  className="rounded-full"
+                  alt={usuario?.nome ?? "Usuário"}
+                  className="h-full w-full rounded-full object-cover"
                 />
               </div>
 
               <span className="text-lg font-semibold text-gray-900 dark:text-[#f5fffc]">
-                Lohran
+                {usuario?.nome ?? ""}
               </span>
             </div>
           </div>
@@ -263,7 +172,17 @@
               {cardsInicio.map((card) => (
                 <div
                   key={card.titulo}
-                  className={card.tipo === "strong" ? "app-card-strong min-h-36 p-5" : "app-card min-h-36 p-5"}
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => setCategoria(card.titulo)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setCategoria(card.titulo);
+                    }
+                  }}
+                  title={"Ver alunos: " + card.titulo}
+                  className={`cursor-pointer ${card.tipo === "strong" ? "app-card-strong min-h-36 p-5" : "app-card min-h-36 p-5"}`}
                 >
                   <div className="flex items-start justify-between">
                     <div>
@@ -290,10 +209,12 @@
               ))}
             </div>
 
+            <LeitorRfid podeAlterar={pode("configuracoes.rfid")} aoLer={() => setLeituras(leituras + 1)} />
+
             <div className="grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1fr)_300px]">
               <div className="app-card min-h-80 overflow-hidden p-5">
                 <div className="mb-4 flex items-center justify-between">
-                  <h2 className="app-report-title">Grafico de frequência</h2>
+                  <h2 className="app-report-title">Gráfico de frequência</h2>
                   <select className="h-9 rounded-lg border border-slate-300 bg-gray-200 px-3 text-sm dark:border-white/10 dark:bg-[#0c171d] dark:text-white">
                     <option>Últimos 14 dias</option>
                     <option>Últimos 30 dias</option>
@@ -370,9 +291,9 @@
                 <h2 className="app-report-title mb-5">Pré-relatório</h2>
 
                 <div className="flex justify-center">
-                  <div className="flex h-36 w-36 items-center justify-center rounded-full bg-[conic-gradient(#22c7a9_0_78%,#ef4444_78%_92%,#f59e0b_92%_100%)]">
+                  <div className="flex h-36 w-36 items-center justify-center rounded-full" style={{ background: `conic-gradient(#22c7a9 0 ${pctPresentes}%, #ef4444 ${pctPresentes}% ${pctPresentes + pctFaltas}%, #f59e0b ${pctPresentes + pctFaltas}% 100%)` }}>
                     <div className="flex h-24 w-24 flex-col items-center justify-center rounded-full bg-white dark:bg-[#0a141a]">
-                      <strong className="text-2xl text-gray-900 dark:text-white">84%</strong>
+                      <strong className="text-2xl text-gray-900 dark:text-white">{pctPresentes}%</strong>
                       <span className="text-xs text-gray-500 dark:text-[#8fb1aa]">presença</span>
                     </div>
                   </div>
@@ -380,13 +301,19 @@
 
                 <div className="mt-6 space-y-3">
                   {preRelatorio.map((item) => (
-                    <div key={item.label} className="flex items-center justify-between text-sm">
+                    <button
+                      key={item.label}
+                      type="button"
+                      onClick={() => setCategoria(item.categoria)}
+                      title={"Ver alunos: " + item.categoria}
+                      className="flex w-full cursor-pointer items-center justify-between rounded-md px-1 py-1 text-sm hover:bg-black/5 dark:hover:bg-white/5"
+                    >
                       <div className="flex items-center gap-2">
                         <span className={`h-3 w-3 rounded-sm ${item.cor}`} />
                         <span className="text-gray-600 dark:text-[#b9d2cc]">{item.label}</span>
                       </div>
                       <strong>{item.valor}</strong>
-                    </div>
+                    </button>
                   ))}
                 </div>
               </aside>
@@ -421,7 +348,17 @@
                           {aluno.status}
                         </span>
                       </td>
-                      <td>•••</td>
+                      <td>
+                    <button
+                      type="button"
+                      aria-label={"Ver detalhes de " + aluno.nome}
+                      title="Ver detalhes"
+                      onClick={() => setAlunoAberto(acharAlunoPorNome(aluno.nome))}
+                      className="cursor-pointer px-2"
+                    >
+                      •••
+                    </button>
+                  </td>
                     </tr>
                   ))}
                 </tbody>
@@ -430,6 +367,107 @@
           </div>
           </div>
         </div>
+
+        {categoria !== "" && (
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="titulo-modal-categoria"
+            onClick={() => setCategoria("")}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm"
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-2xl rounded-2xl border border-black/10 bg-white p-6 shadow-2xl dark:border-white/10 dark:bg-[#151515]"
+            >
+              <div className="mb-6 flex items-center justify-between">
+                <div>
+                  <h2
+                    id="titulo-modal-categoria"
+                    className="text-lg font-semibold text-[#17332e] dark:text-white"
+                  >
+                    {categoria}
+                  </h2>
+
+                  <p className="mt-1 text-sm text-[#6f8781] dark:text-[#8fa9a3]">
+                    {listaDoModal.length} de {resumo.total} alunos hoje
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setCategoria("")}
+                  aria-label="Fechar"
+                  className="rounded-lg p-2 text-[#6f8781] transition hover:bg-black/5 hover:text-[#17332e] dark:text-[#8fa9a3] dark:hover:bg-white/10 dark:hover:text-white"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              <div className="max-h-[55vh] overflow-y-auto">
+                {listaDoModal.length === 0 ? (
+                  <p className="py-8 text-center text-sm text-[#6f8781] dark:text-[#8fa9a3]">
+                    Nenhum aluno nesta categoria.
+                  </p>
+                ) : (
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="border-b border-slate-200 text-left dark:border-white/10">
+                        <th className="py-3 p-2">#</th>
+                        <th>Aluno</th>
+                        <th>Turma</th>
+                        <th>Situação</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {listaDoModal.map((aluno) => (
+                        <tr
+                          key={aluno.id}
+                          className="border-b border-slate-200 dark:border-white/5"
+                        >
+                          <td className="py-3 p-2">{aluno.id}</td>
+                          <td>{aluno.nome}</td>
+                          <td>{aluno.turma}</td>
+                          <td>
+                            <span className={classeStatus(aluno.statusHoje)}>
+                              {aluno.statusHoje}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
+              </div>
+
+              <div className="mt-6 flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => setCategoria("")}
+                  className="rounded-xl border border-black/10 px-4 py-2.5 text-sm font-medium text-[#526a65] transition hover:bg-black/5 dark:border-white/10 dark:text-[#b9d2cc] dark:hover:bg-white/10"
+                >
+                  Fechar
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      {alunoAberto && (
+        <DetalhesAluno
+          aluno={alunoAberto}
+          aoFechar={() => setAlunoAberto(null)}
+          podeEditar={pode("alunos.editar")}
+          podeExcluir={pode("alunos.excluir")}
+        />
+      )}
+    {funcionarioAberto && (
+        <DetalhesFuncionario
+          funcionario={funcionarioAberto}
+          aoFechar={() => setFuncionarioAberto(null)}
+          podeEditar={pode("usuarios.gerenciar")}
+          podeExcluir={pode("usuarios.gerenciar")}
+        />
+      )}
       </main>
     );
   }

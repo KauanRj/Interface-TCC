@@ -1,139 +1,96 @@
 import {
-  Home,
-  LayoutDashboard,
-  List,
-  Filter,
-  Mail,
-  ClipboardCheck,
-  DoorOpen,
   Users,
-  Settings,
   Download,
-  LogOut,
-  BellRing,
   TrendingUp,
   AlertTriangle,
   BarChart3,
   Search,
-  UserRound,
-  UserCircle,
 } from "lucide-react";
-import Lohran from "../../../public/lohran.png";
-import { useNavigate } from "react-router";
+import { Notificacoes } from "~/components/Notificacoes";
+import { DetalhesAluno } from "~/components/DetalhesAluno";
+import { acharAlunoPorNome } from "~/utils/alunosCadastrados";
+import { GerarRelatorio } from "~/components/GerarRelatorio";
+import { Sidebar } from "~/components/Sidebar";
+import { useState } from "react";
+import { filtrarAlunos } from "~/utils/filtros";
+import { useUsuario } from "~/hooks/useUsuario";
+import { Paginacao } from "~/components/Paginacao";
+import { usePaginacao } from "~/hooks/usePaginacao";
+import { todosOsAlunos } from "~/utils/alunosCadastrados";
+import { presencasAtuais } from "~/utils/registroHoje";
+import { filtrarPorPeriodo, contarPresencas, evolucaoPorDia } from "~/utils/relatorios";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
+import Lohran from "../../../public/lohran-avatar.png";
 
 export function Relatorios() {
-  const navigate = useNavigate();
+  const { usuario, pode } = useUsuario();
 
-  const alunos = [
-    { id: 1, nome: "Ana Clara Silva", turma: "9º Ano A", presenca: "95%", media: "8,7", situacao: "Bom" },
-    { id: 2, nome: "Bruno Almeida", turma: "8º Ano B", presenca: "78%", media: "6,9", situacao: "Em atenção" },
-    { id: 3, nome: "Carlos Eduardo", turma: "9º Ano A", presenca: "60%", media: "5,4", situacao: "Risco" },
-    { id: 4, nome: "Daniela Santos", turma: "7º Ano A", presenca: "88%", media: "7,8", situacao: "Bom" },
-  ];  
+  const [alunoAberto, setAlunoAberto] = useState<any>(null);
+  const [relatorioAberto, setRelatorioAberto] = useState(false);
+  const [aviso, setAviso] = useState("");
+  const [busca, setBusca] = useState("");
+  const [turma, setTurma] = useState("Todas as turmas");
+  const [periodo, setPeriodo] = useState("Últimos 30 dias");
+  const [tipo, setTipo] = useState("Todos os tipos");
+
+  const alunosDaTurma = filtrarAlunos(todosOsAlunos(), "", turma, "Todos", "Todos");
+  const alunos = filtrarAlunos(todosOsAlunos(), busca, turma, "Todos", "Todos");
+  const paginacao = usePaginacao(alunos);
+
+  const registros = filtrarPorPeriodo(presencasAtuais(), periodo, turma);
+  const contagem = contarPresencas(registros);
+  const evolucao = evolucaoPorDia(registros);
+
+  let emAtencao = 0;
+  let emRisco = 0;
+  for (let i = 0; i < alunosDaTurma.length; i++) {
+    if (alunosDaTurma[i].situacao === "Em atenção") {
+      emAtencao++;
+    }
+    if (alunosDaTurma[i].situacao === "Risco") {
+      emRisco++;
+    }
+  }
+
+  function aoGerar(nome: string, quantidade: number) {
+    setRelatorioAberto(false);
+    setAviso("Relatório " + nome + " gerado com " + quantidade + (quantidade === 1 ? " linha." : " linhas."));
+    setTimeout(() => setAviso(""), 6000);
+  }
+
+  const mostrarGrafico = tipo === "Todos os tipos" || tipo === "Frequência";
+  const mostrarFrequencia = mostrarGrafico;
+
+  let classeGrafico = "app-card p-5 lg:col-span-2";
+  if (mostrarGrafico === false) {
+    classeGrafico = "app-card p-5 lg:col-span-3";
+  }
+
+  let fundoRosca = "#94a3b8";
+  if (contagem.marcados > 0) {
+    const pPresentes = (contagem.presentes / contagem.marcados) * 100;
+    const pAusentes = pPresentes + (contagem.ausentes / contagem.marcados) * 100;
+    const pAtrasados = pAusentes + (contagem.atrasados / contagem.marcados) * 100;
+    fundoRosca = `conic-gradient(#22c7a9 0 ${pPresentes}%, #ef4444 ${pPresentes}% ${pAusentes}%, #f59e0b ${pAusentes}% ${pAtrasados}%, #60a5fa ${pAtrasados}% 100%)`;
+  }
+
+  function mudarFiltro(funcaoDoFiltro: any, valor: string) {
+    funcaoDoFiltro(valor);
+    paginacao.irPara(0);
+  }
 
   return (
     <main className="app-shell">
 
-      <aside className="app-sidebar">
-        <div className="flex items-center gap-3 mb-10">
-          <span className="sm:text-2xl">
-             <span className="app-login-logo-edu">Edu</span>
-             <span className="app-login-logo-control">Control</span>
-           </span>
-        </div>
-
-        <nav className="flex flex-col gap-2">
-          <a
-            onClick={() => navigate("/home")}
-            className="app-nav-link"
-          >
-            <LayoutDashboard size={20} />
-            <span>Início</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/relatorios")}
-            className="app-nav-active"
-          >
-            <List size={20} />
-            <span>Relatórios</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/ia")}
-            className="app-nav-link"
-          >
-            <Filter size={20} />
-            <span>Assistente de IA</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/team")}
-            className="app-nav-link-between"
-          >
-            <div className="flex items-center gap-3">
-              <Users size={20} />
-              <span>Team</span>
-            </div>
-          </a>
-
-          <a
-            onClick={() => navigate("/presenca")}
-            className="app-nav-link"
-          >
-            <ClipboardCheck size={20} />
-            <span>Presenças</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/salas")}
-            className="app-nav-link"
-          >
-            <DoorOpen size={20} />
-            <span>Salas</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/alunos")}
-            className="app-nav-link"
-          >
-            <UserRound size={20} />
-            <span>Alunos</span>
-          </a>
-        </nav>
-
-        <div className="app-divider" />
-
-        <nav>
-          <a
-            onClick={() => navigate("/settings")}
-            className="app-nav-link"
-          >
-            <Settings size={20} />
-            <span>Settings</span>
-          </a>
-        </nav>
-
-        <div className="flex-1" />
-
-        <div className="flex flex-col gap-3">
-          <a
-            onClick={() => navigate("/perfil")}
-            className="app-nav-link"
-          >
-            <UserCircle size={20} />
-            <span>Perfil</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/log")}
-            className="app-nav-link"
-          >
-            <LogOut size={20} />
-            <span>Log out</span>
-          </a>
-        </div>
-      </aside>
+      <Sidebar ativo="/relatorios" />
 
       <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
 
@@ -149,31 +106,38 @@ export function Relatorios() {
           <div className="app-header-actions">
             <button 
             type="button"
+            onClick={() => setRelatorioAberto(true)}
             className="app-button-relatorio">
               <Download size={18} />
-              Gerar relatorio
+              Gerar relatório
             </button>
 
-            <BellRing
-                size={20}
-                className="text-gray-700 dark:text-[#b9d2cc]"
-              />
+            <Notificacoes className="text-gray-700 dark:text-[#b9d2cc]" />
 
               <div className="app-avatar">
                 <img
                   src={Lohran}
                   alt="Profile"
-                  className="rounded-full"
+                  className="h-full w-full rounded-full object-cover"
                 />
               </div>
 
               <span className="text-lg font-semibold text-gray-900 dark:text-[#f5fffc]">
-                Lohran
+                {usuario?.nome ?? ""}
               </span>
           </div>
         </div>
        <div className="min-h-0 flex-1 overflow-y-auto">
         <div className="app-page-grid ">
+
+            {aviso && (
+              <div
+                role="status"
+                className="rounded-lg border border-green-500/30 bg-green-500/10 p-3 text-sm text-green-700 dark:text-green-300"
+              >
+                {aviso}
+              </div>
+            )}
 
           <div className="app-grid-relatorio">
 
@@ -183,7 +147,7 @@ export function Relatorios() {
               </div>
               <div>
                 <p>Total de alunos</p>
-                <span>428</span>
+                <span>{alunosDaTurma.length}</span>
               </div>
             </div>
 
@@ -193,7 +157,7 @@ export function Relatorios() {
               </div>
               <div>
                 <p>Taxa de presença</p>
-                <span>82%</span>                
+                <span>{contagem.taxa}%</span>                
               </div>
             </div>
 
@@ -203,7 +167,7 @@ export function Relatorios() {
               </div>
               <div>
                 <p>Alunos em atenção</p>
-                <span>12</span>                
+                <span>{emAtencao}</span>                
               </div>
             </div>
 
@@ -213,7 +177,7 @@ export function Relatorios() {
               </div>
               <div>
                 <p>Alunos com risco</p>
-                <span>8</span>
+                <span>{emRisco}</span>
                 
               </div>
             </div>
@@ -223,7 +187,7 @@ export function Relatorios() {
 
         <div>
           <label>Período</label>
-          <select>
+          <select value={periodo} onChange={(e) => setPeriodo(e.target.value)}>
             <option>Últimos 30 dias</option>
             <option>Últimos 7 dias</option>
             <option>Este mês</option>
@@ -233,8 +197,15 @@ export function Relatorios() {
 
         <div>
           <label>Turma</label>
-          <select>
+          <select
+            value={turma}
+            onChange={(e) => mudarFiltro(setTurma, e.target.value)}
+          >
             <option>Todas as turmas</option>
+            <option>7º Ano A</option>
+            <option>7º Ano B</option>
+            <option>8º Ano A</option>
+            <option>8º Ano B</option>
             <option>9º Ano A</option>
             <option>9º Ano B</option>
           </select>
@@ -242,7 +213,7 @@ export function Relatorios() {
 
         <div>
           <label>Disciplina</label>
-          <select>
+          <select disabled title="A frequência ainda não tem dados por disciplina">
             <option>Todas as disciplinas</option>
             <option>Matemática</option>
             <option>Português</option>
@@ -252,69 +223,113 @@ export function Relatorios() {
 
         <div>
           <label>Tipo de relatório</label>
-          <select>
-            <option>Desempenho</option>
+          <select value={tipo} onChange={(e) => setTipo(e.target.value)}>
+            <option>Todos os tipos</option>
             <option>Frequência</option>
             <option>Alunos</option>
           </select>
         </div>
 
 
-
       </div>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
 
-        <div className="app-card p-5 lg:col-span-2">
-          <h2 className="app-report-title">
-            Desempenho por disciplina
-          </h2>
+        {mostrarGrafico && (
+          <div className={classeGrafico}>
+            <h2 className="app-report-title">Gráfico de frequência</h2>
 
-          <div className="flex h-64 items-center justify-center text-gray-400">
-            Gráfico de desempenho
+            <div className="mt-4 h-60 w-full text-gray-500 dark:text-[#8fb1aa]">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart
+                  data={evolucao}
+                  margin={{ top: 5, right: 10, left: 0, bottom: 5 }}
+                >
+                  <CartesianGrid
+                    strokeDasharray="0"
+                    vertical={true}
+                    horizontal={false}
+                    className="opacity-30"
+                  />
+
+                  <XAxis
+                    dataKey="dia"
+                    tick={{ fontSize: 12, fill: "currentColor" }}
+                    axisLine={false}
+                    tickLine={false}
+                  />
+
+                  <YAxis
+                    tick={{ fontSize: 11, fill: "currentColor" }}
+                    axisLine={false}
+                    tickLine={false}
+                    width={40}
+                  />
+
+                  <Tooltip />
+
+                  <Line type="monotone" dataKey="presentes" name="Presentes" stroke="#22c7a9" strokeWidth={3} dot={false} activeDot={{ r: 5 }} />
+                  <Line type="monotone" dataKey="faltosos" name="Faltosos" stroke="#f59e0b" strokeWidth={3} dot={false} activeDot={{ r: 5 }} />
+                  <Line type="monotone" dataKey="pendentes" name="Pendentes" stroke="#2f8de4" strokeWidth={3} dot={false} activeDot={{ r: 5 }} />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
           </div>
-        </div>
+        )}
 
-        <div className="app-card p-3">
-          <h2 className="app-report-title">
-            Frequência dos alunos
-          </h2>
+        {mostrarFrequencia && (
+          <div className="app-card p-3">
+            <h2 className="app-report-title">Frequência dos alunos</h2>
 
-          
-            <div className="flex items-center justify-center">
-                    <div className="flex h-32 w-32 items-center justify-center rounded-full bg-[conic-gradient(#22c7a9_0_84%,#ef4444_84%_92%,#f59e0b_92%_97%,#60a5fa_97%_100%)]">
-                      <div className="flex h-22 w-22 flex-col items-center justify-center rounded-full bg-white dark:bg-[#0a141a]">
-                        <strong className="text-2xl text-gray-900 dark:text-white">84%</strong>
-                        <span className="text-xs text-gray-500 dark:text-[#8fb1aa]">Presença</span>
-                      </div>
-                    </div>
-                  </div>
-          <div className="mt-4 space-y-2 text-sm">
-                    <div className="flex items-center justify-between">
-                      <span className="text-emerald-500">Presentes</span>
-                      <strong>362</strong>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-red-500">Ausentes</span>
-                      <strong>34</strong>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-yellow-500">Atrasados</span>
-                      <strong>18</strong>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-blue-500">Justificados</span>
-                      <strong>14</strong>
-                    </div>
-                  </div>
-        </div>
+            <div className="mt-4 flex items-center justify-center">
+              <div
+                className="flex h-32 w-32 items-center justify-center rounded-full"
+                style={{ background: fundoRosca }}
+              >
+                <div className="flex h-22 w-22 flex-col items-center justify-center rounded-full bg-white dark:bg-[#0a141a]">
+                  <strong className="text-2xl text-gray-900 dark:text-white">
+                    {contagem.marcados > 0 ? contagem.taxa + "%" : "—"}
+                  </strong>
+                  <span className="text-xs text-gray-500 dark:text-[#8fb1aa]">Presença</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-4 space-y-2 text-sm">
+              <div className="flex items-center justify-between">
+                <span className="text-emerald-500">Presentes</span>
+                <strong>{contagem.presentes}</strong>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-red-500">Ausentes</span>
+                <strong>{contagem.ausentes}</strong>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-yellow-500">Atrasados</span>
+                <strong>{contagem.atrasados}</strong>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-blue-500">Justificados</span>
+                <strong>{contagem.justificados}</strong>
+              </div>
+            </div>
+          </div>
+        )}
 
       </div>
+
       <div className="app-report-search">
           <label>Pesquisar</label>
           <div>
             <Search size={17} />
-            <input placeholder="Pesquisar aluno..." />
+            <input
+              placeholder="Pesquisar aluno..."
+              value={busca}
+              onChange={(e) => {
+                setBusca(e.target.value);
+                paginacao.irPara(0);
+              }}
+            />
           </div>
         </div>
 
@@ -341,7 +356,14 @@ export function Relatorios() {
             </thead>
 
             <tbody>
-              {alunos.map((aluno) => (
+              {alunos.length === 0 && (
+                <tr>
+                  <td colSpan={7} className="py-8 text-center app-muted">
+                    Nenhum aluno encontrado com esses filtros.
+                  </td>
+                </tr>
+              )}
+              {paginacao.bloco.map((aluno) => (
                 <tr
                   key={aluno.id}
                   className="border-b border-slate-200 dark:border-white/5"
@@ -356,11 +378,31 @@ export function Relatorios() {
                       {aluno.situacao}
                     </span>
                   </td>
-                  <td>•••</td>
+                  <td>
+                    <button
+                      type="button"
+                      aria-label={"Ver detalhes de " + aluno.nome}
+                      title="Ver detalhes"
+                      onClick={() => setAlunoAberto(acharAlunoPorNome(aluno.nome))}
+                      className="cursor-pointer px-2"
+                    >
+                      •••
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
+        </div>
+
+        <div className="px-4 pb-4">
+          <Paginacao
+ paginaAtual={paginacao.paginaAtual}
+ totalPaginas={paginacao.totalPaginas}
+ totalItens={paginacao.totalItens}
+ tamanho={paginacao.tamanho}
+ irPara={paginacao.irPara}
+ />
         </div>
       </div>
          
@@ -370,6 +412,25 @@ export function Relatorios() {
 
       </div>
 
-    </main>
+    {alunoAberto && (
+        <DetalhesAluno
+          aluno={alunoAberto}
+          aoFechar={() => setAlunoAberto(null)}
+          podeEditar={pode("alunos.editar")}
+          podeExcluir={pode("alunos.excluir")}
+        />
+      )}
+    {relatorioAberto && (
+        <GerarRelatorio
+          aoFechar={() => setRelatorioAberto(false)}
+          aoGerar={aoGerar}
+          tipo={tipo}
+          periodo={periodo}
+          turma={turma}
+          registros={registros}
+          alunos={alunos}
+        />
+      )}
+      </main>
   );
 }

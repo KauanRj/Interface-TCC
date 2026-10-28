@@ -1,14 +1,5 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
-  LayoutDashboard,
-  List,
-  Filter,
-  ClipboardCheck,
-  DoorOpen,
-  Users,
-  Settings,
-  LogOut,
-  BellRing,
   UserRound,
   Mail,
   Phone,
@@ -19,19 +10,63 @@ import {
   Lock,
   Save,
   Camera,
-  UserCircle,
   Eye,
   EyeOff,
-  X
+  X,
 } from "lucide-react";
+import { Notificacoes } from "~/components/Notificacoes";
+import { Sidebar } from "~/components/Sidebar";
+import { useUsuario } from "~/hooks/useUsuario";
+import { nomeDoPerfil } from "~/auth/permissoes";
+import {
+  formatarDataCurta,
+  formatarDataLonga,
+  formatarUltimoAcesso,
+} from "~/utils/formatacao";
+import {
+  formatarTelefone,
+  validarCargo,
+  validarEmail,
+  validarNome,
+  validarNovaSenha,
+  validarTelefone,
+} from "~/utils/validacoes";
 
-import Lohran from "../../../public/lohran.png";
-import { useNavigate } from "react-router";
+import Lohran from "../../../public/lohran-avatar.png";
 
+
+const TAMANHO_MAXIMO_FOTO = 2 * 1024 * 1024;
+
+const CLASSE_CAMPO =
+  "w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-10 pr-4 text-sm text-gray-900 outline-none transition focus:border-[#0d7f70] dark:border-white/15 dark:bg-[#151515] dark:text-white dark:focus:border-[#22c7a9]";
+
+function classeAviso(tipo: string) {
+  if (tipo === "ok") {
+    return "bg-green-500/10 text-green-600 dark:text-green-400";
+  }
+  return "bg-red-500/10 text-red-600 dark:text-red-400";
+}
 
 export function Perfil() {
+  const { usuario, pode, atualizarUsuario } = useUsuario();
 
-  const navigate = useNavigate();
+  const podeEditar = pode("perfil.editarProprio");
+  const podeEditarCargo = pode("usuarios.gerenciar");
+  const podeAlterarSenha = pode("perfil.alterarSenha");
+
+  const [nome, setNome] = useState(usuario?.nome ?? "");
+  const [email, setEmail] = useState(usuario?.email ?? "");
+  const [cargo, setCargo] = useState(usuario?.cargo ?? "");
+  const [telefone, setTelefone] = useState(usuario?.telefone ?? "");
+  const [erroNome, setErroNome] = useState("");
+  const [erroEmail, setErroEmail] = useState("");
+  const [erroTelefone, setErroTelefone] = useState("");
+  const [erroCargo, setErroCargo] = useState("");
+  const [avisoPerfil, setAvisoPerfil] = useState<any>(null);
+
+  const [fotoPreview, setFotoPreview] = useState("");
+  const [erroFoto, setErroFoto] = useState("");
+  const inputFotoRef = useRef<HTMLInputElement>(null);
 
   const [modalSenha, setModalSenha] = useState(false);
   const [mostrarSenhaAtual, setMostrarSenhaAtual] = useState(false);
@@ -42,142 +77,131 @@ export function Perfil() {
   const [novaSenha, setNovaSenha] = useState("");
   const [confirmarSenha, setConfirmarSenha] = useState("");
 
-  const [mensagemSenha, setMensagemSenha] = useState("");
+  const [avisoSenha, setAvisoSenha] = useState<any>(null);
 
-  const alterarSenha = () => {
-    setMensagemSenha("");
+  function fecharModalSenha() {
+    setModalSenha(false);
+    setSenhaAtual("");
+    setNovaSenha("");
+    setConfirmarSenha("");
+    setMostrarSenhaAtual(false);
+    setMostrarNovaSenha(false);
+    setMostrarConfirmacao(false);
+    setAvisoSenha(null);
+  }
 
-    if (!senhaAtual || !novaSenha || !confirmarSenha) {
-      setMensagemSenha("Preencha todos os campos.");
+  useEffect(() => {
+    if (!modalSenha) return;
+
+    function aoTeclar(evento: KeyboardEvent) {
+      if (evento.key === "Escape") fecharModalSenha();
+    }
+
+    window.addEventListener("keydown", aoTeclar);
+    return () => window.removeEventListener("keydown", aoTeclar);
+  }, [modalSenha]);
+
+  function alterarCampo(campo: string, valor: string) {
+    if (campo === "nome") {
+      setNome(valor);
+      setErroNome("");
+    }
+    if (campo === "email") {
+      setEmail(valor);
+      setErroEmail("");
+    }
+    if (campo === "cargo") {
+      setCargo(valor);
+      setErroCargo("");
+    }
+    if (campo === "telefone") {
+      setTelefone(formatarTelefone(valor));
+      setErroTelefone("");
+    }
+    setAvisoPerfil(null);
+  }
+
+  function salvarPerfil() {
+    const novoErroNome = validarNome(nome);
+    const novoErroEmail = validarEmail(email);
+    const novoErroTelefone = validarTelefone(telefone);
+    let novoErroCargo = "";
+    if (podeEditarCargo) {
+      novoErroCargo = validarCargo(cargo);
+    }
+
+    setErroNome(novoErroNome);
+    setErroEmail(novoErroEmail);
+    setErroTelefone(novoErroTelefone);
+    setErroCargo(novoErroCargo);
+
+    if (novoErroNome || novoErroEmail || novoErroTelefone || novoErroCargo) {
+      setAvisoPerfil({ tipo: "erro", texto: "Corrija os campos destacados." });
       return;
     }
 
-    if (novaSenha !== confirmarSenha) {
-      setMensagemSenha("As senhas não coincidem.");
+    const nomeLimpo = nome.trim();
+    const emailLimpo = email.trim().toLowerCase();
+
+    const dados: any = { nome: nomeLimpo, email: emailLimpo, telefone: telefone };
+    if (podeEditarCargo) {
+      dados.cargo = cargo.trim();
+    }
+    atualizarUsuario(dados);
+
+    setNome(nomeLimpo);
+    setEmail(emailLimpo);
+    setAvisoPerfil({
+      tipo: "ok",
+      texto:
+        "Alterações salvas neste navegador. O envio definitivo depende da integração com a API.",
+    });
+    setTimeout(() => setAvisoPerfil(null), 6000);
+  }
+
+  function escolherFoto(evento: any) {
+    const arquivo = evento.target.files[0];
+    evento.target.value = "";
+    if (!arquivo) {
       return;
     }
 
-    if (novaSenha.length < 6) {
-      setMensagemSenha("A nova senha deve ter pelo menos 6 caracteres.");
+    if (arquivo.type.startsWith("image/") === false) {
+      setErroFoto("Escolha um arquivo de imagem.");
       return;
     }
 
-    setMensagemSenha("Senha alterada com sucesso!");
+    if (arquivo.size > TAMANHO_MAXIMO_FOTO) {
+      setErroFoto("A imagem deve ter no máximo 2 MB.");
+      return;
+    }
 
-    setTimeout(() => {
-      setSenhaAtual("");
-      setNovaSenha("");
-      setConfirmarSenha("");
-      setMensagemSenha("");
-      setModalSenha(false);
-    }, 1500);
-  };
+    setErroFoto("");
+    setFotoPreview(URL.createObjectURL(arquivo));
+  }
+
+  function alterarSenha(evento: any) {
+    evento.preventDefault();
+
+    const erro = validarNovaSenha(senhaAtual, novaSenha, confirmarSenha);
+
+    if (erro !== "") {
+      setAvisoSenha({ tipo: "erro", texto: erro });
+      return;
+    }
+
+    setAvisoSenha({
+      tipo: "ok",
+      texto:
+        "Senha validada. A alteração definitiva depende da integração com a API.",
+    });
+    setTimeout(fecharModalSenha, 2200);
+  }
 
   return (
     <main className="app-shell">
 
-      <aside className="app-sidebar">
-
-        <div className="flex items-center gap-3 mb-10">
-          <span className="sm:text-2xl">
-            <span className="app-login-logo-edu">Edu</span>
-            <span className="app-login-logo-control">Control</span>
-          </span>
-        </div>
-
-        <nav className="flex flex-col gap-2">
-          <a
-            onClick={() => navigate("/home")}
-            className="app-nav-link"
-          >
-            <LayoutDashboard size={20} />
-            <span>Início</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/relatorios")}
-            className="app-nav-link"
-          >
-            <List size={20} />
-            <span>Relatórios</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/ia")}
-            className="app-nav-link"
-          >
-            <Filter size={20} />
-            <span>Assistente de IA</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/team")}
-            className="app-nav-link-between"
-          >
-            <div className="flex items-center gap-3">
-              <Users size={20} />
-              <span>Team</span>
-            </div>
-
-          </a>
-
-          <a
-            onClick={() => navigate("/presenca")}
-            className="app-nav-link"
-          >
-            <ClipboardCheck size={20} />
-            <span>Presenças</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/salas")}
-            className="app-nav-link"
-          >
-            <DoorOpen size={20} />
-            <span>Salas</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/alunos")}
-            className="app-nav-link"
-          >
-            <UserRound size={20} />
-            <span>Alunos</span>
-          </a>
-        </nav>
-
-        <div className="app-divider" />
-
-        <nav>
-          <a
-            onClick={() => navigate("/settings")}
-            className="app-nav-link"
-          >
-            <Settings size={20} />
-            <span>Settings</span>
-          </a>
-        </nav>
-
-        <div className="flex-1" />
-
-        <div className="flex flex-col gap-3">
-          <a
-            onClick={() => navigate("/perfil")}
-            className="app-nav-active"
-          >
-            <UserCircle size={20} />
-            <span>Perfil</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/log")}
-            className="app-nav-link"
-          >
-            <LogOut size={20} />
-            <span>Log out</span>
-          </a>
-        </div>
-      </aside>
+      <Sidebar ativo="/perfil" />
 
 
       <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
@@ -198,21 +222,18 @@ export function Perfil() {
 
           <div className="flex items-center gap-4">
 
-            <BellRing
-              size={20}
-              className="text-gray-700 dark:text-[#b9d2cc]"
-            />
+            <Notificacoes className="text-gray-700 dark:text-[#b9d2cc]" />
 
             <div className="app-avatar">
               <img
-                src={Lohran}
-                alt="Profile"
-                className="rounded-full"
+                src={fotoPreview || Lohran}
+                alt={usuario?.nome ?? "Perfil"}
+                className="h-full w-full rounded-full object-cover"
               />
             </div>
 
             <span className="text-lg font-semibold text-gray-900 dark:text-[#f5fffc]">
-              Lohran
+              {usuario?.nome ?? ""}
             </span>
 
           </div>
@@ -222,35 +243,60 @@ export function Perfil() {
         <div className="flex-1 overflow-y-auto">
 
           <div className="app-page-grid">
-            <div className="grid grid-cols-1 gap-4 xl:grid-cols-[280px_minmax(0,1fr)]">
-              <div className="app-card flex min-h-[390px] flex-col items-center justify-center p-5">
+            <div className="grid grid-cols-1 gap-4">
+              <div className="app-card flex flex-col items-center px-5 py-8 text-center">
                 <div className="relative mb-4">
-                  <div className="h-28 w-28 overflow-hidden rounded-full bg-[#dbe5e5]">
+                  <div className="h-36 w-36 overflow-hidden rounded-full bg-[#dbe5e5]">
 
                     <img
-                      src={Lohran}
+                      src={fotoPreview || Lohran}
                       alt="Foto de perfil"
                       className="h-full w-full object-cover"/>
 
                   </div>
-                  <button
-                    type="button"
-                    className="absolute bottom-1 right-1 flex h-9 w-9 items-center justify-center rounded-full bg-[#0d7f70] text-white shadow-md transition hover:bg-[#09695e]"
-                  >
-                    <Camera size={17} />
-                  </button>
+                  {podeEditar && (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() => inputFotoRef.current?.click()}
+                        aria-label="Alterar foto de perfil"
+                        title="Alterar foto de perfil"
+                        className="absolute bottom-1 right-1 flex h-9 w-9 items-center justify-center rounded-full bg-[#0d7f70] text-white shadow-md transition hover:bg-[#09695e]"
+                      >
+                        <Camera size={17} />
+                      </button>
+                      <input
+                        ref={inputFotoRef}
+                        type="file"
+                        accept="image/*"
+                        onChange={escolherFoto}
+                        className="hidden"
+                      />
+                    </>
+                  )}
 
                 </div>
 
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                  Lohran
+                  {usuario?.nome ?? ""}
                 </h2>
                 <p className="mt-1 text-sm text-gray-500 dark:text-[#91aaa5]">
-                  Administrador
+                  {usuario ? nomeDoPerfil(usuario.perfil) : ""}
                 </p>
                 <p className="mt-1 text-center text-xs text-gray-400 dark:text-[#718985]">
-                  lohran@educontrol.local
+                  {usuario?.email ?? ""}
                 </p>
+
+                {erroFoto && (
+                  <p role="alert" className="mt-3 text-center text-xs text-red-500 dark:text-red-400">
+                    {erroFoto}
+                  </p>
+                )}
+                {fotoPreview && !erroFoto && (
+                  <p className="mt-3 text-center text-xs text-gray-400 dark:text-[#718985]">
+                    Pré-visualização. O envio da foto depende da API.
+                  </p>
+                )}
 
                 <div className="mt-5 rounded-full bg-emerald-100 px-4 py-2 text-xs font-semibold text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-400">
                   Conta ativa
@@ -295,11 +341,20 @@ export function Perfil() {
                       <input
                         id="nome"
                         type="text"
-                        defaultValue="Lohran"
-                        className="w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-10 pr-4 text-sm text-gray-900 outline-none transition focus:border-[#0d7f70] dark:border-white/15 dark:bg-[#151515] dark:text-white dark:focus:border-[#22c7a9]"
+                        value={nome}
+                        onChange={(e) => alterarCampo("nome", e.target.value)}
+                        readOnly={!podeEditar}
+                        aria-invalid={erroNome !== "" ? true : undefined}
+                        aria-describedby={erroNome ? "erro-nome" : undefined}
+                        className={`${CLASSE_CAMPO}${erroNome ? " !border-red-400" : ""}`}
                       />
 
                     </div>
+                    {erroNome && (
+                      <p id="erro-nome" role="alert" className="text-xs text-red-500 dark:text-red-400">
+                        {erroNome}
+                      </p>
+                    )}
 
                   </div>
 
@@ -322,11 +377,20 @@ export function Perfil() {
                       <input
                         id="email"
                         type="email"
-                        defaultValue="lohran@educontrol.local"
-                        className="w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-10 pr-4 text-sm text-gray-900 outline-none transition focus:border-[#0d7f70] dark:border-white/15 dark:bg-[#151515] dark:text-white dark:focus:border-[#22c7a9]"
+                        value={email}
+                        onChange={(e) => alterarCampo("email", e.target.value)}
+                        readOnly={!podeEditar}
+                        aria-invalid={erroEmail ? true : undefined}
+                        aria-describedby={erroEmail ? "erro-email" : undefined}
+                        className={`${CLASSE_CAMPO}${erroEmail ? " !border-red-400" : ""}`}
                       />
 
                     </div>
+                    {erroEmail && (
+                      <p id="erro-email" role="alert" className="text-xs text-red-500 dark:text-red-400">
+                        {erroEmail}
+                      </p>
+                    )}
 
                   </div>
 
@@ -349,11 +413,20 @@ export function Perfil() {
                       <input
                         id="cargo"
                         type="text"
-                        defaultValue="Administrador do Sistema"
-                        className="w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-10 pr-4 text-sm text-gray-900 outline-none transition focus:border-[#0d7f70] dark:border-white/15 dark:bg-[#151515] dark:text-white dark:focus:border-[#22c7a9]"
+                        value={cargo}
+                        onChange={(e) => alterarCampo("cargo", e.target.value)}
+                        readOnly={!podeEditar || !podeEditarCargo}
+                        aria-invalid={erroCargo ? true : undefined}
+                        aria-describedby={erroCargo ? "erro-cargo" : undefined}
+                        className={`${CLASSE_CAMPO}${erroCargo ? " !border-red-400" : ""}`}
                       />
 
                     </div>
+                    {erroCargo && (
+                      <p id="erro-cargo" role="alert" className="text-xs text-red-500 dark:text-red-400">
+                        {erroCargo}
+                      </p>
+                    )}
 
                   </div>
 
@@ -376,27 +449,48 @@ export function Perfil() {
                       <input
                         id="telefone"
                         type="tel"
-                        defaultValue="(35) 99876-5432"
-                        className="w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-10 pr-4 text-sm text-gray-900 outline-none transition focus:border-[#0d7f70] dark:border-white/15 dark:bg-[#151515] dark:text-white dark:focus:border-[#22c7a9]"
+                        value={telefone}
+                        onChange={(e) => alterarCampo("telefone", e.target.value)}
+                        readOnly={!podeEditar}
+                        aria-invalid={erroTelefone ? true : undefined}
+                        aria-describedby={erroTelefone ? "erro-telefone" : undefined}
+                        className={`${CLASSE_CAMPO}${erroTelefone ? " !border-red-400" : ""}`}
                       />
 
                     </div>
+                    {erroTelefone && (
+                      <p id="erro-telefone" role="alert" className="text-xs text-red-500 dark:text-red-400">
+                        {erroTelefone}
+                      </p>
+                    )}
 
                   </div>
 
                 </div>
 
-                <div className="mt-5 flex justify-end">
-
-                  <button
-                    type="button"
-                    className="flex items-center gap-2 rounded-lg bg-[#0d7f70] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#09695e]"
+                {avisoPerfil && (
+                  <div
+                    role="status"
+                    className={`mt-5 rounded-xl px-4 py-3 text-sm ${classeAviso(avisoPerfil.tipo)}`}
                   >
-                    <Save size={17} />
-                    Salvar alterações
-                  </button>
+                    {avisoPerfil.texto}
+                  </div>
+                )}
 
-                </div>
+                {podeEditar && (
+                  <div className="mt-5 flex justify-end">
+
+                    <button
+                      type="button"
+                      onClick={salvarPerfil}
+                      className="flex items-center gap-2 rounded-lg bg-[#0d7f70] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#09695e]"
+                    >
+                      <Save size={17} />
+                      Salvar alterações
+                    </button>
+
+                  </div>
+                )}
 
               </div>
 
@@ -423,7 +517,7 @@ export function Perfil() {
                         Último acesso
                       </p>
                       <p className="text-sm font-semibold text-gray-900 dark:text-white">
-                        Hoje, 20:10
+                        {formatarUltimoAcesso(usuario?.ultimoAcessoEm)}
                       </p>
                     </div>
 
@@ -440,7 +534,7 @@ export function Perfil() {
                         Nível de acesso
                       </p>
                       <p className="text-sm font-semibold text-gray-900 dark:text-white">
-                        Administrador
+                        {usuario ? nomeDoPerfil(usuario.perfil) : ""}
                       </p>
                     </div>
 
@@ -458,7 +552,7 @@ export function Perfil() {
                         Membro desde
                       </p>
                       <p className="text-sm font-semibold text-gray-900 dark:text-white">
-                        12 de janeiro de 2026
+                        {formatarDataLonga(usuario?.membroDesde)}
                       </p>
 
                     </div>
@@ -495,18 +589,21 @@ export function Perfil() {
                         </p>
 
                         <p className="mt-1 text-xs text-gray-500 dark:text-[#8fa9a3]">
-                          Última alteração: 15/09/2026
+                          Última alteração: {formatarDataCurta(usuario?.senhaAlteradaEm)}
                         </p>
 
                       </div>
                     </div>
 
-                    <button
-                      onClick={() => setModalSenha(true)}
-                      className="rounded-xl border border-[#0d7f70]/30 px-4 py-2 text-sm font-medium text-[#0d7f70] transition hover:bg-[#0d7f70]/10 dark:text-[#22c7a9]"
-                    >
-                      Alterar senha
-                    </button>
+                    {podeAlterarSenha && (
+                      <button
+                        type="button"
+                        onClick={() => setModalSenha(true)}
+                        className="rounded-xl border border-[#0d7f70]/30 px-4 py-2 text-sm font-medium text-[#0d7f70] transition hover:bg-[#0d7f70]/10 dark:text-[#22c7a9]"
+                      >
+                        Alterar senha
+                      </button>
+                    )}
 
                   </div>
 
@@ -531,7 +628,9 @@ export function Perfil() {
 
                     <button
                       type="button"
-                      className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-100 dark:border-white/15 dark:text-[#d8e5e2] dark:hover:bg-white/5"
+                      disabled
+                      title="Disponível após a integração com o backend"
+                      className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/15 dark:text-[#d8e5e2] dark:hover:bg-white/5"
                     >
                       Ver sessões
                     </button>
@@ -547,12 +646,24 @@ export function Perfil() {
         </div>
       </div>
       {modalSenha && (
-  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm">
-    <div className="w-full max-w-md rounded-2xl border border-black/10 bg-white p-6 shadow-2xl dark:border-white/10 dark:bg-[#151515]">
+  <div
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="titulo-modal-senha"
+    onClick={fecharModalSenha}
+    className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm"
+  >
+    <div
+      onClick={(e) => e.stopPropagation()}
+      className="w-full max-w-md rounded-2xl border border-black/10 bg-white p-6 shadow-2xl dark:border-white/10 dark:bg-[#151515]"
+    >
 
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-[#17332e] dark:text-white">
+          <h2
+            id="titulo-modal-senha"
+            className="text-lg font-semibold text-[#17332e] dark:text-white"
+          >
             Alterar senha
           </h2>
 
@@ -562,20 +673,23 @@ export function Perfil() {
         </div>
 
         <button
-          onClick={() => {
-            setModalSenha(false);
-            setMensagemSenha("");
-          }}
+          type="button"
+          onClick={fecharModalSenha}
+          aria-label="Fechar"
           className="rounded-lg p-2 text-[#6f8781] transition hover:bg-black/5 hover:text-[#17332e] dark:text-[#8fa9a3] dark:hover:bg-white/10 dark:hover:text-white"
         >
           <X size={20} />
         </button>
       </div>
 
+      <form onSubmit={alterarSenha} noValidate>
       <div className="space-y-4">
 
         <div>
-          <label className="mb-2 block text-sm font-medium text-[#17332e] dark:text-white">
+          <label
+            htmlFor="senha-atual"
+            className="mb-2 block text-sm font-medium text-[#17332e] dark:text-white"
+          >
             Senha atual
           </label>
 
@@ -586,9 +700,11 @@ export function Perfil() {
             />
 
             <input
+              id="senha-atual"
               type={mostrarSenhaAtual ? "text" : "password"}
               value={senhaAtual}
               onChange={(e) => setSenhaAtual(e.target.value)}
+              autoComplete="current-password"
               placeholder="Digite sua senha atual"
               className="w-full rounded-xl border border-black/10 bg-white py-3 pl-10 pr-11 text-sm outline-none transition focus:border-[#0d7f70] dark:border-white/10 dark:bg-[#1c1c1c] dark:text-white"
             />
@@ -596,6 +712,7 @@ export function Perfil() {
             <button
               type="button"
               onClick={() => setMostrarSenhaAtual(!mostrarSenhaAtual)}
+              aria-label={mostrarSenhaAtual ? "Ocultar senha atual" : "Mostrar senha atual"}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8fa9a3]"
             >
               {mostrarSenhaAtual ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -604,7 +721,10 @@ export function Perfil() {
         </div>
 
         <div>
-          <label className="mb-2 block text-sm font-medium text-[#17332e] dark:text-white">
+          <label
+            htmlFor="nova-senha"
+            className="mb-2 block text-sm font-medium text-[#17332e] dark:text-white"
+          >
             Nova senha
           </label>
 
@@ -615,9 +735,11 @@ export function Perfil() {
             />
 
             <input
+              id="nova-senha"
               type={mostrarNovaSenha ? "text" : "password"}
               value={novaSenha}
               onChange={(e) => setNovaSenha(e.target.value)}
+              autoComplete="new-password"
               placeholder="Digite a nova senha"
               className="w-full rounded-xl border border-black/10 bg-white py-3 pl-10 pr-11 text-sm outline-none transition focus:border-[#0d7f70] dark:border-white/10 dark:bg-[#1c1c1c] dark:text-white"
             />
@@ -625,6 +747,7 @@ export function Perfil() {
             <button
               type="button"
               onClick={() => setMostrarNovaSenha(!mostrarNovaSenha)}
+              aria-label={mostrarNovaSenha ? "Ocultar nova senha" : "Mostrar nova senha"}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8fa9a3]"
             >
               {mostrarNovaSenha ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -633,7 +756,10 @@ export function Perfil() {
         </div>
 
         <div>
-          <label className="mb-2 block text-sm font-medium text-[#17332e] dark:text-white">
+          <label
+            htmlFor="confirmar-senha"
+            className="mb-2 block text-sm font-medium text-[#17332e] dark:text-white"
+          >
             Confirmar nova senha
           </label>
 
@@ -644,9 +770,11 @@ export function Perfil() {
             />
 
             <input
+              id="confirmar-senha"
               type={mostrarConfirmacao ? "text" : "password"}
               value={confirmarSenha}
               onChange={(e) => setConfirmarSenha(e.target.value)}
+              autoComplete="new-password"
               placeholder="Digite novamente a nova senha"
               className="w-full rounded-xl border border-black/10 bg-white py-3 pl-10 pr-11 text-sm outline-none transition focus:border-[#0d7f70] dark:border-white/10 dark:bg-[#1c1c1c] dark:text-white"
             />
@@ -654,6 +782,7 @@ export function Perfil() {
             <button
               type="button"
               onClick={() => setMostrarConfirmacao(!mostrarConfirmacao)}
+              aria-label={mostrarConfirmacao ? "Ocultar confirmação" : "Mostrar confirmação"}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8fa9a3]"
             >
               {mostrarConfirmacao ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -661,15 +790,12 @@ export function Perfil() {
           </div>
         </div>
 
-        {mensagemSenha && (
+        {avisoSenha && (
           <div
-            className={`rounded-xl px-4 py-3 text-sm ${
-              mensagemSenha.includes("sucesso")
-                ? "bg-green-500/10 text-green-600 dark:text-green-400"
-                : "bg-red-500/10 text-red-600 dark:text-red-400"
-            }`}
+            role="status"
+            className={`rounded-xl px-4 py-3 text-sm ${classeAviso(avisoSenha.tipo)}`}
           >
-            {mensagemSenha}
+            {avisoSenha.texto}
           </div>
         )}
 
@@ -678,23 +804,22 @@ export function Perfil() {
       <div className="mt-6 flex justify-end gap-3">
 
         <button
-          onClick={() => {
-            setModalSenha(false);
-            setMensagemSenha("");
-          }}
+          type="button"
+          onClick={fecharModalSenha}
           className="rounded-xl border border-black/10 px-4 py-2.5 text-sm font-medium text-[#526a65] transition hover:bg-black/5 dark:border-white/10 dark:text-[#b9d2cc] dark:hover:bg-white/10"
         >
           Cancelar
         </button>
 
         <button
-          onClick={alterarSenha}
+          type="submit"
           className="rounded-xl bg-[#0d7f70] px-4 py-2.5 text-sm font-medium text-white transition hover:bg-[#09695e]"
         >
           Alterar senha
         </button>
 
       </div>
+      </form>
     </div>
   </div>
 )}

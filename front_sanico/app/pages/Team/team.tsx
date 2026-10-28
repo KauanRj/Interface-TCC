@@ -1,157 +1,63 @@
 import {
-  Home,
-  LayoutDashboard,
-  List,
-  Filter,
   Mail,
-  ClipboardCheck,
-  DoorOpen,
   Users,
-  Settings,
-
-  LogOut,
-  BellRing,
-  TrendingUp,
-  TrendingDown,
-  User,
-  UserRound,
-  UserCircle,
   Plus,
-  BarChart3,
-  AlertTriangle,
   ShieldCheck,
   GraduationCap,
   BriefcaseBusiness,
   ClipboardList,
   UserCog,
   Phone,
-}from "lucide-react";
-import Lohran from "../../../public/lohran.png";
-import { useNavigate } from "react-router";
+  Search,
+  Filter,
+} from "lucide-react";
+import { useState } from "react";
+import { Notificacoes } from "~/components/Notificacoes";
+import { DetalhesFuncionario } from "~/components/DetalhesFuncionario";
+import { NovoFuncionario } from "~/components/NovoFuncionario";
+import { lerFuncionariosNovos } from "~/utils/funcionariosCadastrados";
+import { FUNCIONARIOS_BASE } from "~/data/funcionariosFicticios";
+import { Sidebar } from "~/components/Sidebar";
+import { useUsuario } from "~/hooks/useUsuario";
+import Lohran from "../../../public/lohran-avatar.png";
 
 export function Team() {
-  const navigate = useNavigate();
+  const [filtrosAbertos, setFiltrosAbertos] = useState(false);
+  const { pode, usuario } = useUsuario();
+  const [funcionarioAberto, setFuncionarioAberto] = useState<any>(null);
 
-  const funcionarios = [
-    { id: 1, nome: "Mariana Silva", cargo: "Professora", setor: "Matematica", status: "Ativo" },
-    { id: 2, nome: "Carlos Mendes", cargo: "Coordenador", setor: "Pedagogico", status: "Ativo" },
-    { id: 3, nome: "Fernanda Lima", cargo: "Diretora", setor: "Gestao", status: "Ativo" },
-    { id: 4, nome: "Juliana Costa", cargo: "Secretaria", setor: "Administrativo", status: "Pendente" },
-    { id: 5, nome: "Ricardo Santos", cargo: "Supervisor", setor: "Ensino Medio", status: "Ativo" },
-  ];
+  const funcionariosBase = FUNCIONARIOS_BASE;
+  const [funcionariosNovos, setFuncionariosNovos] = useState<any[]>(lerFuncionariosNovos);
+  const [cadastroAberto, setCadastroAberto] = useState(false);
+  const [aviso, setAviso] = useState("");
+  const funcionarios = funcionariosBase.concat(funcionariosNovos);
+
+  let proximoId = 1;
+  for (let i = 0; i < funcionarios.length; i++) {
+    if (funcionarios[i].id >= proximoId) {
+      proximoId = funcionarios[i].id + 1;
+    }
+  }
+
+  function aoCadastrar(funcionario: any) {
+    setFuncionariosNovos(lerFuncionariosNovos());
+    setCadastroAberto(false);
+    setAviso(funcionario.nome + " foi cadastrado neste navegador. O cadastro definitivo depende da integração com a API.");
+    setTimeout(() => setAviso(""), 6000);
+  }
 
   const cargos = [
     { nome: "Professores", quantidade: 24, largura: "88%" },
     { nome: "Coordenadores", quantidade: 5, largura: "55%" },
     { nome: "Administrativo", quantidade: 7, largura: "65%" },
-    { nome: "Supervisao", quantidade: 3, largura: "38%" },
+    { nome: "Supervisão", quantidade: 3, largura: "38%" },
   ];
 
 
   return (
     <main className="app-shell">
    
-      <aside className="app-sidebar">
-        <div className="flex items-center gap-3 mb-10">
-          <span className="sm:text-2xl">
-             <span className="app-login-logo-edu">Edu</span>
-             <span className="app-login-logo-control">Control</span>
-           </span>
-        </div>
-
-        <nav className="flex flex-col gap-2">
-          <a
-            onClick={() => navigate("/home")}
-            className="app-nav-link"
-          >
-            <LayoutDashboard size={20} />
-            <span>Início</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/relatorios")}
-            className="app-nav-link"
-          >
-            <List size={20} />
-            <span>Relatórios</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/ia")}
-            className="app-nav-link"
-          >
-            <Filter size={20} />
-            <span>Assistente de IA</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/team")}
-            className="app-nav-active"
-          >
-            <div className="flex items-center gap-3">
-              <Users size={20} />
-              <span>Team</span>
-            </div>
-
-          </a>
-
-          <a
-            onClick={() => navigate("/presenca")}
-            className="app-nav-link"
-          >
-            <ClipboardCheck size={20} />
-            <span>Presenças</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/salas")}
-            className="app-nav-link"
-          >
-            <DoorOpen size={20} />
-            <span>Salas</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/alunos")}
-            className="app-nav-link"
-          >
-            <UserRound size={20} />
-            <span>Alunos</span>
-          </a>
-        </nav>
-
-        <div className="app-divider" />
-
-        <nav>
-          <a
-            onClick={() => navigate("/settings")}
-            className="app-nav-link"
-          >
-            <Settings size={20} />
-            <span>Settings</span>
-          </a>
-        </nav>
-
-        <div className="flex-1" />
-
-        <div className="flex flex-col gap-3">
-          <a
-            onClick={() => navigate("/perfil")}
-            className="app-nav-link"
-          >
-            <UserCircle size={20} />
-            <span>Perfil</span>
-          </a>
-
-          <a
-            onClick={() => navigate("/log")}
-            className="app-nav-link"
-          >
-            <LogOut size={20} />
-            <span>Log out</span>
-          </a>
-        </div>
-      </aside>
+      <Sidebar ativo="/team" />
 
         <div className="flex-1 min-w-0 flex flex-col overflow-hidden">
           <div className="app-header">
@@ -161,28 +67,40 @@ export function Team() {
             </div>
 
             <div className="app-header-actions">
-              <button 
-              type="submit"
-              className="app-button-relatorio">
-                <Plus size={18} />
-                Novo funcionario 
-              </button>
+              {pode("usuarios.gerenciar") && (
+                <button
+                  type="button"
+                  onClick={() => setCadastroAberto(true)}
+                  className="app-button-relatorio">
+                  <Plus size={18} />
+                  Novo funcionário
+                </button>
+              )}
 
-              <BellRing size={20} />
+              <Notificacoes />
               <div className="app-avatar">
                 <img
                   src={Lohran}
                   alt="Profile"
-                  className="rounded-full"
+                  className="h-full w-full rounded-full object-cover"
                 />
               </div>
-              <span className="text-lg font-semibold text-gray-900 dark:text-[#f5fffc]">Lohran</span>
+              <span className="text-lg font-semibold text-gray-900 dark:text-[#f5fffc]">{usuario?.nome ?? ""}</span>
             </div>
           </div>
           
           <div className="min-h-0 flex-1 overflow-y-auto">
 
             <div className="app-page-grid">
+
+            {aviso && (
+              <div
+                role="status"
+                className="rounded-lg border border-green-500/30 bg-green-500/10 p-3 text-sm text-green-700 dark:text-green-300"
+              >
+                {aviso}
+              </div>
+            )}
 
               <div className="app-grid-team">
                 <div className="app-report-stat">
@@ -246,9 +164,72 @@ export function Team() {
                 </div>
               </div>
 
+              <div className="app-report-filters">
+                <div className="app-report-search col-span-3">
+                  <label>Pesquisar</label>
+                  <div>
+                    <Search size={17} />
+                    <input placeholder="Pesquisar funcionário..." />
+                  </div>
+                </div>
+
+                <div className="flex items-end">
+                  <button
+                    type="button"
+                    className="app-button-filtrar"
+                    aria-expanded={filtrosAbertos}
+                    onClick={() => setFiltrosAbertos(!filtrosAbertos)}
+                  >
+                    <Filter size={16} />
+                    Filtrar
+                  </button>
+                </div>
+
+                {filtrosAbertos && (
+                  <>
+                    <div>
+                      <label>Cargo</label>
+                      <select>
+                        <option>Todos os cargos</option>
+                        <option>Professor</option>
+                        <option>Coordenador</option>
+                        <option>Secretário</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label>Setor</label>
+                      <select>
+                        <option>Todos os setores</option>
+                        <option>Pedagógico</option>
+                        <option>Administrativo</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label>Vínculo</label>
+                      <select>
+                        <option>Todos</option>
+                        <option>Efetivo</option>
+                        <option>Contratado</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label>Status</label>
+                      <select>
+                        <option>Todos</option>
+                        <option>Ativo</option>
+                        <option>Pendente</option>
+                      </select>
+                    </div>
+                  </>
+                )}
+              </div>
+
               <div className="grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1fr)_340px]">
                 <div className="app-card overflow-hidden p-4">
-                  <h2 className="app-report-title mb-4">Funcionarios cadastrados</h2>
+                  <h2 className="app-report-title mb-4">Funcionários cadastrados</h2>
 
                   <table className="w-full text-left border-collapse">
                     <thead>
@@ -257,6 +238,7 @@ export function Team() {
                         <th>Nome</th>
                         <th>Cargo</th>
                         <th>Setor</th>
+                        <th>Vínculo</th>
                         <th>Status</th>
                         <th>Ações</th>
                       </tr>
@@ -272,11 +254,26 @@ export function Team() {
                           <td>{funcionario.cargo}</td>
                           <td>{funcionario.setor}</td>
                           <td>
+                            <span className={funcionario.vinculo === "Efetivo" ? "app-status-green" : "app-status-yellow"}>
+                              {funcionario.vinculo}
+                            </span>
+                          </td>
+                          <td>
                             <span className={funcionario.status === "Ativo" ? "app-status-green" : "app-status-yellow"}>
                               {funcionario.status}
                             </span>
                           </td>
-                          <td>•••</td>
+                          <td>
+                            <button
+                              type="button"
+                              aria-label={"Ver detalhes de " + funcionario.nome}
+                              title="Ver detalhes"
+                              onClick={() => setFuncionarioAberto(funcionario)}
+                              className="cursor-pointer px-2"
+                            >
+                              •••
+                            </button>
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -285,7 +282,7 @@ export function Team() {
 
                 <aside className="grid gap-4">
                   <div className="app-card p-4">
-                    <h2 className="app-report-title mb-4">Distribuicao por cargo</h2>
+                    <h2 className="app-report-title mb-4">Distribuição por cargo</h2>
 
                     <div className="space-y-4">
                       {cargos.map((cargo) => (
@@ -303,7 +300,7 @@ export function Team() {
                   </div>
 
                   <div className="app-card p-4">
-                    <h2 className="app-report-title mb-4">Contatos rapidos</h2>
+                    <h2 className="app-report-title mb-4">Contatos rápidos</h2>
 
                     <div className="space-y-3 text-sm">
                       <div className="flex items-center gap-3">
@@ -328,6 +325,22 @@ export function Team() {
         </div>
         
       
-    </main>
+    {funcionarioAberto && (
+        <DetalhesFuncionario
+          funcionario={funcionarioAberto}
+          aoFechar={() => setFuncionarioAberto(null)}
+          podeEditar={pode("usuarios.gerenciar")}
+          podeExcluir={pode("usuarios.gerenciar")}
+        />
+      )}
+    {cadastroAberto && (
+        <NovoFuncionario
+          aoFechar={() => setCadastroAberto(false)}
+          aoSalvar={aoCadastrar}
+          proximoId={proximoId}
+          funcionariosExistentes={funcionarios}
+        />
+      )}
+      </main>
   );
 }
